@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محول العملات</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>محول العملات</h1>
+
+        <form action="/refresh-rates" method="post" style="margin-bottom: 15px;">
+            <button type="submit">تحديث أسعار اليوم</button>
+        </form>
+
+        <form action="/result" method="post">
+            <textarea name="data" rows="10" placeholder="أدخل البيانات هنا"></textarea><br><br>
+
+            <label for="selected_rate_date">اختياري: اختر تاريخ سعر معين للجدول كله</label><br>
+            <input type="date" id="selected_rate_date" name="selected_rate_date"><br><br>
+
+            <button type="submit">تحويل</button>
+        </form>
+    </div>
+</body>
+</html>

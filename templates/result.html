@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>نتائج التحويل</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:#0f1117; --surface:#1a1d2e; --border:#2a2d45;
+      --accent:#4f8ef7; --green:#22c55e; --amber:#f59e0b;
+      --purple:#a78bfa; --red:#ef4444; --text:#e2e8f0;
+      --muted:#64748b; --radius:12px;
+    }
+
+    * { box-sizing:border-box; margin:0; padding:0; }
+
+    body {
+      font-family:'Cairo', sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      padding:1rem .8rem 3rem;
+    }
+
+    .header {
+      text-align:center;
+      margin-bottom:1.3rem;
+    }
+
+    .header h1 {
+      font-size:1.8rem;
+      font-weight:900;
+      background:linear-gradient(135deg,var(--accent),var(--purple));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    .header p {
+      color:var(--muted);
+      margin-top:.3rem;
+      font-size:.85rem;
+    }
+
+    .rate-editors {
+      max-width:1250px;
+      margin:0 auto 1.2rem;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:.8rem;
+    }
+
+    @media(max-width:900px) {
+      .rate-editors { grid-template-columns:1fr; }
+    }
+
+    .rate-box {
+      border-radius:var(--radius);
+      padding:.8rem 1rem;
+      display:flex;
+      flex-direction:column;
+      gap:.45rem;
+      min-height:135px;
+    }
+
+    .rate-box.egp {
+      background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(245,158,11,.02));
+      border:1.5px solid rgba(245,158,11,.4);
+    }
+
+    .rate-box.egp-sar {
+      background:linear-gradient(135deg,rgba(34,197,94,.08),rgba(34,197,94,.02));
+      border:1.5px solid rgba(34,197,94,.4);
+    }
+
+    .rb-title {
+      font-size:.68rem;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+    }
+
+    .rate-box.egp .rb-title { color:var(--amber); }
+    .rate-box.egp-sar .rb-title { color:var(--green); }
+
+    .rb-desc {
+      font-size:.72rem;
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    .rate-row {
+      display:flex;
+      align-items:center;
+      gap:.55rem;
+      flex-wrap:wrap;
+      margin-top:.1rem;
+    }
+
+    .rate-input {
+      background:rgba(255,255,255,.04);
+      border-radius:8px;
+      font-family:'Cairo',sans-serif;
+      font-size:1.25rem;
+      font-weight:700;
+      padding:.25rem .7rem;
+      width:105px;
+      text-align:center;
+      outline:none;
+    }
+
+    .rate-box.egp .rate-input {
+      border:1.5px solid var(--amber);
+      color:var(--amber);
+    }
+
+    .rate-box.egp-sar .rate-input {
+      border:1.5px solid var(--green);
+      color:var(--green);
+    }
+
+    .rb-unit {
+      color:var(--muted);
+      font-size:.78rem;
+    }
+
+    .live-tag {
+      font-size:.68rem;
+      border-radius:6px;
+      padding:.15rem .5rem;
+      font-weight:700;
+    }
+
+    .rate-box.egp .live-tag {
+      background:rgba(245,158,11,.12);
+      color:var(--amber);
+    }
+
+    .rate-box.egp-sar .live-tag {
+      background:rgba(34,197,94,.12);
+      color:var(--green);
+    }
+
+    .formula-preview {
+      font-size:.72rem;
+      color:var(--muted);
+      background:rgba(255,255,255,.03);
+      border-radius:6px;
+      padding:.28rem .6rem;
+      margin-top:.05rem;
+      font-family:monospace;
+      direction:ltr;
+      text-align:left;
+    }
+
+    .formula-preview span {
+      color:var(--text);
+      font-weight:700;
+    }
+
+    .summary {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+      gap:.8rem;
+      margin-bottom:1rem;
+      max-width:1250px;
+      margin-inline:auto;
+    }
+
+    .card {
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:.9rem 1.1rem;
+    }
+
+    .card .label {
+      font-size:.7rem;
+      color:var(--muted);
+      margin-bottom:.25rem;
+    }
+
+    .card .value {
+      font-size:1.25rem;
+      font-weight:700;
+      line-height:1.2;
+    }
+
+    .card.live .value,
+    .card.live-sar .value,
+    .selected-card .value { color:var(--green); }
+
+    .card.fixed .value { color:var(--amber); }
+    .card.sar .value { color:var(--purple); }
+    .card.count .value { color:var(--accent); }
+
+    .unit {
+      font-size:.6em;
+      opacity:.7;
+      margin-right:.2rem;
+    }
+
+    .selected-card {
+      border-color:rgba(34,197,94,.45);
+      background:linear-gradient(135deg,rgba(34,197,94,.08),rgba(34,197,94,.02));
+    }
+
+    .selected-meta {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:.6rem;
+      margin-top:.5rem;
+      color:var(--muted);
+      font-size:.7rem;
+    }
+
+    .clear-selection {
+      border:1px solid rgba(34,197,94,.35);
+      background:rgba(34,197,94,.12);
+      color:var(--green);
+      border-radius:6px;
+      padding:.12rem .5rem;
+      font-family:'Cairo',sans-serif;
+      font-size:.65rem;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .actions-bar,
+    .manual-panel {
+      max-width:1250px;
+      margin:0 auto 1.1rem;
+      background:linear-gradient(135deg,rgba(79,142,247,.08),rgba(167,139,250,.04));
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:.9rem 1rem;
+    }
+
+    .actions-bar {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:.8rem;
+      flex-wrap:wrap;
+    }
+
+    .actions-info {
+      color:var(--muted);
+      font-size:.78rem;
+      line-height:1.7;
+    }
+
+    .actions-buttons {
+      display:flex;
+      align-items:center;
+      gap:.6rem;
+      flex-wrap:wrap;
+    }
+
+    .save-mode,
+    .manual-input,
+    .manual-select {
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      border:1px solid var(--border);
+      border-radius:8px;
+      padding:.55rem .75rem;
+      font-family:'Cairo',sans-serif;
+      outline:none;
+    }
+
+    .manual-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+      gap:.7rem;
+      align-items:end;
+    }
+
+    .manual-title {
+      font-size:.88rem;
+      font-weight:900;
+      margin-bottom:.75rem;
+      color:var(--text);
+    }
+
+    .manual-field label {
+      display:block;
+      color:var(--muted);
+      font-size:.7rem;
+      margin-bottom:.25rem;
+    }
+
+    .manual-field input,
+    .manual-field select {
+      width:100%;
+    }
+
+    .action-btn {
+      border:0;
+      border-radius:8px;
+      padding:.55rem 1rem;
+      font-family:'Cairo',sans-serif;
+      font-weight:800;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:.35rem;
+    }
+
+    .save-btn {
+      background:var(--green);
+      color:#06120b;
+    }
+
+    .history-btn {
+      background:var(--accent);
+      color:white;
+    }
+
+    .manual-btn {
+      background:rgba(167,139,250,.18);
+      color:var(--purple);
+      border:1px solid rgba(167,139,250,.35);
+      width:100%;
+    }
+
+    .save-status {
+      width:100%;
+      font-size:.76rem;
+      color:var(--green);
+      display:none;
+    }
+
+    .save-status.show { display:block; }
+
+    .error-banner {
+      background:rgba(239,68,68,.1);
+      border:1px solid var(--red);
+      color:var(--red);
+      border-radius:var(--radius);
+      padding:1rem 1.5rem;
+      margin-bottom:1.5rem;
+      max-width:960px;
+      margin-inline:auto;
+    }
+
+    .table-wrap {
+      max-width:1500px;
+      margin-inline:auto;
+      overflow-x:auto;
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+    }
+
+    table {
+      width:100%;
+      border-collapse:collapse;
+      font-size:.84rem;
+    }
+
+    thead {
+      background:linear-gradient(90deg,#1e2340,#252a45);
+      position:sticky;
+      top:0;
+      z-index:2;
+    }
+
+    th {
+      padding:.7rem .75rem;
+      text-align:right;
+      color:var(--muted);
+      font-weight:600;
+      font-size:.68rem;
+      text-transform:uppercase;
+      letter-spacing:.03em;
+      white-space:nowrap;
+    }
+
+    th.col-live,
+    th.col-live-sar { color:var(--green); }
+
+    th.col-fixed { color:var(--amber); }
+    th.col-sar { color:var(--purple); }
+
+    tbody tr {
+      border-top:1px solid var(--border);
+      transition:background .15s;
+    }
+
+    tbody tr[data-amount] { cursor:pointer; }
+
+    tbody tr[data-amount]:hover {
+      background:rgba(79,142,247,.06);
+    }
+
+    tbody tr[data-amount].selected {
+      background:rgba(34,197,94,.12) !important;
+    }
+
+    tbody tr[data-amount].selected td:first-child::before {
+      content:"✓ ";
+      color:var(--green);
+      font-weight:900;
+    }
+
+    td {
+      padding:.65rem .75rem;
+      vertical-align:middle;
+      white-space:nowrap;
+    }
+
+    .badge {
+      display:inline-block;
+      padding:.13rem .45rem;
+      border-radius:6px;
+      font-size:.7rem;
+      font-weight:700;
+      letter-spacing:.04em;
+    }
+
+    .badge-EGP { background:rgba(34,197,94,.15); color:var(--green); }
+    .badge-USD { background:rgba(79,142,247,.15); color:var(--accent); }
+    .badge-SAR { background:rgba(245,158,11,.15); color:var(--amber); }
+    .badge-IQD { background:rgba(167,139,250,.15); color:var(--purple); }
+    .badge-JPY { background:rgba(34,197,94,.15); color:var(--green); }
+    .badge-MVR { background:rgba(236,72,153,.15); color:#ec4899; }
+    .badge-def { background:rgba(100,116,139,.15); color:var(--muted); }
+
+    .live-val {
+      color:var(--green);
+      font-weight:700;
+    }
+
+    .live-sar-val {
+      color:var(--green);
+      font-weight:700;
+      font-family:'Courier New', monospace;
+    }
+
+    .fixed-val {
+      color:var(--amber);
+      font-weight:600;
+    }
+
+    .sar-val {
+      color:var(--purple);
+      font-weight:600;
+      font-family:'Courier New', monospace;
+      letter-spacing:.02em;
+    }
+
+    .null-val {
+      color:var(--muted);
+    }
+
+    .card-num {
+      font-family:monospace;
+      color:var(--muted);
+      font-size:.77rem;
+    }
+
+    .unit-sm {
+      color:var(--muted);
+      font-size:.73em;
+      margin-right:.12rem;
+    }
+
+    .totals-row td {
+      border-top:2px solid var(--border);
+      background:rgba(255,255,255,.025);
+      font-weight:700;
+    }
+
+    .copy-btn {
+      display:inline-flex;
+      align-items:center;
+      gap:.25rem;
+      background:rgba(167,139,250,.15);
+      border:1px solid rgba(167,139,250,.35);
+      color:var(--purple);
+      border-radius:6px;
+      padding:.12rem .45rem;
+      font-size:.65rem;
+      font-weight:700;
+      font-family:'Cairo',sans-serif;
+      cursor:pointer;
+      margin-left:.35rem;
+      vertical-align:middle;
+    }
+
+    .copy-btn.copied {
+      background:rgba(34,197,94,.2);
+      color:var(--green);
+      border-color:rgba(34,197,94,.4);
+    }
+
+    .back-btn {
+      display:block;
+      width:fit-content;
+      margin:1.8rem auto 0;
+      padding:.6rem 1.8rem;
+      background:var(--accent);
+      color:#fff;
+      text-decoration:none;
+      border-radius:var(--radius);
+      font-weight:700;
+      font-family:'Cairo',sans-serif;
+    }
+
+    .empty {
+      text-align:center;
+      padding:4rem 1rem;
+      color:var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="header">
+  <h1>نتائج التحويل</h1>
+  <p>تم معالجة البيانات وتحويل العملات تلقائياً</p>
+</div>
+
+{% if error %}
+  <div class="error-banner">⚠️ {{ error }}</div>
+{% endif %}
+
+{% if results %}
+
+<div class="rate-editors">
+
+  <div class="rate-box egp">
+    <div class="rb-title">⚙️ السعر الثابت — دولار ← جنيه مصري</div>
+    <div class="rb-desc">يتحكم في عمود <strong>بالجنيه ثابت</strong></div>
+
+    <div class="rate-row">
+      <input id="rateEGP" class="rate-input" type="number" step="0.01" min="1" value="{{ egp_rate }}" />
+      <span class="rb-unit">EGP / دولار</span>
+      <span class="live-tag" id="tagRateEGP">حي: {{ egp_rate }}</span>
+    </div>
+
+    <div class="formula-preview">
+      USD × <span id="previewEGP">{{ egp_rate }}</span> × 1.025 = EGP
+    </div>
+  </div>
+
+  <div class="rate-box egp-sar">
+    <div class="rb-title">⚙️ السعر الثابت — جنيه مصري ← ريال سعودي</div>
+    <div class="rb-desc">يتحكم فقط في معادلة الجنيه داخل عمود <strong>بالريال ثابت</strong></div>
+
+    <div class="rate-row">
+      <input id="rateEGPForSAR" class="rate-input" type="number" step="0.01" min="1" value="53" />
+      <span class="rb-unit">EGP / دولار</span>
+      <span class="live-tag" id="tagEGPForSAR">ثابت: 53</span>
+    </div>
+
+    <div class="formula-preview">
+      EGP ÷ <span id="previewEGPForSAR">53.00</span> × 1.025 × 3.76 = SAR
+    </div>
+  </div>
+
+</div>
+
+<div class="summary">
+
+  <div class="card count">
+    <div class="label">عدد العمليات</div>
+    <div class="value" id="resultCount">{{ results|length }}</div>
+  </div>
+
+  <div class="card live">
+    <div class="label">إجمالي — جنيه حي</div>
+    <div class="value">{{ "{:,.2f}".format(total_live) }}<span class="unit">EGP</span></div>
+  </div>
+
+  <div class="card live-sar">
+    <div class="label">إجمالي — ريال حي</div>
+    <div class="value" id="sumLiveSAR">—<span class="unit">SAR</span></div>
+  </div>
+
+  <div class="card selected-card">
+    <div class="label">إجمالي المختار — جنيه حي</div>
+    <div class="value" id="selectedLiveSum">0.00<span class="unit">EGP</span></div>
+
+    <div class="selected-meta">
+      <span id="selectedCount">0 عملية مختارة</span>
+      <button type="button" class="clear-selection" onclick="clearSelection(event)">مسح</button>
+    </div>
+  </div>
+
+  <div class="card fixed">
+    <div class="label">إجمالي — جنيه ثابت</div>
+    <div class="value" id="sumFixed">—<span class="unit">EGP</span></div>
+  </div>
+
+  <div class="card sar">
+    <div class="label">إجمالي — ريال ثابت</div>
+    <div class="value" id="sumSAR">—<span class="unit">SAR</span></div>
+  </div>
+
+  {% if failed %}
+  <div class="card" style="border-color:var(--red)">
+    <div class="label">عمليات فاشلة</div>
+    <div class="value" style="color:var(--red)">{{ failed }}</div>
+  </div>
+  {% endif %}
+
+</div>
+
+<div class="actions-bar">
+  <div class="actions-info">
+    <strong>حفظ العمليات</strong><br>
+    أول ضغطة هتحفظ عادي. لو حاولت تحفظ نفس العمليات تاني، هيظهرلك تأكيد نعم أو لا.
+  </div>
+
+  <div class="actions-buttons">
+    <select id="saveType" class="save-mode">
+      <option value="deduct">خصم من الرصيد</option>
+      <option value="add">إضافة إلى الرصيد</option>
+    </select>
+
+    <button type="button" class="action-btn save-btn" onclick="saveTodayOperations()">💾 حفظ العمليات</button>
+    <a href="/history" class="action-btn history-btn">📊 سجل الرصيد</a>
+  </div>
+
+  <div id="saveStatus" class="save-status"></div>
+</div>
+
+<div class="manual-panel">
+  <div class="manual-title">➕ إضافة عملية تحويل يدوي لنتائج التحويل</div>
+
+  <div class="manual-grid">
+    <div class="manual-field">
+      <label>المبلغ</label>
+      <input id="manualResultAmount" class="manual-input" type="number" step="0.01" min="0" placeholder="مثال: 100">
+    </div>
+
+    <div class="manual-field">
+      <label>العملة</label>
+      <select id="manualResultCurrency" class="manual-select">
+        <option value="EGP">EGP</option>
+        <option value="USD">USD</option>
+        <option value="SAR">SAR</option>
+        <option value="IQD">IQD</option>
+        <option value="MVR">MVR</option>
+        <option value="JPY">JPY</option>
+      </select>
+    </div>
+
+    <div class="manual-field">
+      <label>التاجر / البيان</label>
+      <input id="manualResultMerchant" class="manual-input" type="text" placeholder="عملية تحويل يدوي">
+    </div>
+
+    <div class="manual-field">
+      <label>التاريخ</label>
+      <input id="manualResultDate" class="manual-input" type="text" placeholder="مثال: 01/01/26 10:30">
+    </div>
+
+    <div class="manual-field">
+      <label>البطاقة / المرجع</label>
+      <input id="manualResultCard" class="manual-input" type="text" placeholder="MANUAL">
+    </div>
+
+    <div class="manual-field">
+      <label>الحساب</label>
+      <input id="manualResultAccount" class="manual-input" type="text" placeholder="—">
+    </div>
+
+    <div class="manual-field">
+      <label>إضافة</label>
+      <button type="button" class="action-btn manual-btn" onclick="addManualResultOperation()">➕ إضافة للجدول</button>
+    </div>
+  </div>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>البطاقة</th>
+        <th>المبلغ</th>
+        <th>العملة</th>
+        <th>التاجر</th>
+        <th>التاريخ</th>
+        <th class="col-live">بالجنيه حي</th>
+        <th class="col-live-sar">بالريال حي</th>
+        <th class="col-fixed">بالجنيه ثابت</th>
+        <th class="col-sar">
+          <button class="copy-btn" id="copyBtn" type="button" onclick="copySARColumn(event)">⎘ نسخ</button>
+          بالريال ثابت
+        </th>
+        <th>الحساب</th>
+      </tr>
+    </thead>
+
+    <tbody id="resultsBody">
+      {% for r in results %}
+      <tr
+        data-amount="{{ r.amount }}"
+        data-currency="{{ r.currency }}"
+        data-live-egp="{{ r.live_egp if r.live_egp is not none else '' }}"
+        data-card="{{ r.card }}"
+        data-merchant="{{ r.merchant }}"
+        data-date="{{ r.date }}"
+        data-account="{{ r.account }}"
+      >
+        <td class="row-number" style="color:var(--muted)">{{ loop.index }}</td>
+        <td class="card-num">{{ r.card }}</td>
+        <td><strong>{{ "{:,.2f}".format(r.amount) }}</strong></td>
+
+        <td>
+          <span class="badge badge-{{ r.currency if r.currency in ['EGP','USD','SAR','IQD','JPY','MVR'] else 'def' }}">
+            {{ r.currency }}
+          </span>
+        </td>
+
+        <td>{{ r.merchant }}</td>
+        <td>{{ r.date }}</td>
+
+        <td>
+          {% if r.live_egp is not none %}
+            <span class="live-val">{{ "{:,.2f}".format(r.live_egp) }}</span>
+            <span class="unit-sm">EGP</span>
+          {% else %}
+            <span class="null-val">—</span>
+          {% endif %}
+        </td>
+
+        <td class="cell-live-sar"><span class="null-val">…</span></td>
+        <td class="cell-fixed"><span class="null-val">…</span></td>
+        <td class="cell-sar"><span class="null-val">…</span></td>
+        <td style="color:var(--muted)">{{ r.account }}</td>
+      </tr>
+      {% endfor %}
+
+      <tr class="totals-row">
+        <td colspan="6" style="color:var(--muted);font-size:.78rem">الإجمالي</td>
+
+        <td>
+          <span class="live-val">{{ "{:,.2f}".format(total_live) }}</span>
+          <span class="unit-sm">EGP</span>
+        </td>
+
+        <td>
+          <span class="live-sar-val" id="totalLiveSAR">—</span>
+          <span class="unit-sm">SAR</span>
+        </td>
+
+        <td>
+          <span class="fixed-val" id="totalFixed">—</span>
+          <span class="unit-sm">EGP</span>
+        </td>
+
+        <td>
+          <span class="sar-val" id="totalSAR">—</span>
+          <span class="unit-sm">SAR</span>
+        </td>
+
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+{% else %}
+<div class="empty">
+  <p>لم يتم العثور على عمليات صالحة</p>
+</div>
+{% endif %}
+
+<a href="/" class="back-btn">← إدخال بيانات جديدة</a>
+
+<script>
+  const LIVE_RATES = {{ rates_json | safe }};
+  const MARKUP = 1.025;
+
+  const STORAGE_RATE_EGP = 'converter_rate_egp';
+  const STORAGE_RATE_EGP_FOR_SAR = 'converter_rate_egp_for_sar';
+  const STORAGE_HISTORY = 'sar_balance_history_v1';
+  const STORAGE_SAVED_SIGNATURES = 'sar_saved_signatures_v1';
+
+  function escapeHTML(value) {
+    return String(value || '')
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#039;');
+  }
+
+  function toUSD(amount, currency) {
+    if (currency === 'USD') return amount;
+
+    if (currency === 'IQD') {
+      const rate = LIVE_RATES['IQD'];
+      return rate ? (amount / 10) / rate : null;
+    }
+
+    const rate = LIVE_RATES[currency];
+    return rate ? amount / rate : null;
+  }
+
+  function calcLiveEGP(amount, currency) {
+    if (amount <= 0) return null;
+
+    let value = amount * MARKUP;
+
+    if (currency === 'EGP') {
+      return value;
+    }
+
+    if (currency === 'IQD') {
+      value = value / 10;
+    }
+
+    const usdRate = LIVE_RATES[currency];
+    const egpRate = LIVE_RATES['EGP'];
+
+    if (!usdRate || !egpRate) return null;
+
+    return (value / usdRate) * egpRate;
+  }
+
+  function calcLiveSAR(amount, currency) {
+    const usd = toUSD(amount, currency);
+    const sarRate = LIVE_RATES['SAR'];
+
+    if (usd === null || !sarRate) return null;
+
+    return usd * sarRate;
+  }
+
+  function calcFixedEGP(amount, currency, usdEgpRate) {
+    const usd = toUSD(amount, currency);
+
+    if (usd === null || usdEgpRate <= 0) return null;
+
+    return usd * usdEgpRate * MARKUP;
+  }
+
+  function calcFixedSAR(amount, currency, egpRateForSar) {
+    if (!currency || amount <= 0) return null;
+
+    if (currency === 'EGP') {
+      return (amount / egpRateForSar) * 1.025 * 3.76;
+    }
+
+    if (currency === 'IQD') {
+      return (amount / 3500) * 1.025;
+    }
+
+    if (currency === 'USD') {
+      return (amount / 0.2666666) * 1.027;
+    }
+
+    if (currency === 'MVR') {
+      return (amount / 4.09) * 1.025;
+    }
+
+    if (currency === 'JPY') {
+      return (amount * 0.00703) * 1.025 * 3.76;
+    }
+
+    if (currency === 'SAR') {
+      return amount * 1.025;
+    }
+
+    return null;
+  }
+
+  function fmtEN(n) {
+    return n.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+
+  function fmtAR(n) {
+    return n.toLocaleString('ar-EG', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+
+  function updateSelectedLiveTotal() {
+    let total = 0;
+    let count = 0;
+
+    document.querySelectorAll('tbody tr[data-amount].selected').forEach(row => {
+      const live = parseFloat(row.dataset.liveEgp);
+      count++;
+
+      if (!Number.isNaN(live)) total += live;
+    });
+
+    const selectedLiveSum = document.getElementById('selectedLiveSum');
+    const selectedCount = document.getElementById('selectedCount');
+
+    if (selectedLiveSum) {
+      selectedLiveSum.innerHTML = `${fmtAR(total)}<span class="unit">EGP</span>`;
+    }
+
+    if (selectedCount) {
+      selectedCount.textContent = `${count} عملية مختارة`;
+    }
+  }
+
+  function attachRowSelection(row) {
+    row.addEventListener('click', function (event) {
+      if (event.target.closest('button') || event.target.closest('select') || event.target.closest('a') || event.target.closest('input')) {
+        return;
+      }
+
+      this.classList.toggle('selected');
+      updateSelectedLiveTotal();
+    });
+  }
+
+  function setupRowSelection() {
+    document.querySelectorAll('tbody tr[data-amount]').forEach(row => {
+      attachRowSelection(row);
+    });
+  }
+
+  function clearSelection(event) {
+    if (event) event.stopPropagation();
+
+    document.querySelectorAll('tbody tr[data-amount].selected').forEach(row => {
+      row.classList.remove('selected');
+    });
+
+    updateSelectedLiveTotal();
+  }
+
+  function loadSavedRates() {
+    const rateEGPInput = document.getElementById('rateEGP');
+    const rateEGPForSARInput = document.getElementById('rateEGPForSAR');
+
+    const savedRateEGP = localStorage.getItem(STORAGE_RATE_EGP);
+    const savedRateEGPForSAR = localStorage.getItem(STORAGE_RATE_EGP_FOR_SAR);
+
+    if (rateEGPInput && savedRateEGP !== null && savedRateEGP !== '') {
+      rateEGPInput.value = savedRateEGP;
+    }
+
+    if (rateEGPForSARInput) {
+      if (savedRateEGPForSAR !== null && savedRateEGPForSAR !== '') {
+        rateEGPForSARInput.value = savedRateEGPForSAR;
+      } else {
+        rateEGPForSARInput.value = '53';
+      }
+    }
+  }
+
+  function saveRate(key, value) {
+    if (value !== null && value !== '') {
+      localStorage.setItem(key, value);
+    }
+  }
+
+  function updateRowNumbers() {
+    const rows = document.querySelectorAll('tbody tr[data-amount]');
+    rows.forEach((row, index) => {
+      const numberCell = row.querySelector('.row-number') || row.children[0];
+      if (numberCell) numberCell.textContent = index + 1;
+    });
+
+    const resultCount = document.getElementById('resultCount');
+    if (resultCount) resultCount.textContent = rows.length;
+  }
+
+  function recalcAll() {
+    const rateEGPInput = document.getElementById('rateEGP');
+    const rateEGPForSARInput = document.getElementById('rateEGPForSAR');
+
+    if (!rateEGPInput || !rateEGPForSARInput) return;
+
+    const usdEgpRate = parseFloat(rateEGPInput.value) || 0;
+    const egpRateForSar = parseFloat(rateEGPForSARInput.value) || 53;
+
+    const previewEGP = document.getElementById('previewEGP');
+    const previewEGPForSAR = document.getElementById('previewEGPForSAR');
+    const tagRateEGP = document.getElementById('tagRateEGP');
+    const tagEGPForSAR = document.getElementById('tagEGPForSAR');
+
+    if (previewEGP) previewEGP.textContent = usdEgpRate.toFixed(2);
+    if (previewEGPForSAR) previewEGPForSAR.textContent = egpRateForSar.toFixed(2);
+    if (tagRateEGP) tagRateEGP.textContent = `ثابت: ${usdEgpRate.toFixed(2)}`;
+    if (tagEGPForSAR) tagEGPForSAR.textContent = `ثابت: ${egpRateForSar.toFixed(2)}`;
+
+    let sumLiveSAR = 0;
+    let sumFixed = 0;
+    let sumSAR = 0;
+
+    document.querySelectorAll('tbody tr[data-amount]').forEach(row => {
+      const amount = parseFloat(row.dataset.amount);
+      const currency = row.dataset.currency;
+
+      if (!row.dataset.liveEgp) {
+        const liveEGP = calcLiveEGP(amount, currency);
+        row.dataset.liveEgp = liveEGP !== null ? liveEGP.toFixed(6) : '';
+      }
+
+      const liveSAR = calcLiveSAR(amount, currency);
+      const cellLiveSAR = row.querySelector('.cell-live-sar');
+
+      if (cellLiveSAR) {
+        if (liveSAR !== null) {
+          cellLiveSAR.innerHTML = `<span class="live-sar-val">${fmtEN(liveSAR)}</span><span class="unit-sm">SAR</span>`;
+          row.dataset.liveSar = liveSAR.toFixed(6);
+          sumLiveSAR += liveSAR;
+        } else {
+          cellLiveSAR.innerHTML = `<span class="null-val">—</span>`;
+          row.dataset.liveSar = '';
+        }
+      }
+
+      const fixedEGP = calcFixedEGP(amount, currency, usdEgpRate);
+      const cellFixed = row.querySelector('.cell-fixed');
+
+      if (cellFixed) {
+        if (fixedEGP !== null) {
+          cellFixed.innerHTML = `<span class="fixed-val">${fmtAR(fixedEGP)}</span><span class="unit-sm">EGP</span>`;
+          row.dataset.fixedEgp = fixedEGP.toFixed(6);
+          sumFixed += fixedEGP;
+        } else {
+          cellFixed.innerHTML = `<span class="null-val">—</span>`;
+          row.dataset.fixedEgp = '';
+        }
+      }
+
+      const fixedSAR = calcFixedSAR(amount, currency, egpRateForSar);
+      const cellSAR = row.querySelector('.cell-sar');
+
+      if (cellSAR) {
+        if (fixedSAR !== null) {
+          cellSAR.innerHTML = `<span class="sar-val">${fmtEN(fixedSAR)}</span><span class="unit-sm">SAR</span>`;
+          row.dataset.fixedSar = fixedSAR.toFixed(6);
+          sumSAR += fixedSAR;
+        } else {
+          cellSAR.innerHTML = `<span class="null-val">—</span>`;
+          row.dataset.fixedSar = '';
+        }
+      }
+    });
+
+    const totalLiveSAR = document.getElementById('totalLiveSAR');
+    const sumLiveSAREl = document.getElementById('sumLiveSAR');
+    const totalFixed = document.getElementById('totalFixed');
+    const totalSAR = document.getElementById('totalSAR');
+    const sumFixedEl = document.getElementById('sumFixed');
+    const sumSAREl = document.getElementById('sumSAR');
+
+    if (totalLiveSAR) totalLiveSAR.textContent = fmtEN(sumLiveSAR);
+    if (sumLiveSAREl) sumLiveSAREl.innerHTML = `${fmtEN(sumLiveSAR)}<span class="unit">SAR</span>`;
+    if (totalFixed) totalFixed.textContent = fmtAR(sumFixed);
+    if (totalSAR) totalSAR.textContent = fmtEN(sumSAR);
+    if (sumFixedEl) sumFixedEl.innerHTML = `${fmtAR(sumFixed)}<span class="unit">EGP</span>`;
+    if (sumSAREl) sumSAREl.innerHTML = `${fmtEN(sumSAR)}<span class="unit">SAR</span>`;
+
+    updateRowNumbers();
+    updateSelectedLiveTotal();
+  }
+
+  function addManualResultOperation() {
+    const amountInput = document.getElementById('manualResultAmount');
+    const currencyInput = document.getElementById('manualResultCurrency');
+    const merchantInput = document.getElementById('manualResultMerchant');
+    const dateInput = document.getElementById('manualResultDate');
+    const cardInput = document.getElementById('manualResultCard');
+    const accountInput = document.getElementById('manualResultAccount');
+
+    const amount = parseFloat(amountInput.value);
+    const currency = currencyInput.value;
+
+    if (!amount || amount <= 0) {
+      alert('اكتب مبلغ صحيح للعملية اليدوية.');
+      return;
+    }
+
+    const merchant = merchantInput.value.trim() || 'عملية تحويل يدوي';
+    const date = dateInput.value.trim() || new Date().toLocaleString('ar-EG');
+    const card = cardInput.value.trim() || 'MANUAL';
+    const account = accountInput.value.trim() || '—';
+
+    const liveEGP = calcLiveEGP(amount, currency);
+
+    const row = document.createElement('tr');
+    row.dataset.amount = String(amount);
+    row.dataset.currency = currency;
+    row.dataset.liveEgp = liveEGP !== null ? liveEGP.toFixed(6) : '';
+    row.dataset.card = card;
+    row.dataset.merchant = merchant;
+    row.dataset.date = date;
+    row.dataset.account = account;
+
+    const badgeClass = ['EGP','USD','SAR','IQD','JPY','MVR'].includes(currency) ? currency : 'def';
+
+    row.innerHTML = `
+      <td class="row-number" style="color:var(--muted)">—</td>
+      <td class="card-num">${escapeHTML(card)}</td>
+      <td><strong>${fmtEN(amount)}</strong></td>
+      <td><span class="badge badge-${badgeClass}">${escapeHTML(currency)}</span></td>
+      <td>${escapeHTML(merchant)}</td>
+      <td>${escapeHTML(date)}</td>
+      <td>
+        ${
+          liveEGP !== null
+            ? `<span class="live-val">${fmtAR(liveEGP)}</span><span class="unit-sm">EGP</span>`
+            : `<span class="null-val">—</span>`
+        }
+      </td>
+      <td class="cell-live-sar"><span class="null-val">…</span></td>
+      <td class="cell-fixed"><span class="null-val">…</span></td>
+      <td class="cell-sar"><span class="null-val">…</span></td>
+      <td style="color:var(--muted)">${escapeHTML(account)}</td>
+    `;
+
+    const totalsRow = document.querySelector('.totals-row');
+
+    if (totalsRow) {
+      totalsRow.before(row);
+    }
+
+    attachRowSelection(row);
+
+    amountInput.value = '';
+    merchantInput.value = '';
+    dateInput.value = '';
+    cardInput.value = '';
+    accountInput.value = '';
+
+    recalcAll();
+  }
+
+  function getHistory() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_HISTORY)) || [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function setHistory(history) {
+    localStorage.setItem(STORAGE_HISTORY, JSON.stringify(history));
+  }
+
+  function getSavedSignatures() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_SAVED_SIGNATURES)) || [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function setSavedSignatures(signatures) {
+    localStorage.setItem(STORAGE_SAVED_SIGNATURES, JSON.stringify(signatures));
+  }
+
+  function buildCurrentSaveSignature(saveType) {
+    const rows = Array.from(document.querySelectorAll('tbody tr[data-amount]'));
+
+    const parts = rows.map(row => {
+      return [
+        row.dataset.date || '',
+        row.dataset.card || '',
+        row.dataset.merchant || '',
+        row.dataset.account || '',
+        row.dataset.amount || '',
+        row.dataset.currency || '',
+        row.dataset.fixedSar || ''
+      ].join('|');
+    });
+
+    return `${saveType}::${parts.join(';;')}`;
+  }
+
+  function saveTodayOperations() {
+    recalcAll();
+
+    const saveTypeInput = document.getElementById('saveType');
+    const saveStatus = document.getElementById('saveStatus');
+
+    const saveType = saveTypeInput ? saveTypeInput.value : 'deduct';
+    const rows = Array.from(document.querySelectorAll('tbody tr[data-amount]'));
+
+    const currentSignature = buildCurrentSaveSignature(saveType);
+    const savedSignatures = getSavedSignatures();
+
+    if (savedSignatures.includes(currentSignature)) {
+      const confirmAgain = confirm('⚠️ أنت حفظت نفس العمليات قبل كده. هل تريد حفظها مرة أخرى؟');
+
+      if (!confirmAgain) {
+        if (saveStatus) {
+          saveStatus.classList.add('show');
+          saveStatus.textContent = 'ℹ️ تم إلغاء الحفظ المتكرر.';
+          setTimeout(() => saveStatus.classList.remove('show'), 3500);
+        }
+
+        return;
+      }
+    }
+
+    const history = getHistory();
+
+    let addedCount = 0;
+
+    const now = new Date();
+    const savedAt = now.toISOString();
+    const savedDay = now.toLocaleDateString('en-CA');
+    const batchId = `batch_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+
+    rows.forEach(row => {
+      const fixedSAR = parseFloat(row.dataset.fixedSar);
+
+      if (Number.isNaN(fixedSAR)) return;
+
+      const item = {
+        id: `${Date.now()}_${Math.random().toString(16).slice(2)}`,
+        batchId: batchId,
+        source: 'save_button',
+        type: saveType,
+        savedAt: savedAt,
+        savedDay: savedDay,
+        operationDate: row.dataset.date || '',
+        card: row.dataset.card || '',
+        amount: parseFloat(row.dataset.amount) || 0,
+        currency: row.dataset.currency || '',
+        merchant: row.dataset.merchant || '',
+        account: row.dataset.account || '',
+        liveEGP: parseFloat(row.dataset.liveEgp) || 0,
+        liveSAR: parseFloat(row.dataset.liveSar) || 0,
+        fixedEGP: parseFloat(row.dataset.fixedEgp) || 0,
+        fixedSAR: fixedSAR,
+        note: saveType === 'add' ? 'إضافة رصيد من صفحة النتائج' : 'خصم عملية شراء من صفحة النتائج'
+      };
+
+      history.push(item);
+      addedCount++;
+    });
+
+    setHistory(history);
+
+    if (!savedSignatures.includes(currentSignature)) {
+      savedSignatures.push(currentSignature);
+      setSavedSignatures(savedSignatures);
+    }
+
+    if (saveStatus) {
+      saveStatus.classList.add('show');
+
+      if (addedCount > 0) {
+        saveStatus.textContent = `✅ تم حفظ ${addedCount} عملية بنجاح.`;
+      } else {
+        saveStatus.textContent = `⚠️ لا توجد عمليات صالحة للحفظ.`;
+      }
+
+      setTimeout(() => {
+        saveStatus.classList.remove('show');
+      }, 4500);
+    }
+  }
+
+  function copySARColumn(event) {
+    if (event) event.stopPropagation();
+
+    const values = [];
+
+    document.querySelectorAll('tbody tr[data-amount] .cell-sar .sar-val').forEach(el => {
+      values.push(el.textContent.trim());
+    });
+
+    if (!values.length) return;
+
+    navigator.clipboard.writeText(values.join('\n')).then(() => {
+      const btn = document.getElementById('copyBtn');
+
+      if (!btn) return;
+
+      btn.textContent = '✓ تم النسخ';
+      btn.classList.add('copied');
+
+      setTimeout(() => {
+        btn.textContent = '⎘ نسخ';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const rateEGPInput = document.getElementById('rateEGP');
+    const rateEGPForSARInput = document.getElementById('rateEGPForSAR');
+
+    loadSavedRates();
+    setupRowSelection();
+    recalcAll();
+
+    if (rateEGPInput) {
+      rateEGPInput.addEventListener('input', function () {
+        saveRate(STORAGE_RATE_EGP, rateEGPInput.value);
+        recalcAll();
+      });
+    }
+
+    if (rateEGPForSARInput) {
+      rateEGPForSARInput.addEventListener('input', function () {
+        saveRate(STORAGE_RATE_EGP_FOR_SAR, rateEGPForSARInput.value);
+        recalcAll();
+      });
+    }
+  });
+</script>
+
+</body>
+</html>

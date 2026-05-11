@@ -1,0 +1,14 @@
+{
+  "builds": [
+    {
+      "src": "MOX.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "MOX.py"
+    }
+  ]
+}
