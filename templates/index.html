@@ -8,6 +8,9 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/logo.png') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='assets/logo.png') }}">
+
   <meta name="theme-color" content="#0f1117">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -69,14 +72,33 @@
     }
 
     .logo {
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
       display: grid;
       place-items: center;
-      background: linear-gradient(135deg, var(--accent), var(--purple));
-      box-shadow: 0 14px 35px rgba(79,142,247,.18);
-      font-size: 1.35rem;
+      background: linear-gradient(135deg, rgba(34,197,94,.18), rgba(79,142,247,.14));
+      border: 1px solid rgba(34,197,94,.35);
+      box-shadow: 0 14px 35px rgba(34,197,94,.14);
+      overflow: hidden;
+      animation: logoFloat 3s ease-in-out infinite;
+    }
+
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    @keyframes logoFloat {
+      0%, 100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-4px);
+      }
     }
 
     .brand-title {
@@ -111,6 +133,39 @@
     .hero {
       text-align: center;
       margin: 1.7rem auto 1.5rem;
+    }
+
+    .hero-logo {
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 1rem;
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid rgba(34,197,94,.35);
+      background: rgba(255,255,255,.04);
+      box-shadow: 0 22px 60px rgba(34,197,94,.15);
+      display: grid;
+      place-items: center;
+      animation: heroLogoPulse 3.5s ease-in-out infinite;
+    }
+
+    .hero-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    @keyframes heroLogoPulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 22px 60px rgba(34,197,94,.12);
+      }
+
+      50% {
+        transform: scale(1.035);
+        box-shadow: 0 26px 70px rgba(34,197,94,.22);
+      }
     }
 
     .hero h1 {
@@ -385,6 +440,12 @@
         margin-top: 1.2rem;
       }
 
+      .hero-logo {
+        width: 84px;
+        height: 84px;
+        border-radius: 24px;
+      }
+
       .hero h1 {
         font-size: 2.15rem;
       }
@@ -428,7 +489,9 @@
 
   <div class="topbar">
     <div class="brand">
-      <div class="logo">💱</div>
+      <div class="logo">
+        <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="لوجو محول العملات">
+      </div>
       <div>
         <div class="brand-title">محول العمليات</div>
         <div class="brand-subtitle">تحويل تلقائي للجنيه والريال</div>
@@ -439,6 +502,10 @@
   </div>
 
   <section class="hero">
+    <div class="hero-logo">
+      <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="لوجو نتائج التحويل">
+    </div>
+
     <h1>محول العملات</h1>
     <p>
       الصق رسائل العمليات البنكية هنا، وسيتم استخراج العمليات وتحويلها تلقائيًا.
