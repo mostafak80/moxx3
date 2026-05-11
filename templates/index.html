@@ -1,27 +1,586 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محول العملات</title>
-    <link rel="stylesheet" href="/static/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>محول العملات</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+  <meta name="theme-color" content="#0f1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="محول العملات">
+
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d2e;
+      --surface2: #20243a;
+      --border: #2a2d45;
+      --accent: #4f8ef7;
+      --green: #22c55e;
+      --amber: #f59e0b;
+      --purple: #a78bfa;
+      --red: #ef4444;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --muted2: #64748b;
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Cairo', Arial, sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(79,142,247,.18), transparent 32%),
+        radial-gradient(circle at bottom left, rgba(167,139,250,.14), transparent 35%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 1rem;
+    }
+
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 1rem 0 3rem;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: .8rem;
+      margin-bottom: 1.4rem;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+
+    .logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--accent), var(--purple));
+      box-shadow: 0 14px 35px rgba(79,142,247,.18);
+      font-size: 1.35rem;
+    }
+
+    .brand-title {
+      font-size: 1rem;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .brand-subtitle {
+      font-size: .72rem;
+      color: var(--muted2);
+      margin-top: .15rem;
+    }
+
+    .history-link {
+      text-decoration: none;
+      background: rgba(79,142,247,.12);
+      color: var(--accent);
+      border: 1px solid rgba(79,142,247,.35);
+      padding: .55rem .85rem;
+      border-radius: 10px;
+      font-size: .82rem;
+      font-weight: 800;
+      transition: .2s;
+      white-space: nowrap;
+    }
+
+    .history-link:hover {
+      background: rgba(79,142,247,.22);
+    }
+
+    .hero {
+      text-align: center;
+      margin: 1.7rem auto 1.5rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      line-height: 1.15;
+      background: linear-gradient(135deg, var(--accent), var(--purple), var(--green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--muted);
+      margin-top: .7rem;
+      font-size: .95rem;
+      line-height: 1.8;
+    }
+
+    .status-card {
+      max-width: 980px;
+      margin: 0 auto 1rem;
+      background: linear-gradient(135deg, rgba(34,197,94,.09), rgba(79,142,247,.06));
+      border: 1px solid rgba(34,197,94,.22);
+      border-radius: var(--radius);
+      padding: .9rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: .8rem;
+      flex-wrap: wrap;
+    }
+
+    .status-text {
+      color: var(--muted);
+      font-size: .82rem;
+      line-height: 1.7;
+    }
+
+    .status-text strong {
+      color: var(--green);
+    }
+
+    .rate-btn {
+      border: 0;
+      border-radius: 10px;
+      padding: .6rem 1rem;
+      background: var(--green);
+      color: #07120a;
+      cursor: pointer;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 900;
+      transition: .2s;
+      white-space: nowrap;
+    }
+
+    .rate-btn:hover {
+      opacity: .85;
+    }
+
+    .main-card {
+      background: rgba(26,29,46,.88);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 1.1rem;
+      box-shadow: 0 18px 50px rgba(0,0,0,.24);
+      backdrop-filter: blur(10px);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: .9rem;
+      flex-wrap: wrap;
+    }
+
+    .card-header h2 {
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: var(--text);
+    }
+
+    .card-header p {
+      color: var(--muted2);
+      font-size: .78rem;
+      margin-top: .25rem;
+      line-height: 1.7;
+    }
+
+    .sample-btn {
+      border: 1px solid rgba(167,139,250,.35);
+      background: rgba(167,139,250,.14);
+      color: var(--purple);
+      padding: .5rem .75rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 800;
+      font-size: .76rem;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 310px;
+      background: #111421;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1rem;
+      resize: vertical;
+      outline: none;
+      font-family: 'Cairo', Arial, sans-serif;
+      font-size: .92rem;
+      line-height: 1.9;
+      direction: rtl;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.015);
+    }
+
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(79,142,247,.14);
+    }
+
+    textarea::placeholder {
+      color: #64748b;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: .8rem;
+      margin-top: .9rem;
+      align-items: end;
+    }
+
+    .field label {
+      display: block;
+      font-size: .75rem;
+      color: var(--muted);
+      margin-bottom: .35rem;
+      font-weight: 700;
+    }
+
+    input[type="date"] {
+      width: 100%;
+      background: #111421;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: .72rem .8rem;
+      font-family: 'Cairo', sans-serif;
+      outline: none;
+    }
+
+    input[type="date"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(79,142,247,.14);
+    }
+
+    .submit-btn {
+      border: 0;
+      border-radius: 12px;
+      padding: .78rem 1.4rem;
+      min-width: 150px;
+      background: linear-gradient(135deg, var(--accent), var(--purple));
+      color: white;
+      font-family: 'Cairo', sans-serif;
+      font-size: .95rem;
+      font-weight: 900;
+      cursor: pointer;
+      transition: .2s;
+      box-shadow: 0 12px 28px rgba(79,142,247,.2);
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-1px);
+      opacity: .92;
+    }
+
+    .submit-btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .tips {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .8rem;
+      margin-top: 1rem;
+    }
+
+    .tip {
+      background: rgba(255,255,255,.035);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: .85rem;
+      min-height: 94px;
+    }
+
+    .tip-icon {
+      font-size: 1.1rem;
+      margin-bottom: .35rem;
+    }
+
+    .tip-title {
+      font-size: .78rem;
+      font-weight: 900;
+      color: var(--text);
+    }
+
+    .tip-text {
+      color: var(--muted2);
+      font-size: .72rem;
+      line-height: 1.7;
+      margin-top: .25rem;
+    }
+
+    .message {
+      margin-top: .75rem;
+      padding: .75rem .9rem;
+      border-radius: 12px;
+      display: none;
+      font-size: .82rem;
+      line-height: 1.7;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.ok {
+      color: var(--green);
+      border: 1px solid rgba(34,197,94,.35);
+      background: rgba(34,197,94,.1);
+    }
+
+    .message.err {
+      color: var(--red);
+      border: 1px solid rgba(239,68,68,.35);
+      background: rgba(239,68,68,.1);
+    }
+
+    .footer-note {
+      text-align: center;
+      color: var(--muted2);
+      font-size: .72rem;
+      margin-top: 1.2rem;
+      line-height: 1.7;
+    }
+
+    @media(max-width: 760px) {
+      body {
+        padding: .75rem;
+      }
+
+      .topbar {
+        align-items: stretch;
+      }
+
+      .brand {
+        width: 100%;
+      }
+
+      .history-link {
+        width: 100%;
+        text-align: center;
+      }
+
+      .hero {
+        margin-top: 1.2rem;
+      }
+
+      .hero h1 {
+        font-size: 2.15rem;
+      }
+
+      .main-card {
+        padding: .9rem;
+        border-radius: 18px;
+      }
+
+      textarea {
+        min-height: 280px;
+        font-size: .88rem;
+      }
+
+      .options {
+        grid-template-columns: 1fr;
+      }
+
+      .submit-btn {
+        width: 100%;
+      }
+
+      .tips {
+        grid-template-columns: 1fr;
+      }
+
+      .status-card {
+        align-items: stretch;
+      }
+
+      .rate-btn {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>محول العملات</h1>
 
-        <form action="/refresh-rates" method="post" style="margin-bottom: 15px;">
-            <button type="submit">تحديث أسعار اليوم</button>
-        </form>
+<div class="page">
 
-        <form action="/result" method="post">
-            <textarea name="data" rows="10" placeholder="أدخل البيانات هنا"></textarea><br><br>
-
-            <label for="selected_rate_date">اختياري: اختر تاريخ سعر معين للجدول كله</label><br>
-            <input type="date" id="selected_rate_date" name="selected_rate_date"><br><br>
-
-            <button type="submit">تحويل</button>
-        </form>
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo">💱</div>
+      <div>
+        <div class="brand-title">محول العمليات</div>
+        <div class="brand-subtitle">تحويل تلقائي للجنيه والريال</div>
+      </div>
     </div>
+
+    <a href="/history" class="history-link">📊 سجل الرصيد</a>
+  </div>
+
+  <section class="hero">
+    <h1>محول العملات</h1>
+    <p>
+      الصق رسائل العمليات البنكية هنا، وسيتم استخراج العمليات وتحويلها تلقائيًا.
+    </p>
+  </section>
+
+  <div class="status-card">
+    <div class="status-text">
+      <strong>الأسعار الحية</strong><br>
+      يمكنك تحديث أسعار اليوم قبل التحويل، ولو حصل خطأ سيتم استخدام آخر أسعار محفوظة أو أسعار احتياطية.
+    </div>
+
+    <button type="button" class="rate-btn" onclick="refreshRates()">🔄 تحديث أسعار اليوم</button>
+  </div>
+
+  <main class="main-card">
+    <div class="card-header">
+      <div>
+        <h2>إدخال بيانات العمليات</h2>
+        <p>انسخ رسائل البنك كما هي، سواء كانت عملية واحدة أو أكثر.</p>
+      </div>
+
+      <button type="button" class="sample-btn" onclick="insertSample()">مثال سريع</button>
+    </div>
+
+    <form action="/result" method="POST" onsubmit="return validateForm()">
+      <textarea
+        id="data"
+        name="data"
+        placeholder="مثال:
+
+عملية انترنت ب: 9.5 USD
+من: War and Peace
+بطاقة: *0858
+في: 01/01/26 10:30
+
+عملية انترنت ب: 250 EGP
+من: Player
+بطاقة: *0858
+في: 01/01/26 10:45"
+      ></textarea>
+
+      <div class="options">
+        <div class="field">
+          <label for="rateDate">اختياري: تاريخ سعر معين للجدول</label>
+          <input type="date" id="rateDate" name="rate_date">
+        </div>
+
+        <button id="submitBtn" type="submit" class="submit-btn">
+          تحويل الآن
+        </button>
+      </div>
+
+      <div id="message" class="message"></div>
+    </form>
+
+    <div class="tips">
+      <div class="tip">
+        <div class="tip-icon">⚡</div>
+        <div class="tip-title">استخراج تلقائي</div>
+        <div class="tip-text">الموقع يقرأ المبلغ والعملة والتاجر والبطاقة والتاريخ من الرسالة.</div>
+      </div>
+
+      <div class="tip">
+        <div class="tip-icon">📱</div>
+        <div class="tip-title">مناسب للموبايل</div>
+        <div class="tip-text">التصميم متجاوب ويشتغل كويس على الآيفون بعد رفعه أونلاين.</div>
+      </div>
+
+      <div class="tip">
+        <div class="tip-icon">💾</div>
+        <div class="tip-title">سجل الرصيد</div>
+        <div class="tip-text">بعد التحويل يمكنك حفظ العمليات ومتابعة الرصيد المضاف والمخصوم.</div>
+      </div>
+    </div>
+  </main>
+
+  <div class="footer-note">
+    ملاحظة: سجل الرصيد محفوظ على الجهاز والمتصفح المستخدمين.
+  </div>
+
+</div>
+
+<script>
+  function showMessage(text, type) {
+    const msg = document.getElementById('message');
+    msg.textContent = text;
+    msg.className = `message show ${type}`;
+  }
+
+  function validateForm() {
+    const textarea = document.getElementById('data');
+    const value = textarea.value.trim();
+
+    if (!value) {
+      showMessage('⚠️ من فضلك الصق بيانات العمليات قبل التحويل.', 'err');
+      textarea.focus();
+      return false;
+    }
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'جاري التحويل...';
+
+    return true;
+  }
+
+  function insertSample() {
+    const sample = `عملية انترنت ب: 9.5 USD
+من: War and Peace
+بطاقة: *0858
+في: 01/01/26 10:30
+
+عملية انترنت ب: 250 EGP
+من: Player
+بطاقة: *0858
+في: 01/01/26 10:45`;
+
+    document.getElementById('data').value = sample;
+    showMessage('✅ تم إضافة مثال. اضغط تحويل الآن للتجربة.', 'ok');
+  }
+
+  async function refreshRates() {
+    try {
+      showMessage('⏳ جاري تحديث الأسعار...', 'ok');
+
+      const response = await fetch('/api/rates');
+      const data = await response.json();
+
+      if (data && data.rates) {
+        const egp = data.rates.EGP ? Number(data.rates.EGP).toFixed(2) : '—';
+        const sar = data.rates.SAR ? Number(data.rates.SAR).toFixed(2) : '—';
+
+        showMessage(`✅ تم تحديث الأسعار. الدولار ≈ ${egp} جنيه، والريال ≈ ${sar} لكل دولار.`, 'ok');
+      } else {
+        showMessage('⚠️ لم يتم تحديث الأسعار، جرّب مرة أخرى.', 'err');
+      }
+    } catch (error) {
+      showMessage('⚠️ حصل خطأ أثناء تحديث الأسعار، تأكد من الاتصال بالإنترنت.', 'err');
+    }
+  }
+</script>
+
 </body>
 </html>
