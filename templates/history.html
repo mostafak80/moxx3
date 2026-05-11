@@ -315,6 +315,20 @@
   </div>
 
   <div class="top-actions-group">
+    <button type="button" class="btn btn-green" onclick="exportBackup()">⬇️ تحميل نسخة احتياطية</button>
+
+    <button type="button" class="btn btn-purple" onclick="document.getElementById('backupFileInput').click()">
+      ⬆️ استرجاع نسخة احتياطية
+    </button>
+
+    <input
+      type="file"
+      id="backupFileInput"
+      accept="application/json"
+      style="display:none"
+      onchange="importBackup(event)"
+    >
+
     <button type="button" class="btn btn-amber" onclick="restoreLastDeleted()">♻️ إرجاع آخر حذف</button>
     <button type="button" class="btn btn-amber" onclick="removeLastSaveBatch()">↩️ إزالة آخر حفظ</button>
     <button type="button" class="btn btn-purple" onclick="exportCSV()">⬇️ تصدير CSV</button>
@@ -440,6 +454,8 @@
   const STORAGE_HISTORY = 'sar_balance_history_v1';
   const STORAGE_DELETED_STACK = 'sar_deleted_stack_v1';
   const STORAGE_SAVED_SIGNATURES = 'sar_saved_signatures_v1';
+  const STORAGE_RATE_EGP = 'converter_rate_egp';
+  const STORAGE_RATE_EGP_FOR_SAR = 'converter_rate_egp_for_sar';
 
   function goBackToResults() {
     if (window.history.length > 1) {
@@ -783,6 +799,103 @@
 
     showToast('✅ تم مسح كل السجل. يمكنك استرجاعه من زر إرجاع آخر حذف.');
     renderHistory();
+  }
+
+  function exportBackup() {
+    const backupData = {
+      appName: 'Currency Converter Backup',
+      version: 1,
+      exportedAt: new Date().toISOString(),
+
+      data: {
+        history: JSON.parse(localStorage.getItem(STORAGE_HISTORY) || '[]'),
+        deletedStack: JSON.parse(localStorage.getItem(STORAGE_DELETED_STACK) || '[]'),
+        savedSignatures: JSON.parse(localStorage.getItem(STORAGE_SAVED_SIGNATURES) || '[]'),
+        rateEGP: localStorage.getItem(STORAGE_RATE_EGP) || '',
+        rateEGPForSAR: localStorage.getItem(STORAGE_RATE_EGP_FOR_SAR) || ''
+      }
+    };
+
+    const json = JSON.stringify(backupData, null, 2);
+    const blob = new Blob([json], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+
+    const today = new Date().toLocaleDateString('en-CA');
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `currency-backup-${today}.json`;
+    link.click();
+
+    URL.revokeObjectURL(url);
+
+    showToast('✅ تم تحميل نسخة احتياطية بنجاح.');
+  }
+
+  function importBackup(event) {
+    const file = event.target.files[0];
+
+    if (!file) {
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      try {
+        const backupData = JSON.parse(e.target.result);
+
+        if (!backupData || !backupData.data) {
+          showToast('⚠️ ملف النسخة الاحتياطية غير صحيح.');
+          return;
+        }
+
+        const confirmed = confirm(
+          '⚠️ هل تريد استرجاع النسخة الاحتياطية؟\n\n' +
+          'سيتم استبدال السجل الحالي بالبيانات الموجودة في ملف النسخة الاحتياطية.'
+        );
+
+        if (!confirmed) {
+          event.target.value = '';
+          return;
+        }
+
+        const data = backupData.data;
+
+        localStorage.setItem(
+          STORAGE_HISTORY,
+          JSON.stringify(Array.isArray(data.history) ? data.history : [])
+        );
+
+        localStorage.setItem(
+          STORAGE_DELETED_STACK,
+          JSON.stringify(Array.isArray(data.deletedStack) ? data.deletedStack : [])
+        );
+
+        localStorage.setItem(
+          STORAGE_SAVED_SIGNATURES,
+          JSON.stringify(Array.isArray(data.savedSignatures) ? data.savedSignatures : [])
+        );
+
+        if (data.rateEGP !== undefined && data.rateEGP !== null) {
+          localStorage.setItem(STORAGE_RATE_EGP, data.rateEGP);
+        }
+
+        if (data.rateEGPForSAR !== undefined && data.rateEGPForSAR !== null) {
+          localStorage.setItem(STORAGE_RATE_EGP_FOR_SAR, data.rateEGPForSAR);
+        }
+
+        showToast('✅ تم استرجاع النسخة الاحتياطية بنجاح.');
+        renderHistory();
+
+      } catch (error) {
+        showToast('⚠️ حصل خطأ أثناء قراءة ملف النسخة الاحتياطية.');
+      }
+
+      event.target.value = '';
+    };
+
+    reader.readAsText(file);
   }
 
   function exportCSV() {
