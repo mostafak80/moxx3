@@ -309,6 +309,7 @@
 
     .sample-btn,
     .paste-btn,
+    .backup-btn,
     .pill-btn {
       border: 1px solid rgba(167,139,250,.35);
       background: rgba(167,139,250,.14);
@@ -327,6 +328,12 @@
       border-color: rgba(34,197,94,.35);
       background: rgba(34,197,94,.13);
       color: var(--green);
+    }
+
+    .backup-btn {
+      border-color: rgba(245,158,11,.38);
+      background: rgba(245,158,11,.13);
+      color: var(--amber);
     }
 
     .input-shell {
@@ -597,6 +604,7 @@
 
       .sample-btn,
       .paste-btn,
+      .backup-btn,
       .pill-btn {
         width: 100%;
         font-size: .7rem;
@@ -647,7 +655,7 @@
         bottom: max(.7rem, var(--safe-bottom));
         z-index: 80;
         display: grid;
-        grid-template-columns: 1fr auto;
+        grid-template-columns: 1fr auto auto;
         gap: .55rem;
         padding: .45rem;
         border-radius: 22px;
@@ -659,12 +667,14 @@
       }
 
       .app-bottom-action .submit-btn,
-      .app-bottom-action .paste-btn {
+      .app-bottom-action .paste-btn,
+      .app-bottom-action .backup-btn {
         min-height: 50px;
         border-radius: 17px;
       }
 
-      .app-bottom-action .paste-btn {
+      .app-bottom-action .paste-btn,
+      .app-bottom-action .backup-btn {
         width: 58px;
         padding: 0;
         font-size: 1.05rem;
@@ -740,6 +750,7 @@
 
       <div class="header-actions">
         <button type="button" class="paste-btn" onclick="pasteFromClipboard()">📋 لصق سريع</button>
+        <button type="button" class="backup-btn" onclick="sendBackupToWhatsApp()">💾 إرسال نسخة واتساب</button>
         <button type="button" class="sample-btn" onclick="insertSample()">⚡ مثال سريع</button>
       </div>
     </div>
@@ -813,6 +824,7 @@
 <div class="app-bottom-action" aria-label="أزرار سريعة للموبايل">
   <button id="mobileSubmitBtn" type="button" class="submit-btn" onclick="submitMainForm()">تحويل الآن</button>
   <button type="button" class="paste-btn" onclick="pasteFromClipboard()" title="لصق سريع">📋</button>
+  <button type="button" class="backup-btn" onclick="sendBackupToWhatsApp()" title="إرسال نسخة احتياطية واتساب">💾</button>
 </div>
 
 <script>
@@ -933,6 +945,120 @@
     document.getElementById('data').value = sample;
     updateTextStats();
     showMessage('✅ تم إضافة مثال. اضغط تحويل الآن للتجربة.', 'ok');
+  }
+
+
+  const BACKUP_WHATSAPP_NUMBER = '201064870491';
+
+  function getBackupLocalStorageSnapshot() {
+    const snapshot = {};
+
+    try {
+      Object.keys(localStorage).forEach(key => {
+        // نخزن المفاتيح الخاصة بالتطبيق فقط قدر الإمكان، ومع ذلك نحتفظ بأي مفاتيح MOX/backup/history مفيدة
+        const normalizedKey = String(key || '').toLowerCase();
+        if (
+          normalizedKey.startsWith('mox') ||
+          normalizedKey.includes('mox') ||
+          normalizedKey.includes('history') ||
+          normalizedKey.includes('rate') ||
+          normalizedKey.includes('balance') ||
+          normalizedKey.includes('backup')
+        ) {
+          snapshot[key] = localStorage.getItem(key);
+        }
+      });
+    } catch (error) {
+      console.warn('LocalStorage snapshot skipped:', error);
+    }
+
+    return snapshot;
+  }
+
+  function buildBackupPayload() {
+    const textarea = document.getElementById('data');
+    const rateDate = document.getElementById('rateDate');
+
+    return {
+      appName: 'MOX-V1',
+      format: 'mox-v1-browser-backup',
+      version: 2,
+      exportedAt: new Date().toISOString(),
+      page: {
+        title: document.title,
+        path: window.location.pathname,
+        origin: window.location.origin
+      },
+      currentForm: {
+        bankMessages: textarea ? textarea.value : '',
+        rateDate: rateDate ? rateDate.value : ''
+      },
+      localStorageSnapshot: getBackupLocalStorageSnapshot()
+    };
+  }
+
+  function getBackupFileName() {
+    const stamp = new Date().toLocaleDateString('en-CA');
+    return `mox-v1-backup-${stamp}.json`;
+  }
+
+  function createBackupFile() {
+    const json = JSON.stringify(buildBackupPayload(), null, 2);
+    const filename = getBackupFileName();
+    const blob = new Blob([json], { type: 'application/json;charset=utf-8' });
+
+    try {
+      return new File([blob], filename, { type: 'application/json' });
+    } catch (error) {
+      blob.name = filename;
+      return blob;
+    }
+  }
+
+  function downloadBackupFile(file) {
+    const filename = file.name || getBackupFileName();
+    const url = URL.createObjectURL(file);
+    const link = document.createElement('a');
+
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    setTimeout(() => URL.revokeObjectURL(url), 1200);
+  }
+
+  function openWhatsAppBackupChat() {
+    const message = encodeURIComponent(
+      'نسخة احتياطية من MOX-V1. لو الملف اتحمّل على الجهاز، ارفعه هنا في نفس المحادثة.'
+    );
+
+    window.open(`https://wa.me/${BACKUP_WHATSAPP_NUMBER}?text=${message}`, '_blank', 'noopener,noreferrer');
+  }
+
+  async function sendBackupToWhatsApp() {
+    const backupFile = createBackupFile();
+    const shareText = 'نسخة احتياطية من MOX-V1';
+
+    try {
+      if (navigator.canShare && navigator.canShare({ files: [backupFile] }) && navigator.share) {
+        await navigator.share({
+          title: 'MOX-V1 Backup',
+          text: shareText,
+          files: [backupFile]
+        });
+
+        showMessage('✅ تم فتح مشاركة النسخة الاحتياطية. اختار واتساب وأرسلها للرقم المطلوب.', 'ok');
+        return;
+      }
+    } catch (error) {
+      console.warn('Native share failed:', error);
+    }
+
+    downloadBackupFile(backupFile);
+    openWhatsAppBackupChat();
+    showMessage('✅ تم تحميل ملف النسخة وفتح واتساب. أرفق الملف الذي تم تحميله في المحادثة.', 'ok');
   }
 
   async function refreshRates() {
