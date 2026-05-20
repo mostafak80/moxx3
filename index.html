@@ -3,1128 +3,363 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
-
   <title>MOX-V1</title>
-
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/logo.png') }}">
-  <link rel="apple-touch-icon" href="{{ url_for('static', filename='assets/logo.png') }}">
+  <link id="faviconLink" rel="icon" type="image/png" href="assets/logo.png">
+  <link id="appleIconLink" rel="apple-touch-icon" href="assets/logo.png">
   <link id="dynamicManifestLink" rel="manifest">
-
   <meta name="theme-color" content="#0f1117">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="MOX-V1">
-  <meta name="apple-touch-fullscreen" content="yes">
   <meta name="format-detection" content="telephone=no">
   <meta name="color-scheme" content="dark">
-
   <style>
-    :root {
-      --bg: #0f1117;
-      --surface: rgba(26, 29, 46, .88);
-      --surface2: rgba(32, 36, 58, .92);
-      --surface3: rgba(17, 20, 33, .82);
-      --border: rgba(148, 163, 184, .18);
-      --border2: #2a2d45;
-      --accent: #4f8ef7;
-      --green: #22c55e;
-      --amber: #f59e0b;
-      --purple: #a78bfa;
-      --red: #ef4444;
-      --text: #e2e8f0;
-      --muted: #94a3b8;
-      --muted2: #64748b;
-      --radius: 18px;
-      --safe-top: env(safe-area-inset-top, 0px);
-      --safe-right: env(safe-area-inset-right, 0px);
-      --safe-bottom: env(safe-area-inset-bottom, 0px);
-      --safe-left: env(safe-area-inset-left, 0px);
-      --tap: 48px;
+    :root{
+      --bg:#0f1117;--surface:#1a1d2e;--surface-soft:rgba(26,29,46,.88);
+      --border:#2a2d45;--border-soft:rgba(148,163,184,.18);
+      --accent:#4f8ef7;--green:#22c55e;--amber:#f59e0b;
+      --purple:#a78bfa;--red:#ef4444;--text:#e2e8f0;
+      --muted:#94a3b8;--muted2:#64748b;--radius:18px;
+      --safe-top:env(safe-area-inset-top,0px);--safe-right:env(safe-area-inset-right,0px);
+      --safe-bottom:env(safe-area-inset-bottom,0px);--safe-left:env(safe-area-inset-left,0px);
+      --tap:48px;
     }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      -webkit-text-size-adjust: 100%;
-      text-size-adjust: 100%;
-    }
-
-    body {
-      font-family: 'Cairo', Arial, sans-serif;
-      background:
-        radial-gradient(circle at top right, rgba(79,142,247,.20), transparent 32%),
-        radial-gradient(circle at bottom left, rgba(167,139,250,.14), transparent 35%),
-        linear-gradient(180deg, #10131d 0%, #0f1117 52%, #0b0d13 100%);
-      color: var(--text);
-      min-height: 100vh;
-      padding: max(.9rem, var(--safe-top)) max(.9rem, var(--safe-right)) calc(1rem + var(--safe-bottom)) max(.9rem, var(--safe-left));
-      overscroll-behavior-y: contain;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    button,
-    input,
-    textarea,
-    a {
-      -webkit-tap-highlight-color: transparent;
-      touch-action: manipulation;
-    }
-
-    input,
-    textarea {
-      font-size: 16px;
-    }
-
-    .page {
-      width: min(980px, 100%);
-      margin: 0 auto;
-      padding: .6rem 0 3rem;
-      animation: pageIn .35s ease both;
-    }
-
-    @keyframes pageIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .topbar {
-      position: sticky;
-      top: max(.55rem, var(--safe-top));
-      z-index: 20;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: .8rem;
-      margin-bottom: 1rem;
-      padding: .55rem;
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      background: rgba(15, 17, 23, .74);
-      box-shadow: 0 16px 44px rgba(0,0,0,.22);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: .7rem;
-      min-width: 0;
-    }
-
-    .logo {
-      width: 48px;
-      height: 48px;
-      border-radius: 16px;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, rgba(34,197,94,.18), rgba(79,142,247,.14));
-      border: 1px solid rgba(34,197,94,.35);
-      box-shadow: 0 14px 35px rgba(34,197,94,.14);
-      overflow: hidden;
-      flex: 0 0 auto;
-    }
-
-    .logo img,
-    .hero-logo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .brand-title {
-      font-size: .96rem;
-      font-weight: 900;
-      line-height: 1.2;
-    }
-
-    .brand-subtitle {
-      font-size: .68rem;
-      color: var(--muted2);
-      margin-top: .1rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .history-link {
-      text-decoration: none;
-      background: rgba(79,142,247,.12);
-      color: var(--accent);
-      border: 1px solid rgba(79,142,247,.35);
-      padding: .55rem .8rem;
-      border-radius: 14px;
-      font-size: .78rem;
-      font-weight: 900;
-      transition: .18s ease;
-      white-space: nowrap;
-      min-height: 42px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .history-link:active,
-    .btn:active,
-    .pill-btn:active {
-      transform: scale(.98);
-      filter: brightness(1.08);
-    }
-
-    .hero {
-      text-align: center;
-      margin: 1.25rem auto 1.05rem;
-    }
-
-    .hero-logo {
-      width: 88px;
-      height: 88px;
-      margin: 0 auto .85rem;
-      border-radius: 26px;
-      overflow: hidden;
-      border: 1px solid rgba(34,197,94,.35);
-      background: rgba(255,255,255,.04);
-      box-shadow: 0 22px 60px rgba(34,197,94,.14);
-      display: grid;
-      place-items: center;
-      animation: heroLogoPulse 3.5s ease-in-out infinite;
-    }
-
-    @keyframes heroLogoPulse {
-      0%, 100% { transform: scale(1); box-shadow: 0 20px 52px rgba(34,197,94,.10); }
-      50% { transform: scale(1.025); box-shadow: 0 24px 64px rgba(34,197,94,.20); }
-    }
-
-    .hero h1 {
-      font-size: clamp(2rem, 5vw, 3.35rem);
-      font-weight: 900;
-      line-height: 1.1;
-      background: linear-gradient(135deg, var(--accent), var(--purple), var(--green));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero p {
-      color: var(--muted);
-      margin-top: .55rem;
-      font-size: .88rem;
-      line-height: 1.75;
-    }
-
-    .status-card {
-      margin: 0 auto .85rem;
-      background: linear-gradient(135deg, rgba(34,197,94,.10), rgba(79,142,247,.065));
-      border: 1px solid rgba(34,197,94,.22);
-      border-radius: 20px;
-      padding: .85rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: .75rem;
-      flex-wrap: wrap;
-      box-shadow: 0 14px 42px rgba(0,0,0,.12);
-    }
-
-    .status-text {
-      color: var(--muted);
-      font-size: .78rem;
-      line-height: 1.7;
-      flex: 1 1 260px;
-    }
-
-    .status-text strong {
-      color: var(--green);
-    }
-
-    .btn,
-    .rate-btn,
-    .sample-btn,
-    .paste-btn,
-    .submit-btn,
-    .pill-btn {
-      border: 0;
-      cursor: pointer;
-      font-family: 'Cairo', sans-serif;
-      font-weight: 900;
-      transition: transform .16s ease, filter .16s ease, opacity .16s ease, border-color .16s ease;
-    }
-
-    .rate-btn {
-      border-radius: 14px;
-      padding: .65rem .95rem;
-      background: var(--green);
-      color: #07120a;
-      min-height: 44px;
-      white-space: nowrap;
-    }
-
-    .main-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 26px;
-      padding: 1rem;
-      box-shadow: 0 20px 58px rgba(0,0,0,.24);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-
-    .card-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: .9rem;
-      margin-bottom: .9rem;
-      flex-wrap: wrap;
-    }
-
-    .card-header h2 {
-      font-size: 1rem;
-      font-weight: 900;
-      color: var(--text);
-    }
-
-    .card-header p {
-      color: var(--muted2);
-      font-size: .75rem;
-      margin-top: .2rem;
-      line-height: 1.75;
-    }
-
-    .header-actions {
-      display: flex;
-      gap: .5rem;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: flex-end;
-    }
-
-    .sample-btn,
-    .paste-btn,
-    .backup-btn,
-    .pill-btn {
-      border: 1px solid rgba(167,139,250,.35);
-      background: rgba(167,139,250,.14);
-      color: var(--purple);
-      padding: .55rem .75rem;
-      border-radius: 14px;
-      font-size: .74rem;
-      min-height: 42px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: .25rem;
-    }
-
-    .paste-btn {
-      border-color: rgba(34,197,94,.35);
-      background: rgba(34,197,94,.13);
-      color: var(--green);
-    }
-
-    .backup-btn {
-      border-color: rgba(245,158,11,.38);
-      background: rgba(245,158,11,.13);
-      color: var(--amber);
-    }
-
-    .input-shell {
-      position: relative;
-    }
-
-    textarea {
-      width: 100%;
-      min-height: 315px;
-      background: #111421;
-      color: var(--text);
-      border: 1px solid var(--border2);
-      border-radius: 20px;
-      padding: 1rem;
-      resize: vertical;
-      outline: none;
-      font-family: 'Cairo', Arial, sans-serif;
-      font-size: .9rem;
-      line-height: 1.9;
-      direction: rtl;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.015);
-    }
-
-    textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 4px rgba(79,142,247,.14);
-    }
-
-    textarea::placeholder {
-      color: #64748b;
-    }
-
-    .textarea-tools {
-      display: flex;
-      justify-content: space-between;
-      gap: .6rem;
-      flex-wrap: wrap;
-      margin-top: .6rem;
-    }
-
-    .textarea-meta {
-      color: var(--muted2);
-      font-size: .72rem;
-      line-height: 1.7;
-    }
-
-    .options {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: .8rem;
-      margin-top: .9rem;
-      align-items: end;
-    }
-
-    .field label {
-      display: block;
-      font-size: .72rem;
-      color: var(--muted);
-      margin-bottom: .32rem;
-      font-weight: 800;
-    }
-
-    input[type="date"] {
-      width: 100%;
-      background: #111421;
-      color: var(--text);
-      border: 1px solid var(--border2);
-      border-radius: 14px;
-      padding: .78rem .8rem;
-      font-family: 'Cairo', sans-serif;
-      outline: none;
-      min-height: var(--tap);
-    }
-
-    input[type="date"]:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 4px rgba(79,142,247,.14);
-    }
-
-    .submit-btn {
-      border-radius: 15px;
-      padding: .82rem 1.35rem;
-      min-width: 152px;
-      background: linear-gradient(135deg, var(--accent), var(--purple));
-      color: white;
-      font-size: .9rem;
-      box-shadow: 0 14px 32px rgba(79,142,247,.22);
-      min-height: var(--tap);
-    }
-
-    .submit-btn:disabled {
-      opacity: .55;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .tips {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: .75rem;
-      margin-top: 1rem;
-    }
-
-    .tip {
-      background: rgba(255,255,255,.035);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: .78rem;
-      min-height: 90px;
-    }
-
-    .tip-icon {
-      font-size: 1rem;
-      margin-bottom: .3rem;
-    }
-
-    .tip-title {
-      font-size: .76rem;
-      font-weight: 900;
-      color: var(--text);
-    }
-
-    .tip-text {
-      color: var(--muted2);
-      font-size: .69rem;
-      line-height: 1.7;
-      margin-top: .2rem;
-    }
-
-    .message {
-      margin-top: .75rem;
-      padding: .78rem .9rem;
-      border-radius: 14px;
-      display: none;
-      font-size: .8rem;
-      line-height: 1.7;
-    }
-
-    .message.show {
-      display: block;
-    }
-
-    .message.ok {
-      color: var(--green);
-      border: 1px solid rgba(34,197,94,.35);
-      background: rgba(34,197,94,.1);
-    }
-
-    .message.err {
-      color: var(--red);
-      border: 1px solid rgba(239,68,68,.35);
-      background: rgba(239,68,68,.1);
-    }
-
-    .message.warn {
-      color: var(--amber);
-      border: 1px solid rgba(245,158,11,.35);
-      background: rgba(245,158,11,.1);
-    }
-
-    .footer-note {
-      text-align: center;
-      color: var(--muted2);
-      font-size: .7rem;
-      margin-top: 1rem;
-      line-height: 1.7;
-    }
-
-    .app-bottom-action {
-      display: none;
-    }
-
-    @media(max-width: 760px) {
-      body {
-        padding: max(.75rem, var(--safe-top)) max(.75rem, var(--safe-right)) calc(5.2rem + var(--safe-bottom)) max(.75rem, var(--safe-left));
-      }
-
-      .page {
-        padding-top: .25rem;
-      }
-
-      .topbar {
-        top: max(.45rem, var(--safe-top));
-        border-radius: 20px;
-        padding: .45rem;
-        margin-bottom: .75rem;
-      }
-
-      .logo {
-        width: 42px;
-        height: 42px;
-        border-radius: 14px;
-      }
-
-      .brand-title {
-        font-size: .88rem;
-      }
-
-      .brand-subtitle {
-        font-size: .63rem;
-      }
-
-      .history-link {
-        padding: .48rem .62rem;
-        font-size: .68rem;
-        border-radius: 13px;
-      }
-
-      .hero {
-        margin: .9rem auto .8rem;
-      }
-
-      .hero-logo {
-        width: 76px;
-        height: 76px;
-        border-radius: 23px;
-        margin-bottom: .65rem;
-      }
-
-      .hero h1 {
-        font-size: 2.1rem;
-      }
-
-      .hero p {
-        font-size: .78rem;
-        line-height: 1.7;
-      }
-
-      .status-card {
-        align-items: stretch;
-        padding: .75rem;
-        border-radius: 18px;
-        gap: .6rem;
-      }
-
-      .status-text {
-        font-size: .72rem;
-      }
-
-      .rate-btn {
-        width: 100%;
-        border-radius: 14px;
-      }
-
-      .main-card {
-        padding: .78rem;
-        border-radius: 22px;
-      }
-
-      .card-header {
-        gap: .65rem;
-        margin-bottom: .7rem;
-      }
-
-      .card-header h2 {
-        font-size: .92rem;
-      }
-
-      .card-header p {
-        font-size: .68rem;
-      }
-
-      .header-actions {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        width: 100%;
-      }
-
-      .sample-btn,
-      .paste-btn,
-      .backup-btn,
-      .pill-btn {
-        width: 100%;
-        font-size: .7rem;
-        min-height: 42px;
-        border-radius: 14px;
-      }
-
-      textarea {
-        min-height: 265px;
-        font-size: .84rem;
-        line-height: 1.85;
-        border-radius: 18px;
-        padding: .85rem;
-      }
-
-      .textarea-tools {
-        gap: .45rem;
-      }
-
-      .textarea-meta {
-        font-size: .66rem;
-      }
-
-      .options {
-        grid-template-columns: 1fr;
-        gap: .65rem;
-      }
-
-      .submit-btn {
-        width: 100%;
-      }
-
-      .tips {
-        grid-template-columns: 1fr;
-        gap: .55rem;
-      }
-
-      .tip {
-        min-height: auto;
-        padding: .68rem;
-        border-radius: 15px;
-      }
-
-      .app-bottom-action {
-        position: fixed;
-        left: max(.75rem, var(--safe-left));
-        right: max(.75rem, var(--safe-right));
-        bottom: max(.7rem, var(--safe-bottom));
-        z-index: 80;
-        display: grid;
-        grid-template-columns: 1fr auto auto;
-        gap: .55rem;
-        padding: .45rem;
-        border-radius: 22px;
-        border: 1px solid rgba(148,163,184,.18);
-        background: rgba(15,17,23,.86);
-        backdrop-filter: blur(18px);
-        -webkit-backdrop-filter: blur(18px);
-        box-shadow: 0 18px 48px rgba(0,0,0,.36);
-      }
-
-      .app-bottom-action .submit-btn,
-      .app-bottom-action .paste-btn,
-      .app-bottom-action .backup-btn {
-        min-height: 50px;
-        border-radius: 17px;
-      }
-
-      .app-bottom-action .paste-btn,
-      .app-bottom-action .backup-btn {
-        width: 58px;
-        padding: 0;
-        font-size: 1.05rem;
-      }
-    }
-
-    @media(max-width: 390px) {
-      .history-link {
-        font-size: .62rem;
-        padding-inline: .5rem;
-      }
-
-      .hero h1 {
-        font-size: 1.9rem;
-      }
-    }
-
-    @media(prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
-        transition-duration: .01ms !important;
-      }
-    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+    body{font-family:'Cairo',Arial,sans-serif;background:radial-gradient(circle at top right,rgba(79,142,247,.20),transparent 32%),radial-gradient(circle at bottom left,rgba(167,139,250,.14),transparent 35%),linear-gradient(180deg,#10131d 0%,#0f1117 52%,#0b0d13 100%);color:var(--text);min-height:100vh;padding:max(.9rem,var(--safe-top)) max(.9rem,var(--safe-right)) calc(1rem + var(--safe-bottom)) max(.9rem,var(--safe-left));overscroll-behavior-y:contain;-webkit-font-smoothing:antialiased}
+    button,input,textarea,a,select{-webkit-tap-highlight-color:transparent;touch-action:manipulation;font-family:'Cairo',sans-serif}
+    button{cursor:pointer} input,textarea,select{font-size:16px}
+    .page{width:min(1250px,100%);margin:0 auto;padding:.6rem 0 3rem;animation:pageIn .35s ease both}
+    @keyframes pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .topbar{position:sticky;top:max(.55rem,var(--safe-top));z-index:20;display:flex;justify-content:space-between;align-items:center;gap:.8rem;margin-bottom:1rem;padding:.55rem;border:1px solid var(--border-soft);border-radius:22px;background:rgba(15,17,23,.74);box-shadow:0 16px 44px rgba(0,0,0,.22);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+    .brand{display:flex;align-items:center;gap:.7rem;min-width:0}
+    .logo,.hero-logo{border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(34,197,94,.18),rgba(79,142,247,.14));border:1px solid rgba(34,197,94,.35);box-shadow:0 14px 35px rgba(34,197,94,.14);overflow:hidden;flex:0 0 auto;font-weight:900;color:var(--green)}
+    .logo{width:48px;height:48px;font-size:1.05rem}.hero-logo{width:88px;height:88px;margin:0 auto .85rem;border-radius:26px;font-size:1.65rem;animation:heroLogoPulse 3.5s ease-in-out infinite}
+    .logo img,.hero-logo img{width:100%;height:100%;object-fit:cover;display:block}
+    @keyframes heroLogoPulse{0%,100%{transform:scale(1);box-shadow:0 20px 52px rgba(34,197,94,.10)}50%{transform:scale(1.025);box-shadow:0 24px 64px rgba(34,197,94,.20)}}
+    .brand-title{font-size:.96rem;font-weight:900;line-height:1.2}.brand-subtitle{font-size:.68rem;color:var(--muted2);margin-top:.1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .nav-actions{display:flex;gap:.45rem;flex-wrap:wrap;justify-content:flex-end}
+    .nav-btn,.history-link,.btn,.rate-btn,.sample-btn,.paste-btn,.submit-btn,.pill-btn,.backup-btn,.copy-btn,.delete-row,.clear-selection{border:0;cursor:pointer;font-weight:900;transition:transform .16s ease,filter .16s ease,opacity .16s ease,border-color .16s ease;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:.25rem;white-space:nowrap}
+    .nav-btn,.history-link{background:rgba(79,142,247,.12);color:var(--accent);border:1px solid rgba(79,142,247,.35);padding:.55rem .8rem;border-radius:14px;font-size:.78rem;min-height:42px}.nav-btn.active{background:var(--accent);color:#fff}.nav-btn:active,.history-link:active,.btn:active,.pill-btn:active,.submit-btn:active{transform:scale(.98);filter:brightness(1.08)}
+    .hero{text-align:center;margin:1.25rem auto 1.05rem}.hero h1{font-size:clamp(2rem,5vw,3.35rem);font-weight:900;line-height:1.1;background:linear-gradient(135deg,var(--accent),var(--purple),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent}.hero p{color:var(--muted);margin-top:.55rem;font-size:.88rem;line-height:1.75}
+    .status-card{margin:0 auto .85rem;background:linear-gradient(135deg,rgba(34,197,94,.10),rgba(79,142,247,.065));border:1px solid rgba(34,197,94,.22);border-radius:20px;padding:.85rem;display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap;box-shadow:0 14px 42px rgba(0,0,0,.12)}
+    .status-text{color:var(--muted);font-size:.78rem;line-height:1.7;flex:1 1 260px}.status-text strong{color:var(--green)}
+    .rate-btn{border-radius:14px;padding:.65rem .95rem;background:var(--green);color:#07120a;min-height:44px}
+    .main-card,.panel,.actions-bar,.manual-panel,.rate-box,.card{background:var(--surface-soft);border:1px solid var(--border-soft);border-radius:26px;padding:1rem;box-shadow:0 20px 58px rgba(0,0,0,.24);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+    .card-header{display:flex;align-items:flex-start;justify-content:space-between;gap:.9rem;margin-bottom:.9rem;flex-wrap:wrap}.card-header h2,.panel-title,.manual-title{font-size:1rem;font-weight:900;color:var(--text)}.card-header p{color:var(--muted2);font-size:.75rem;margin-top:.2rem;line-height:1.75}.header-actions,.actions-buttons,.top-actions-group{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;justify-content:flex-end}
+    .sample-btn,.paste-btn,.backup-btn,.pill-btn,.btn,.copy-btn,.clear-selection{border:1px solid rgba(167,139,250,.35);background:rgba(167,139,250,.14);color:var(--purple);padding:.55rem .75rem;border-radius:14px;font-size:.74rem;min-height:42px}.paste-btn,.btn-green{border-color:rgba(34,197,94,.35);background:rgba(34,197,94,.13);color:var(--green)}.backup-btn,.btn-amber{border-color:rgba(245,158,11,.38);background:rgba(245,158,11,.13);color:var(--amber)}.btn-primary{border-color:rgba(79,142,247,.35);background:rgba(79,142,247,.14);color:var(--accent)}.btn-red{border-color:rgba(239,68,68,.35);background:rgba(239,68,68,.14);color:var(--red)}
+    textarea{width:100%;min-height:315px;background:#111421;color:var(--text);border:1px solid var(--border);border-radius:20px;padding:1rem;resize:vertical;outline:none;font-size:.9rem;line-height:1.9;direction:rtl;box-shadow:inset 0 0 0 1px rgba(255,255,255,.015)}textarea:focus,input:focus,select:focus{border-color:var(--accent)!important;box-shadow:0 0 0 4px rgba(79,142,247,.14)}textarea::placeholder{color:#64748b}.textarea-tools{display:flex;justify-content:space-between;gap:.6rem;flex-wrap:wrap;margin-top:.6rem}.textarea-meta{color:var(--muted2);font-size:.72rem;line-height:1.7}
+    .options,.manual-grid,.filters,.manual-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem;margin-top:.9rem;align-items:end}.field label,.manual-field label{display:block;font-size:.72rem;color:var(--muted);margin-bottom:.32rem;font-weight:800}input,select{width:100%;background:#111421;color:var(--text);border:1px solid var(--border);border-radius:14px;padding:.78rem .8rem;outline:none;min-height:var(--tap)}
+    .submit-btn{border-radius:15px;padding:.82rem 1.35rem;min-width:152px;background:linear-gradient(135deg,var(--accent),var(--purple));color:white;font-size:.9rem;box-shadow:0 14px 32px rgba(79,142,247,.22);min-height:var(--tap)}.submit-btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+    .tips{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-top:1rem}.tip{background:rgba(255,255,255,.035);border:1px solid var(--border-soft);border-radius:16px;padding:.78rem;min-height:90px}.tip-icon{font-size:1rem;margin-bottom:.3rem}.tip-title{font-size:.76rem;font-weight:900}.tip-text{color:var(--muted2);font-size:.69rem;line-height:1.7;margin-top:.2rem}
+    .message,.toast,.save-status{margin-top:.75rem;padding:.78rem .9rem;border-radius:14px;display:none;font-size:.8rem;line-height:1.7}.message.show,.toast.show,.save-status.show{display:block}.message.ok,.toast,.save-status{color:var(--green);border:1px solid rgba(34,197,94,.35);background:rgba(34,197,94,.1)}.message.err{color:var(--red);border:1px solid rgba(239,68,68,.35);background:rgba(239,68,68,.1)}.message.warn{color:var(--amber);border:1px solid rgba(245,158,11,.35);background:rgba(245,158,11,.1)}.footer-note{text-align:center;color:var(--muted2);font-size:.7rem;margin-top:1rem;line-height:1.7}
+    .screen{display:none}.screen.active{display:block}.header{text-align:center;margin:1.2rem 0}.header h1{font-size:1.9rem;font-weight:900;background:linear-gradient(135deg,var(--green),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}.header p{color:var(--muted);margin-top:.3rem;font-size:.85rem}
+    .rate-editors{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1rem}.rate-box{border-radius:var(--radius);min-height:135px;box-shadow:none}.rate-box.egp{background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(245,158,11,.02));border:1.5px solid rgba(245,158,11,.4)}.rate-box.egp-sar{background:linear-gradient(135deg,rgba(34,197,94,.08),rgba(34,197,94,.02));border:1.5px solid rgba(34,197,94,.4)}.rb-title{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}.rate-box.egp .rb-title{color:var(--amber)}.rate-box.egp-sar .rb-title{color:var(--green)}.rb-desc{font-size:.72rem;color:var(--muted);line-height:1.6}.rate-row{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;margin-top:.45rem}.rate-input{background:rgba(255,255,255,.04);border-radius:8px;font-size:1.25rem;font-weight:700;padding:.25rem .7rem;width:105px;text-align:center}.rb-unit{color:var(--muted);font-size:.78rem}.live-tag{font-size:.68rem;border-radius:6px;padding:.15rem .5rem;font-weight:700;background:rgba(255,255,255,.06)}.formula-preview{font-size:.72rem;color:var(--muted);background:rgba(255,255,255,.03);border-radius:6px;padding:.28rem .6rem;margin-top:.45rem;font-family:monospace;direction:ltr;text-align:left}.formula-preview span{color:var(--text);font-weight:700}
+    .summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.8rem;margin-bottom:1rem}.card{border-radius:var(--radius);box-shadow:none}.card .label{font-size:.7rem;color:var(--muted);margin-bottom:.25rem}.card .value{font-size:1.25rem;font-weight:800;line-height:1.2}.card.live .value,.card.live-sar .value,.selected-card .value,.value.added{color:var(--green)}.card.fixed .value,.value.deducted{color:var(--amber)}.card.sar .value,.value.count{color:var(--purple)}.value.balance{color:var(--accent)}.unit{font-size:.6em;opacity:.7;margin-right:.2rem}.selected-meta{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-top:.5rem;color:var(--muted);font-size:.7rem}
+    .actions-bar{display:flex;align-items:center;justify-content:space-between;gap:.8rem;flex-wrap:wrap;margin-bottom:1rem;border-radius:var(--radius);box-shadow:none}.actions-info{color:var(--muted);font-size:.78rem;line-height:1.7}.manual-panel{margin-bottom:1rem;border-radius:var(--radius);box-shadow:none}.manual-title{margin-bottom:.75rem}.table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);margin-bottom:1rem}table{width:100%;border-collapse:collapse;font-size:.84rem;min-width:1650px}thead{background:linear-gradient(90deg,#1e2340,#252a45);position:sticky;top:0;z-index:2}th{padding:.7rem .75rem;text-align:right;color:var(--muted);font-weight:700;font-size:.68rem;white-space:nowrap;user-select:none}th.sortable{cursor:pointer}th.sortable::after{content:' ⇅';color:var(--muted2)}th.sortable.asc::after{content:' ↑';color:var(--green)}th.sortable.desc::after{content:' ↓';color:var(--green)}td{padding:.65rem .75rem;vertical-align:middle;white-space:nowrap;border-top:1px solid var(--border)}tbody tr[data-amount]{cursor:pointer}tbody tr[data-amount]:hover,tbody tr:hover{background:rgba(79,142,247,.06)}tbody tr[data-amount].selected{background:rgba(34,197,94,.12)!important}
+    .badge{display:inline-block;padding:.13rem .45rem;border-radius:6px;font-size:.7rem;font-weight:700;letter-spacing:.04em}.badge-duplicate{background:rgba(245,158,11,.16);color:var(--amber);border:1px solid rgba(245,158,11,.35);margin-inline-start:.35rem}.row-duplicate{background:rgba(245,158,11,.045)}
+    .badge-EGP{background:rgba(34,197,94,.15);color:var(--green)}.badge-USD{background:rgba(79,142,247,.15);color:var(--accent)}.badge-SAR{background:rgba(245,158,11,.15);color:var(--amber)}.badge-IQD{background:rgba(167,139,250,.15);color:var(--purple)}.badge-JPY{background:rgba(34,197,94,.15);color:var(--green)}.badge-MVR{background:rgba(236,72,153,.15);color:#ec4899}.badge-def{background:rgba(100,116,139,.15);color:var(--muted)}.live-val,.live-sar-val{color:var(--green);font-weight:800}.fixed-val{color:var(--amber);font-weight:800}.sar-val{color:var(--purple);font-weight:800}.null-val,.muted{color:var(--muted)}.card-num{font-family:monospace;color:var(--muted);font-size:.77rem}.unit-sm{color:var(--muted);font-size:.73em;margin-right:.12rem}.totals-row td{border-top:2px solid var(--border);background:rgba(255,255,255,.025);font-weight:800}.empty{text-align:center;padding:3rem 1rem;color:var(--muted);background:var(--surface-soft);border:1px solid var(--border-soft);border-radius:var(--radius);margin-bottom:1rem}.delete-row{background:transparent;color:var(--red);border:1px solid rgba(239,68,68,.35);border-radius:6px;padding:.2rem .55rem;font-family:'Cairo',sans-serif;font-weight:700}
+    .top-actions{display:flex;justify-content:space-between;align-items:center;gap:.8rem;flex-wrap:wrap;margin-bottom:1rem}.badge-add{background:rgba(34,197,94,.14);color:var(--green)}.badge-deduct{background:rgba(239,68,68,.14);color:var(--red)}.amount-add{color:var(--green);font-weight:800;font-family:'Courier New',monospace}.amount-deduct{color:var(--red);font-weight:800;font-family:'Courier New',monospace}
+    .app-bottom-action{display:none}
+    @media(max-width:900px){.rate-editors{grid-template-columns:1fr}.topbar{align-items:stretch;flex-direction:column}.nav-actions{display:grid;grid-template-columns:repeat(3,1fr);width:100%}.nav-btn{font-size:.68rem;padding:.48rem .55rem}.tips{grid-template-columns:1fr}.header-actions{display:grid;grid-template-columns:1fr 1fr;width:100%}.sample-btn,.paste-btn,.backup-btn,.pill-btn{width:100%;font-size:.7rem;min-height:42px;border-radius:14px}textarea{min-height:265px;font-size:.84rem;line-height:1.85;border-radius:18px;padding:.85rem}.textarea-meta{font-size:.66rem}.submit-btn{width:100%}.app-bottom-action{position:fixed;left:max(.75rem,var(--safe-left));right:max(.75rem,var(--safe-right));bottom:max(.7rem,var(--safe-bottom));z-index:80;display:grid;grid-template-columns:1fr auto auto;gap:.55rem;padding:.45rem;border-radius:22px;border:1px solid rgba(148,163,184,.18);background:rgba(15,17,23,.86);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 18px 48px rgba(0,0,0,.36)}.app-bottom-action .submit-btn,.app-bottom-action .paste-btn,.app-bottom-action .backup-btn{min-height:50px;border-radius:17px}.app-bottom-action .paste-btn,.app-bottom-action .backup-btn{width:58px;padding:0;font-size:1.05rem}.top-actions{align-items:stretch}.btn{justify-content:center}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
   </style>
 </head>
-
 <body>
-
 <div class="page">
-
   <div class="topbar">
     <div class="brand">
-      <div class="logo">
-        <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="لوجو محول العملات">
-      </div>
-      <div>
-        <div class="brand-title">MOX-V1</div>
-        <div class="brand-subtitle">تحويل تلقائي للجنيه والريال</div>
-      </div>
+      <div class="logo"><img data-logo-img src="assets/logo.png" alt="لوجو MOX"></div>
+      <div><div class="brand-title">MOX-V1</div><div class="brand-subtitle">تحويل تلقائي للجنيه والريال</div></div>
     </div>
-
-    <a href="/history" class="history-link">📊 سجل الرصيد</a>
+    <div class="nav-actions">
+      <button class="nav-btn active" data-nav="home" onclick="showScreen('home')">📝 الإدخال</button>
+      <button class="nav-btn" data-nav="result" onclick="showScreen('result')">📋 النتائج</button>
+      <button class="nav-btn" data-nav="history" onclick="showScreen('history')">📊 سجل الرصيد</button>
+    </div>
   </div>
 
-  <section class="hero">
-    <div class="hero-logo">
-      <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="لوجو نتائج التحويل">
+  <section id="homeScreen" class="screen active">
+    <section class="hero">
+      <div class="hero-logo"><img data-logo-img src="assets/logo.png" alt="لوجو MOX"></div>
+      <h1>MOX-V1</h1>
+      <p>الصق رسائل العمليات البنكية هنا، وسيتم استخراج العمليات وتحويلها تلقائيًا.</p>
+    </section>
+
+    <div class="status-card">
+      <div class="status-text"><strong>الأسعار الحية</strong><br>يمكنك تحديث أسعار اليوم قبل التحويل، ولو حصل خطأ سيتم استخدام آخر أسعار محفوظة أو أسعار احتياطية.</div>
+      <button type="button" class="rate-btn" onclick="refreshRates()">🔄 تحديث أسعار اليوم</button>
     </div>
 
-    <h1>MOX-V1</h1>
-    <p>
-      الصق رسائل العمليات البنكية هنا، وسيتم استخراج العمليات وتحويلها تلقائيًا.
-    </p>
+    <main class="main-card">
+      <div class="card-header">
+        <div><h2>إدخال بيانات العمليات</h2><p>انسخ رسائل البنك كما هي، سواء كانت عملية واحدة أو أكثر.</p></div>
+        <div class="header-actions">
+          <button type="button" class="paste-btn" onclick="pasteFromClipboard()">📋 لصق سريع</button>
+          <button type="button" class="backup-btn" onclick="sendBackupToWhatsApp()">💾 إرسال نسخة واتساب</button>
+          <button type="button" class="sample-btn" onclick="insertSample()">⚡ مثال سريع</button>
+        </div>
+      </div>
+
+      <form onsubmit="return handleConvertSubmit(event)">
+        <textarea id="data" name="data" oninput="updateTextStats()" placeholder="مثال:
+
+شراء إنترنت
+عبر: *1517, Visa
+ب: 209.99 EGP
+من: PUBGMo
+رسوم تحويل العملات: 0.07071765
+ضريبة القيمة المضافة: 0.00 SAR
+رسوم العملية: 0.3 SAR
+إجمالى المبلغ المستحق: 15.15 SAR
+الرصيد المتبقى: 7712.36 SAR
+الدولة: LU
+فى: 20/05/26 22:07
+
+شراء إنترنت
+عبر: *0858, Visa
+ب: 0.49 USD
+من: GARENA
+رسوم تحويل العملات: 3.755102
+ضريبة القيمة المضافة: 0.00 SAR
+رسوم العملية: 0.04 SAR
+إجمالى المبلغ المستحق: 1.88 SAR
+الرصيد المتبقى: 7710.56 SAR
+الدولة: SG
+فى: 20/05/26 22:25"></textarea>
+        <div class="textarea-tools">
+          <div id="textStats" class="textarea-meta">لا يوجد بيانات حتى الآن.</div>
+          <button type="button" class="pill-btn" onclick="clearTextArea()">مسح النص</button>
+        </div>
+        <div class="options">
+          <div class="field"><label for="rateDate">اختياري: تاريخ سعر معين للجدول</label><input type="date" id="rateDate" name="rate_date"></div>
+          <button id="submitBtn" type="submit" class="submit-btn">تحويل الآن</button>
+        </div>
+        <div id="message" class="message"></div>
+      </form>
+
+      <div class="tips">
+        <div class="tip"><div class="tip-icon">⚡</div><div class="tip-title">استخراج تلقائي</div><div class="tip-text">الموقع يقرأ المبلغ والعملة والتاجر والبطاقة والتاريخ من الرسالة.</div></div>
+        <div class="tip"><div class="tip-icon">📋</div><div class="tip-title">لصق سريع</div><div class="tip-text">انسخ رسائل البنك واضغط لصق سريع، سواء رسالة واحدة أو عدة رسائل.</div></div>
+        <div class="tip"><div class="tip-icon">💾</div><div class="tip-title">سجل الرصيد</div><div class="tip-text">بعد التحويل يمكنك حفظ العمليات ومتابعة الرصيد المضاف والمخصوم.</div></div>
+      </div>
+    </main>
+    <div class="footer-note">ملاحظة: سجل الرصيد محفوظ على الجهاز والمتصفح المستخدمين.</div>
   </section>
 
-  <div class="status-card">
-    <div class="status-text">
-      <strong>الأسعار الحية</strong><br>
-      يمكنك تحديث أسعار اليوم قبل التحويل، ولو حصل خطأ سيتم استخدام آخر أسعار محفوظة أو أسعار احتياطية.
-    </div>
-
-    <button type="button" class="rate-btn" onclick="refreshRates()">🔄 تحديث أسعار اليوم</button>
-  </div>
-
-  <main class="main-card">
-    <div class="card-header">
-      <div>
-        <h2>إدخال بيانات العمليات</h2>
-        <p>انسخ رسائل البنك كما هي، سواء كانت عملية واحدة أو أكثر.</p>
+  <section id="resultScreen" class="screen">
+    <div class="header"><h1>نتائج التحويل</h1><p>تم معالجة البيانات وتحويل العملات تلقائياً</p></div>
+    <div id="resultEmpty" class="empty" style="display:block">لم يتم تنفيذ أي تحويل بعد. ارجع إلى شاشة الإدخال والصق العمليات.</div>
+    <div id="resultContent" style="display:none">
+      <div class="rate-editors">
+        <div class="rate-box egp"><div class="rb-title">⚙️ السعر الثابت — دولار ← جنيه مصري</div><div class="rb-desc">يتحكم في عمود <strong>بالجنيه ثابت</strong></div><div class="rate-row"><input id="rateEGP" class="rate-input" type="number" step="0.01" min="1"><span class="rb-unit">EGP / دولار</span><span class="live-tag" id="tagRateEGP">حي: —</span></div><div class="formula-preview">USD × <span id="previewEGP">—</span> × 1.025 = EGP</div></div>
+        <div class="rate-box egp-sar"><div class="rb-title">⚙️ السعر الثابت — جنيه مصري ← ريال سعودي</div><div class="rb-desc">يتحكم فقط في معادلة الجنيه داخل عمود <strong>بالريال ثابت</strong></div><div class="rate-row"><input id="rateEGPForSAR" class="rate-input" type="number" step="0.01" min="1"><span class="rb-unit">EGP / دولار</span><span class="live-tag" id="tagEGPForSAR">ثابت: 53</span></div><div class="formula-preview">EGP ÷ <span id="previewEGPForSAR">53.00</span> × 1.025 × 3.76 = SAR</div></div>
       </div>
 
-      <div class="header-actions">
-        <button type="button" class="paste-btn" onclick="pasteFromClipboard()">📋 لصق سريع</button>
-        <button type="button" class="backup-btn" onclick="sendBackupToWhatsApp()">💾 إرسال نسخة واتساب</button>
-        <button type="button" class="sample-btn" onclick="insertSample()">⚡ مثال سريع</button>
+      <div class="summary">
+        <div class="card count"><div class="label">عدد العمليات</div><div class="value" id="resultCount">0</div></div>
+        <div class="card live"><div class="label">إجمالي — جنيه حي</div><div class="value" id="sumLiveEGP">0.00<span class="unit">EGP</span></div></div>
+        <div class="card live-sar"><div class="label">إجمالي — ريال حي</div><div class="value" id="sumLiveSAR">—<span class="unit">SAR</span></div></div>
+        <div class="card selected-card"><div class="label">إجمالي المختار — جنيه حي</div><div class="value" id="selectedLiveSum">0.00<span class="unit">EGP</span></div><div class="selected-meta"><span id="selectedCount">0 عملية مختارة</span><button type="button" class="clear-selection" onclick="clearSelection(event)">مسح</button></div></div>
+        <div class="card fixed"><div class="label">إجمالي — جنيه ثابت</div><div class="value" id="sumFixed">—<span class="unit">EGP</span></div></div>
+        <div class="card sar"><div class="label">إجمالي — ريال ثابت</div><div class="value" id="sumSAR">—<span class="unit">SAR</span></div></div>
       </div>
-    </div>
 
-    <form action="/result" method="POST" onsubmit="return validateForm()">
-      <div class="input-shell">
-        <textarea
-          id="data"
-          name="data"
-          oninput="updateTextStats()"
-          placeholder="مثال:
+      <div class="actions-bar">
+        <div class="actions-info"><strong>حفظ العمليات</strong><br>العمليات المكررة ستتحفظ عادي وستظهر بعلامة مكرر.</div>
+        <div class="actions-buttons"><select id="saveType" class="save-mode"><option value="deduct">خصم من الرصيد</option><option value="add">إضافة إلى الرصيد</option></select><button type="button" class="btn btn-green" onclick="saveTodayOperations()">💾 حفظ العمليات</button><button type="button" class="btn btn-primary" onclick="showScreen('history')">📊 سجل الرصيد</button></div>
+        <div id="saveStatus" class="save-status"></div>
+      </div>
+
+      <div class="manual-panel">
+        <div class="manual-title">➕ إضافة عملية تحويل يدوي لنتائج التحويل</div>
+        <div class="manual-grid">
+          <div class="manual-field"><label>المبلغ</label><input id="manualResultAmount" type="number" step="0.01" min="0" placeholder="مثال: 100"></div>
+          <div class="manual-field"><label>العملة</label><select id="manualResultCurrency"><option value="EGP">EGP</option><option value="USD">USD</option><option value="SAR">SAR</option><option value="IQD">IQD</option><option value="MVR">MVR</option><option value="JPY">JPY</option></select></div>
+          <div class="manual-field"><label>التاجر / البيان</label><input id="manualResultMerchant" type="text" placeholder="عملية تحويل يدوي"></div>
+          <div class="manual-field"><label>التاريخ</label><input id="manualResultDate" type="text" placeholder="مثال: 01/01/26 10:30"></div>
+          <div class="manual-field"><label>البطاقة / المرجع</label><input id="manualResultCard" type="text" placeholder="MANUAL"></div>
+          <div class="manual-field"><label>الحساب</label><input id="manualResultAccount" type="text" placeholder="—"></div>
+          <div class="manual-field"><label>إضافة</label><button type="button" class="btn" onclick="addManualResultOperation()">➕ إضافة للجدول</button></div>
+        </div>
+      </div>
+
+      <div class="table-wrap"><table id="resultsTable"><thead><tr><th class="sortable">#</th><th class="sortable">البطاقة</th><th class="sortable">عبر</th><th class="sortable">المبلغ</th><th class="sortable">العملة</th><th class="sortable">التاجر</th><th class="sortable">التاريخ</th><th class="sortable">الدولة</th><th class="sortable">رسوم تحويل العملات</th><th class="sortable">ضريبة القيمة</th><th class="sortable">رسوم العملية</th><th class="sortable">الرصيد المتبقي</th><th class="sortable">بالجنيه حي</th><th class="sortable">بالريال حي</th><th class="sortable">بالجنيه ثابت</th><th class="sortable"><button class="copy-btn" id="copyBtn" type="button" onclick="copySARColumn(event)">⎘ نسخ</button> بالريال ثابت</th><th class="sortable">الحساب</th></tr></thead><tbody id="resultsBody"></tbody></table></div>
+      <button class="btn btn-primary" style="margin:1rem auto 0;display:flex;width:fit-content" onclick="showScreen('home')">← إدخال بيانات جديدة</button>
+    </div>
+  </section>
+
+  <section id="historyScreen" class="screen">
+    <div class="header"><h1>سجل الرصيد بالريال</h1><p>متابعة الرصيد المضاف والمخصوم حسب كل عملية وتاريخها</p></div>
+    <div class="top-actions"><div class="top-actions-group"><button class="btn btn-primary" onclick="showScreen('home')">📝 إدخال بيانات جديدة</button><button class="btn btn-green" onclick="showScreen('result')">📋 العودة لنتائج التحويل</button></div><div class="top-actions-group"><button type="button" class="btn btn-green" onclick="exportBackup()">⬇️ تحميل نسخة احتياطية</button><button type="button" class="btn" onclick="document.getElementById('backupFileInput').click()">⬆️ استرجاع نسخة احتياطية</button><input type="file" id="backupFileInput" accept="application/json" style="display:none" onchange="importBackup(event)"><button type="button" class="btn btn-amber" onclick="restoreLastDeleted()">♻️ إرجاع آخر حذف</button><button type="button" class="btn btn-amber" onclick="removeLastSaveBatch()">↩️ إزالة آخر حفظ</button><button type="button" class="btn" onclick="exportCSV()">⬇️ تصدير CSV</button><button type="button" class="btn btn-red" onclick="clearAllHistory()">🗑️ مسح السجل كله</button></div></div>
+    <div id="toast" class="toast"></div>
+    <div class="summary"><div class="card"><div class="label">إجمالي الرصيد المضاف</div><div class="value added" id="totalAdded">0.00<span class="unit">SAR</span></div></div><div class="card"><div class="label">إجمالي الرصيد المخصوم</div><div class="value deducted" id="totalDeducted">0.00<span class="unit">SAR</span></div></div><div class="card"><div class="label">الرصيد الحالي</div><div class="value balance" id="netBalance">0.00<span class="unit">SAR</span></div></div><div class="card"><div class="label">عدد العمليات</div><div class="value count" id="operationsCount">0</div></div></div>
+    <div class="panel"><div class="panel-title">إضافة رصيد يدوي</div><div class="manual-form"><div class="field"><label>التاريخ</label><input type="date" id="manualDate"></div><div class="field"><label>المبلغ بالريال</label><input type="number" id="manualAmount" step="0.01" min="0" placeholder="مثال: 100"></div><div class="field"><label>النوع</label><select id="manualType"><option value="add">إضافة رصيد</option><option value="deduct">خصم رصيد</option></select></div><div class="field"><label>ملاحظة</label><input type="text" id="manualNote" placeholder="مثال: شحن رصيد"></div><button type="button" class="btn btn-green" onclick="addManualEntry()">➕ إضافة</button></div></div>
+    <div class="panel"><div class="panel-title">فلترة السجل</div><div class="filters"><div class="field"><label>بحث</label><input type="text" id="searchInput" placeholder="تاجر / بطاقة / ملاحظة" oninput="renderHistory()"></div><div class="field"><label>النوع</label><select id="typeFilter" onchange="renderHistory()"><option value="all">كل العمليات</option><option value="add">المضاف فقط</option><option value="deduct">المخصوم فقط</option></select></div><div class="field"><label>من تاريخ الحفظ</label><input type="date" id="fromDate" onchange="renderHistory()"></div><div class="field"><label>إلى تاريخ الحفظ</label><input type="date" id="toDate" onchange="renderHistory()"></div><button type="button" class="btn btn-primary" onclick="renderHistory()">تطبيق</button></div></div>
+    <div id="emptyState" class="empty" style="display:none;">لا يوجد عمليات محفوظة حتى الآن.</div>
+    <div class="table-wrap" id="tableWrap"><table id="historyTable"><thead><tr><th class="sortable">#</th><th class="sortable">نوع العملية</th><th class="sortable">تاريخ الحفظ</th><th class="sortable">تاريخ العملية</th><th class="sortable">التاجر / الملاحظة</th><th class="sortable">البطاقة</th><th class="sortable">عبر</th><th class="sortable">الدولة</th><th class="sortable">العملة الأصلية</th><th class="sortable">المبلغ الأصلي</th><th class="sortable">رسوم تحويل العملات</th><th class="sortable">ضريبة القيمة</th><th class="sortable">رسوم العملية</th><th class="sortable">الرصيد المتبقي</th><th class="sortable">رصيد مضاف</th><th class="sortable">رصيد مخصوم</th><th class="sortable">الحساب</th><th>إجراء</th></tr></thead><tbody id="historyBody"></tbody></table></div>
+  </section>
+</div>
+
+<div class="app-bottom-action" aria-label="أزرار سريعة للموبايل"><button id="mobileSubmitBtn" type="button" class="submit-btn" onclick="submitMainForm()">تحويل الآن</button><button type="button" class="paste-btn" onclick="pasteFromClipboard()" title="لصق سريع">📋</button><button type="button" class="backup-btn" onclick="sendBackupToWhatsApp()" title="إرسال نسخة احتياطية واتساب">💾</button></div>
+
+<script>
+  const MARKUP = 1.025;
+  const API_KEY = '662bb25b4b70f2546b90fcfe';
+  const API_URL = `https://v6.exchangerate-api.com/v6/${API_KEY}/latest/USD`;
+  const FALLBACK_RATES = { EGP: 50.5, SAR: 3.75, IQD: 1310, MVR: 15.4, JPY: 149.5, USD: 1.0 };
+  const STORAGE_RATES = 'mox_v1_rates_cache';
+  const STORAGE_HISTORY = 'sar_balance_history_v1';
+  const STORAGE_DELETED_STACK = 'sar_deleted_stack_v1';
+  const STORAGE_SAVED_SIGNATURES = 'sar_saved_signatures_v1';
+  const STORAGE_RATE_EGP = 'converter_rate_egp';
+  const STORAGE_RATE_EGP_FOR_SAR = 'converter_rate_egp_for_sar';
+  const STORAGE_LAST_RESULTS = 'mox_v1_last_results';
+  let LIVE_RATES = loadRates();
+  let currentResults = loadLastResults();
+  let sortState = {};
+
+  function $(id){ return document.getElementById(id); }
+  function escapeHTML(value){ return String(value ?? '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;'); }
+  function fmtEN(n){ return Number(n || 0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  function fmtAR(n){ return Number(n || 0).toLocaleString('ar-EG',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  function todayISO(){ return new Date().toLocaleDateString('en-CA'); }
+  function loadRates(){ try { const cached = JSON.parse(localStorage.getItem(STORAGE_RATES) || 'null'); if (cached && cached.rates) return Object.assign({}, FALLBACK_RATES, cached.rates); } catch(e) {} return Object.assign({}, FALLBACK_RATES); }
+  function saveRatesCache(rates){ LIVE_RATES = Object.assign({}, FALLBACK_RATES, rates || {}); localStorage.setItem(STORAGE_RATES, JSON.stringify({ rates: LIVE_RATES, cachedAt: Date.now() })); }
+  function loadLastResults(){ try { return JSON.parse(localStorage.getItem(STORAGE_LAST_RESULTS) || '[]'); } catch(e) { return []; } }
+  function saveLastResults(){ localStorage.setItem(STORAGE_LAST_RESULTS, JSON.stringify(currentResults || [])); }
+  function showScreen(name){ ['home','result','history'].forEach(screen => { const el = $(screen + 'Screen'); if (el) el.classList.toggle('active', screen === name); document.querySelectorAll(`[data-nav="${screen}"]`).forEach(btn => btn.classList.toggle('active', screen === name)); }); if (name === 'result') renderResults(); if (name === 'history') renderHistory(); window.scrollTo({top:0,behavior:'smooth'}); }
+  function showMessage(text,type){ const msg = $('message'); if (!msg) return; msg.textContent = text; msg.className = `message show ${type || 'ok'}`; }
+  function showToast(message){ const toast = $('toast'); if (!toast) return; toast.textContent = message; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3500); }
+
+  function updateTextStats(){ const textarea = $('data'); const stats = $('textStats'); const value = textarea.value.trim(); if (!value) { stats.textContent = 'لا يوجد بيانات حتى الآن.'; return; } const likelyOperations = value.split(/\n\s*\n|(?=عملية\s)|(?=تم\s)|(?=شراء\s)|(?=خصم\s)|(?=مشتريات\s)/gi).map(x => x.trim()).filter(Boolean).length; stats.textContent = `عدد الحروف: ${value.length.toLocaleString('ar-EG')} — عمليات متوقعة: ${likelyOperations.toLocaleString('ar-EG')}`; }
+  function insertSample(){ $('data').value = `شراء إنترنت
+عبر: *1517, Visa
+ب: 209.99 EGP
+من: PUBGMo
+رسوم تحويل العملات: 0.07071765
+ضريبة القيمة المضافة: 0.00 SAR
+رسوم العملية: 0.3 SAR
+إجمالى المبلغ المستحق: 15.15 SAR
+الرصيد المتبقى: 7712.36 SAR
+الدولة: LU
+فى: 20/05/26 22:07
+
+شراء إنترنت
+عبر: *0858, Visa
+ب: 0.49 USD
+من: GARENA
+رسوم تحويل العملات: 3.755102
+ضريبة القيمة المضافة: 0.00 SAR
+رسوم العملية: 0.04 SAR
+إجمالى المبلغ المستحق: 1.88 SAR
+الرصيد المتبقى: 7710.56 SAR
+الدولة: SG
+فى: 20/05/26 22:25
 
 عملية انترنت ب: 9.5 USD
 من: War and Peace
 بطاقة: *0858
-في: 01/01/26 10:30
+في: 01/01/26 10:30`; updateTextStats(); showMessage('✅ تم إضافة مثال بالشكل الجديد + عملية قديمة للتجربة.', 'ok'); }
+    function clearTextArea(){ const textarea = $('data'); if (!textarea.value.trim()) { showMessage('ℹ️ لا يوجد نص لمسحه.', 'warn'); return; } if (!confirm('هل تريد مسح النص الموجود؟')) return; textarea.value = ''; updateTextStats(); textarea.focus(); showMessage('✅ تم مسح النص.', 'ok'); }
+  async function pasteFromClipboard(){ const textarea = $('data'); try { if (!navigator.clipboard || !navigator.clipboard.readText) { textarea.focus(); showMessage('⚠️ المتصفح لا يدعم اللصق التلقائي. اضغط داخل المربع واستخدم لصق يدوي.', 'warn'); return; } const text = await navigator.clipboard.readText(); if (!text || !text.trim()) { showMessage('⚠️ الحافظة فارغة. انسخ رسائل البنك أولًا.', 'err'); return; } const current = textarea.value.trim(); textarea.value = current ? `${current}\n\n${text.trim()}` : text.trim(); textarea.focus(); updateTextStats(); showMessage('✅ تم لصق الرسائل بنجاح.', 'ok'); } catch(error) { textarea.focus(); showMessage('⚠️ لم يتم السماح باللصق التلقائي. اضغط داخل المربع واستخدم Paste يدويًا.', 'warn'); } }
+  function submitMainForm(){ const form = document.querySelector('form'); if (form) form.requestSubmit ? form.requestSubmit() : handleConvertSubmit(new Event('submit')); }
+  async function refreshRates(){ try { showMessage('⏳ جاري تحديث الأسعار...', 'ok'); const response = await fetch(API_URL, { cache: 'no-store' }); const data = await response.json(); if (data && data.result === 'success' && data.conversion_rates) { saveRatesCache(data.conversion_rates); showMessage(`✅ تم تحديث الأسعار. الدولار ≈ ${Number(LIVE_RATES.EGP).toFixed(2)} جنيه، والريال ≈ ${Number(LIVE_RATES.SAR).toFixed(2)} لكل دولار.`, 'ok'); renderResults(); return; } throw new Error('Invalid rates response'); } catch(error) { saveRatesCache(loadRates()); showMessage('⚠️ لم يتم تحديث الأسعار من الإنترنت. سيتم استخدام آخر أسعار محفوظة أو أسعار احتياطية.', 'warn'); } }
 
-عملية انترنت ب: 250 EGP
-من: Player
-بطاقة: *0858
-في: 01/01/26 10:45"
-        ></textarea>
-      </div>
+  function round2(n){ return Math.round((Number(n) + Number.EPSILON) * 100) / 100; }
+  function convertLive(amount,currency,rates = LIVE_RATES){ amount = Number(amount); currency = String(currency || '').toUpperCase(); if (!amount || amount <= 0) return null; let value = amount * MARKUP; if (currency === 'EGP') return round2(value); if (currency === 'IQD') value = value / 10; const usdRate = rates[currency]; const egpRate = rates.EGP; if (!usdRate || !egpRate) return null; return round2((value / usdRate) * egpRate); }
+  function toUSD(amount,currency){ amount = Number(amount); currency = String(currency || '').toUpperCase(); if (currency === 'USD') return amount; if (currency === 'IQD') { const rate = LIVE_RATES.IQD; return rate ? (amount / 10) / rate : null; } const rate = LIVE_RATES[currency]; return rate ? amount / rate : null; }
+  function calcLiveSAR(amount,currency){ const usd = toUSD(amount,currency); const sarRate = LIVE_RATES.SAR; if (usd === null || !sarRate) return null; return round2(usd * sarRate); }
+  function calcFixedEGP(amount,currency,usdEgpRate){ const usd = toUSD(amount,currency); if (usd === null || usdEgpRate <= 0) return null; return round2(usd * usdEgpRate * MARKUP); }
+  function calcFixedSAR(amount,currency,egpRateForSar){ amount = Number(amount); currency = String(currency || '').toUpperCase(); if (!currency || amount <= 0) return null; if (currency === 'EGP') return round2((amount / egpRateForSar) * MARKUP * 3.76); if (currency === 'IQD') return round2((amount / 3500) * MARKUP); if (currency === 'USD') return round2((amount / 0.2666666) * 1.027); if (currency === 'MVR') return round2((amount / 4.09) * MARKUP); if (currency === 'JPY') return round2((amount * 0.00703) * MARKUP * 3.76); if (currency === 'SAR') return round2(amount * MARKUP); return null; }
+  function normalizeText(text){ return String(text || '').replace(/\r/g,'').replace(/[\u200e\u200f]/g,'').trim(); }
+  function safeGroup(match,n){ try { return match && match[n] ? String(match[n]).trim() : '—'; } catch(e) { return '—'; } }
+  function duplicateKeyFor(entry){ return [Number(entry.amount || 0).toFixed(2), entry.currency, entry.card, entry.date, entry.merchant].join('|').toLowerCase(); }
+  function buildEntry(amount,currency,merchant,card,date,account,raw,extra){ const cur = String(currency || '').toUpperCase(); const entry = { amount:Number(amount), currency:cur, merchant:merchant || '—', card:card || '—', date:date || '—', account:account || '—', raw:raw || '', channel:'—', fx_fee:null, vat_sar:null, operation_fee_sar:null, due_sar:null, remaining_balance_sar:null, country:'—', live_egp:convertLive(Number(amount),cur), live_sar:calcLiveSAR(Number(amount),cur), fixed_egp:null, fixed_sar:null, isDuplicate:false, duplicateCount:1, duplicateKey:'' }; if (extra && typeof extra === 'object') Object.assign(entry, extra); if (Number.isFinite(Number(entry.due_sar))) entry.fixed_sar = round2(Number(entry.due_sar)); return entry; }
+  function parseNum(value){ const cleaned = String(value ?? '').replace(/,/g,'').trim(); const n = parseFloat(cleaned); return Number.isFinite(n) ? n : null; }
+  function fmtMaybe(value, unit){ const n = Number(value); if (!Number.isFinite(n)) return '<span class="null-val">—</span>'; return `<span class="sar-val">${fmtEN(n)}</span>${unit ? `<span class="unit-sm">${escapeHTML(unit)}</span>` : ''}`; }
+  function firstLineValue(regex, block, fallback = '—'){ const match = regex.exec(block); return match && match[1] ? String(match[1]).trim() : fallback; }
+  
+  function addResultWithDuplicateMark(results, seen, entry){ const key = duplicateKeyFor(entry); const count = (seen.get(key) || 0) + 1; seen.set(key, count); entry.isDuplicate = count > 1; entry.duplicateCount = count; entry.duplicateKey = key; results.push(entry); }
+  function parseTransactions(raw){ raw = normalizeText(raw); const results = []; const seen = new Map();
+    const purchaseBlocks = raw.split(/(?=شراء\s+إنترنت|شراء\s+انترنت)/gi).map(x => x.trim()).filter(Boolean);
+    purchaseBlocks.forEach(block => {
+      if (!/^شراء\s+(?:إنترنت|انترنت)/i.test(block)) return;
+      const am = /^ب\s*[:：]?\s*([\d,.]+)\s*([A-Za-z]{3})/mi.exec(block);
+      if (!am) return;
+      const amount = parseNum(am[1]);
+      const currency = String(am[2] || '').toUpperCase();
+      if (!Number.isFinite(amount)) return;
+      const viaFull = firstLineValue(/^عبر\s*[:：]?\s*(.+)$/mi, block);
+      const viaParts = viaFull.split(',').map(x => x.trim()).filter(Boolean);
+      const card = viaParts[0] || viaFull || '—';
+      const account = viaParts.slice(1).join(', ') || '—';
+      const merchant = firstLineValue(/^من\s*[:：]?\s*(.+)$/mi, block);
+      const date = firstLineValue(/^ف[ىي]\s*[:：]?\s*(\d{1,2}\/\d{1,2}\/\d{2,4}\s+\d{1,2}:\d{2})/mi, block);
+      const fxFee = parseNum(firstLineValue(/^رسوم\s+تحويل\s+العملات\s*[:：]?\s*([\d,.]+)/mi, block, ''));
+      const vatSAR = parseNum(firstLineValue(/^ضريبة\s+القيمة\s+المضافة\s*[:：]?\s*([\d,.]+)/mi, block, ''));
+      const operationFeeSAR = parseNum(firstLineValue(/^رسوم\s+العملية\s*[:：]?\s*([\d,.]+)/mi, block, ''));
+      const dueSAR = parseNum(firstLineValue(/^إجمال[ىي]\s+المبلغ\s+المستحق\s*[:：]?\s*([\d,.]+)/mi, block, ''));
+      const remainingSAR = parseNum(firstLineValue(/^الرصيد\s+المتبق[ىي]\s*[:：]?\s*([\d,.]+)/mi, block, ''));
+      const country = firstLineValue(/^الدولة\s*[:：]?\s*(.+)$/mi, block);
+      addResultWithDuplicateMark(results, seen, buildEntry(amount, currency, merchant, card, date, account, block, { channel: viaFull, fx_fee: fxFee, vat_sar: vatSAR, operation_fee_sar: operationFeeSAR, due_sar: dueSAR, remaining_balance_sar: remainingSAR, country }));
+    });
+    const newPattern = /عملية\s+انترنت\s+ب\s*[:：]?\s*([\d,.]+)\s*([A-Za-z]{3})[\s\S]*?من\s*[:：]?\s*([\s\S]*?)\s+بطاقة\s*[:：]?\s*(\*?\d+)[\s\S]*?في\s*[:：]?\s*(\d{1,2}\/\d{1,2}\/\d{2,4}\s+\d{1,2}:\d{2})/gi; let m; while ((m = newPattern.exec(raw)) !== null) { const amount = parseFloat(String(m[1]).replace(/,/g,'')); if (!Number.isFinite(amount)) continue; addResultWithDuplicateMark(results, seen, buildEntry(amount, m[2], m[3].trim(), m[4].trim(), m[5].trim(), '—', m[0])); }
+    const oldBlocks = raw.split(/مشتريات\s+إنترنت|مشتريات\s+انترنت/gi).map(x => x.trim()).filter(Boolean); oldBlocks.forEach(block => { const am = /المبلغ\s*[:\-]\s*([\d,.]+)\s*([A-Za-z]{3})/i.exec(block); if (!am) return; const amount = parseFloat(String(am[1]).replace(/,/g,'')); const currency = String(am[2] || '').toUpperCase(); if (!Number.isFinite(amount)) return; const card = safeGroup(/البطاقة\s*[:\-]\s*(\S+)/i.exec(block),1); const merchant = safeGroup(/\bفي\s*[:\-]\s*(.+)/i.exec(block),1); const date = safeGroup(/بتاريخ\s*[:\-]\s*(.+)/i.exec(block),1); const account = safeGroup(/من\s+حساب\s+رقم\s*[:\-]\s*(\S+)/i.exec(block),1); addResultWithDuplicateMark(results, seen, buildEntry(amount,currency,merchant,card,date,account,block)); });
+    const simpleBlocks = raw.split(/\n\s*\n+/).map(x => x.trim()).filter(Boolean); simpleBlocks.forEach(block => { if (/عملية\s+انترنت|شراء\s+إنترنت|شراء\s+انترنت/i.test(block) || /المبلغ\s*[:\-]/i.test(block)) return; const am = /(?:amount|المبلغ|ب)\s*[:\-]?\s*([\d,.]+)\s*([A-Za-z]{3})/i.exec(block); if (!am) return; const amount = parseFloat(String(am[1]).replace(/,/g,'')); const currency = String(am[2] || '').toUpperCase(); const merchant = safeGroup(/(?:من|merchant|at|في)\s*[:\-]?\s*(.+)/i.exec(block),1); const card = safeGroup(/(?:بطاقة|card)\s*[:\-]?\s*(\*?\d+)/i.exec(block),1); const date = safeGroup(/(?:في|date|بتاريخ)\s*[:\-]?\s*(\d{1,2}\/\d{1,2}\/\d{2,4}\s+\d{1,2}:\d{2})/i.exec(block),1); if (Number.isFinite(amount)) addResultWithDuplicateMark(results, seen, buildEntry(amount,currency,merchant,card,date,'—',block)); }); return results; }
 
-      <div class="textarea-tools">
-        <div id="textStats" class="textarea-meta">لا يوجد بيانات حتى الآن.</div>
-        <button type="button" class="pill-btn" onclick="clearTextArea()">مسح النص</button>
-      </div>
+    function handleConvertSubmit(event){ if (event && event.preventDefault) event.preventDefault(); const textarea = $('data'); const raw = textarea.value.trim(); if (!raw) { showMessage('⚠️ من فضلك الصق بيانات العمليات قبل التحويل.', 'err'); textarea.focus(); return false; } const btn = $('submitBtn'); const mobileBtn = $('mobileSubmitBtn'); btn.disabled = true; btn.textContent = 'جاري التحويل...'; if (mobileBtn) { mobileBtn.disabled = true; mobileBtn.textContent = 'جاري التحويل...'; } try { currentResults = parseTransactions(raw); saveLastResults(); if (!currentResults.length) { showMessage('⚠️ لم أستطع استخراج أي عملية. تأكد أن الرسائل بنفس شكل البنك أو استخدم المثال للتجربة.', 'err'); return false; } const duplicateCount = currentResults.filter(item => item.isDuplicate).length; showMessage(`✅ تم استخراج ${currentResults.length} عملية بنجاح${duplicateCount ? ` — منهم ${duplicateCount} مكرر وتم إضافتهم عادي.` : ''}`, 'ok'); renderResults(); showScreen('result'); } catch(error) { console.error(error); showMessage('❌ حصل خطأ أثناء التحويل. جرّب تمسح النص وتلصقه مرة أخرى.', 'err'); } finally { btn.disabled = false; btn.textContent = 'تحويل الآن'; if (mobileBtn) { mobileBtn.disabled = false; mobileBtn.textContent = 'تحويل الآن'; } } return false; }
 
-      <div class="options">
-        <div class="field">
-          <label for="rateDate">اختياري: تاريخ سعر معين للجدول</label>
-          <input type="date" id="rateDate" name="rate_date">
-        </div>
+  function setupRateInputs(){ const rateEGP = $('rateEGP'); const rateEGPForSAR = $('rateEGPForSAR'); if (!rateEGP || !rateEGPForSAR) return; if (!rateEGP.value) rateEGP.value = localStorage.getItem(STORAGE_RATE_EGP) || Number(LIVE_RATES.EGP || FALLBACK_RATES.EGP).toFixed(2); if (!rateEGPForSAR.value) rateEGPForSAR.value = localStorage.getItem(STORAGE_RATE_EGP_FOR_SAR) || '53'; $('tagRateEGP').textContent = `حي: ${Number(LIVE_RATES.EGP || 0).toFixed(2)}`; $('tagEGPForSAR').textContent = `ثابت: ${Number(rateEGPForSAR.value || 53).toFixed(2)}`; $('previewEGP').textContent = Number(rateEGP.value || LIVE_RATES.EGP || 0).toFixed(2); $('previewEGPForSAR').textContent = Number(rateEGPForSAR.value || 53).toFixed(2); rateEGP.oninput = () => { localStorage.setItem(STORAGE_RATE_EGP, rateEGP.value); recalcResultColumns(); }; rateEGPForSAR.oninput = () => { localStorage.setItem(STORAGE_RATE_EGP_FOR_SAR, rateEGPForSAR.value); recalcResultColumns(); }; }
+  function duplicateBadgeHTML(item){ return item && item.isDuplicate ? ` <span class="badge badge-duplicate">مكرر${item.duplicateCount && item.duplicateCount > 1 ? ' ' + item.duplicateCount : ''}</span>` : ''; }
+  function renderResults(){ setupRateInputs(); const empty = $('resultEmpty'); const content = $('resultContent'); const body = $('resultsBody'); if (!body) return; body.innerHTML = ''; if (!currentResults || !currentResults.length) { empty.style.display = 'block'; content.style.display = 'none'; return; } empty.style.display = 'none'; content.style.display = 'block'; setupRateInputs(); currentResults.forEach((r,index) => { r.live_egp = convertLive(r.amount,r.currency); r.live_sar = calcLiveSAR(r.amount,r.currency); const tr = document.createElement('tr'); if (r.isDuplicate) tr.classList.add('row-duplicate'); tr.dataset.resultIndex = String(index); tr.dataset.amount = String(r.amount); tr.dataset.currency = r.currency; tr.dataset.liveEgp = r.live_egp ?? ''; tr.dataset.card = r.card || '—'; tr.dataset.channel = r.channel || '—'; tr.dataset.merchant = r.merchant || '—'; tr.dataset.date = r.date || '—'; tr.dataset.country = r.country || '—'; tr.dataset.account = r.account || '—'; tr.onclick = () => { tr.classList.toggle('selected'); updateSelectedLiveTotal(); }; tr.innerHTML = `<td class="row-number" style="color:var(--muted)">${index + 1}</td><td class="card-num">${escapeHTML(r.card)}</td><td>${escapeHTML(r.channel || '—')}</td><td data-number="${r.amount}"><strong>${fmtEN(r.amount)}</strong></td><td><span class="badge badge-${['EGP','USD','SAR','IQD','JPY','MVR'].includes(r.currency) ? r.currency : 'def'}">${escapeHTML(r.currency)}</span></td><td>${escapeHTML(r.merchant)}${duplicateBadgeHTML(r)}</td><td>${escapeHTML(r.date)}</td><td>${escapeHTML(r.country || '—')}</td><td data-number="${Number.isFinite(Number(r.fx_fee)) ? Number(r.fx_fee) : ''}">${fmtMaybe(r.fx_fee, '')}</td><td data-number="${Number.isFinite(Number(r.vat_sar)) ? Number(r.vat_sar) : ''}">${fmtMaybe(r.vat_sar, 'SAR')}</td><td data-number="${Number.isFinite(Number(r.operation_fee_sar)) ? Number(r.operation_fee_sar) : ''}">${fmtMaybe(r.operation_fee_sar, 'SAR')}</td><td data-number="${Number.isFinite(Number(r.remaining_balance_sar)) ? Number(r.remaining_balance_sar) : ''}">${fmtMaybe(r.remaining_balance_sar, 'SAR')}</td><td class="cell-live-egp" data-number="${r.live_egp ?? ''}">${r.live_egp !== null ? `<span class="live-val">${fmtEN(r.live_egp)}</span><span class="unit-sm">EGP</span>` : '<span class="null-val">—</span>'}</td><td class="cell-live-sar"><span class="null-val">…</span></td><td class="cell-fixed"><span class="null-val">…</span></td><td class="cell-sar"><span class="null-val">…</span></td><td style="color:var(--muted)">${escapeHTML(r.account)}</td>`; body.appendChild(tr); }); const totals = document.createElement('tr'); totals.className = 'totals-row'; totals.innerHTML = `<td colspan="12" style="color:var(--muted);font-size:.78rem">الإجمالي</td><td><span class="live-val" id="totalLiveEGP">—</span><span class="unit-sm">EGP</span></td><td><span class="live-sar-val" id="totalLiveSAR">—</span><span class="unit-sm">SAR</span></td><td><span class="fixed-val" id="totalFixed">—</span><span class="unit-sm">EGP</span></td><td><span class="sar-val" id="totalSAR">—</span><span class="unit-sm">SAR</span></td><td></td>`; body.appendChild(totals); recalcResultColumns(); enableTableSort('resultsTable'); }
+    function recalcResultColumns(){ const rateEGP = Number(($('rateEGP') && $('rateEGP').value) || LIVE_RATES.EGP || FALLBACK_RATES.EGP); const rateEGPForSAR = Number(($('rateEGPForSAR') && $('rateEGPForSAR').value) || 53); if ($('previewEGP')) $('previewEGP').textContent = rateEGP.toFixed(2); if ($('previewEGPForSAR')) $('previewEGPForSAR').textContent = rateEGPForSAR.toFixed(2); if ($('tagEGPForSAR')) $('tagEGPForSAR').textContent = `ثابت: ${rateEGPForSAR.toFixed(2)}`; let totalLiveEGP = 0, totalLiveSAR = 0, totalFixed = 0, totalSAR = 0; const rows = [...document.querySelectorAll('#resultsBody tr[data-amount]')]; rows.forEach((row) => { const amount = Number(row.dataset.amount); const currency = row.dataset.currency; const resultIndex = Number(row.dataset.resultIndex); const resultItem = Number.isInteger(resultIndex) ? currentResults[resultIndex] : null; const liveEGP = convertLive(amount,currency); const liveSAR = calcLiveSAR(amount,currency); const fixedEGP = calcFixedEGP(amount,currency,rateEGP); const dueSAR = resultItem && Number.isFinite(Number(resultItem.due_sar)) ? round2(Number(resultItem.due_sar)) : null; const fixedSAR = dueSAR !== null ? dueSAR : calcFixedSAR(amount,currency,rateEGPForSAR); if (resultItem) { resultItem.live_egp = liveEGP; resultItem.live_sar = liveSAR; resultItem.fixed_egp = fixedEGP; resultItem.fixed_sar = fixedSAR; } row.dataset.liveEgp = liveEGP ?? ''; row.querySelector('.cell-live-sar').innerHTML = liveSAR !== null ? `<span class="live-sar-val">${fmtEN(liveSAR)}</span><span class="unit-sm">SAR</span>` : '<span class="null-val">—</span>'; row.querySelector('.cell-live-sar').dataset.number = liveSAR ?? ''; row.querySelector('.cell-fixed').innerHTML = fixedEGP !== null ? `<span class="fixed-val">${fmtEN(fixedEGP)}</span><span class="unit-sm">EGP</span>` : '<span class="null-val">—</span>'; row.querySelector('.cell-fixed').dataset.number = fixedEGP ?? ''; row.querySelector('.cell-sar').innerHTML = fixedSAR !== null ? `<span class="sar-val">${fmtEN(fixedSAR)}</span><span class="unit-sm">SAR</span>` : '<span class="null-val">—</span>'; row.querySelector('.cell-sar').dataset.number = fixedSAR ?? ''; if (liveEGP !== null) totalLiveEGP += liveEGP; if (liveSAR !== null) totalLiveSAR += liveSAR; if (fixedEGP !== null) totalFixed += fixedEGP; if (fixedSAR !== null) totalSAR += fixedSAR; }); saveLastResults(); if ($('resultCount')) $('resultCount').textContent = rows.length; if ($('sumLiveEGP')) $('sumLiveEGP').innerHTML = `${fmtEN(totalLiveEGP)}<span class="unit">EGP</span>`; if ($('sumLiveSAR')) $('sumLiveSAR').innerHTML = `${fmtEN(totalLiveSAR)}<span class="unit">SAR</span>`; if ($('sumFixed')) $('sumFixed').innerHTML = `${fmtEN(totalFixed)}<span class="unit">EGP</span>`; if ($('sumSAR')) $('sumSAR').innerHTML = `${fmtEN(totalSAR)}<span class="unit">SAR</span>`; if ($('totalLiveEGP')) $('totalLiveEGP').textContent = fmtEN(totalLiveEGP); if ($('totalLiveSAR')) $('totalLiveSAR').textContent = fmtEN(totalLiveSAR); if ($('totalFixed')) $('totalFixed').textContent = fmtEN(totalFixed); if ($('totalSAR')) $('totalSAR').textContent = fmtEN(totalSAR); updateSelectedLiveTotal(); }
+    function updateSelectedLiveTotal(){ let total = 0, count = 0; document.querySelectorAll('#resultsBody tr[data-amount].selected').forEach(row => { const live = Number(row.dataset.liveEgp); count++; if (!Number.isNaN(live)) total += live; }); if ($('selectedLiveSum')) $('selectedLiveSum').innerHTML = `${fmtAR(total)}<span class="unit">EGP</span>`; if ($('selectedCount')) $('selectedCount').textContent = `${count} عملية مختارة`; }
+  function clearSelection(event){ if (event) event.stopPropagation(); document.querySelectorAll('#resultsBody tr[data-amount].selected').forEach(row => row.classList.remove('selected')); updateSelectedLiveTotal(); }
+  function addManualResultOperation(){ const amount = parseFloat(($('manualResultAmount').value || '').replace(/,/g,'')); const currency = $('manualResultCurrency').value; if (!amount || amount <= 0) { alert('اكتب مبلغ صحيح.'); return; } currentResults.push(buildEntry(amount,currency,$('manualResultMerchant').value || 'عملية تحويل يدوي',$('manualResultCard').value || 'MANUAL',$('manualResultDate').value || new Date().toLocaleString('ar-EG'),$('manualResultAccount').value || '—','manual')); saveLastResults(); $('manualResultAmount').value = ''; $('manualResultMerchant').value = ''; renderResults(); }
+  function copySARColumn(event){ if (event) event.stopPropagation(); const values = [...document.querySelectorAll('#resultsBody tr[data-amount] .cell-sar')].map(cell => cell.textContent.replace('SAR','').trim()).filter(v => v && v !== '—' && v !== '…'); if (!values.length) return; navigator.clipboard?.writeText(values.join('\n')).then(() => { const btn = $('copyBtn'); if (btn) { const old = btn.textContent; btn.textContent = '✅ تم النسخ'; setTimeout(() => btn.textContent = old, 1500); } }).catch(() => alert(values.join('\n'))); }
 
-        <button id="submitBtn" type="submit" class="submit-btn">
-          تحويل الآن
-        </button>
-      </div>
-
-      <div id="message" class="message"></div>
-    </form>
-
-    <div class="tips">
-      <div class="tip">
-        <div class="tip-icon">⚡</div>
-        <div class="tip-title">استخراج تلقائي</div>
-        <div class="tip-text">الموقع يقرأ المبلغ والعملة والتاجر والبطاقة والتاريخ من الرسالة.</div>
-      </div>
-
-      <div class="tip">
-        <div class="tip-icon">📋</div>
-        <div class="tip-title">لصق سريع</div>
-        <div class="tip-text">انسخ رسائل البنك واضغط لصق سريع، سواء رسالة واحدة أو عدة رسائل.</div>
-      </div>
-
-      <div class="tip">
-        <div class="tip-icon">💾</div>
-        <div class="tip-title">سجل الرصيد</div>
-        <div class="tip-text">بعد التحويل يمكنك حفظ العمليات ومتابعة الرصيد المضاف والمخصوم.</div>
-      </div>
-    </div>
-  </main>
-
-  <div class="footer-note">
-    ملاحظة: سجل الرصيد محفوظ على الجهاز والمتصفح المستخدمين.
-  </div>
-
-</div>
-
-<div class="app-bottom-action" aria-label="أزرار سريعة للموبايل">
-  <button id="mobileSubmitBtn" type="button" class="submit-btn" onclick="submitMainForm()">تحويل الآن</button>
-  <button type="button" class="paste-btn" onclick="pasteFromClipboard()" title="لصق سريع">📋</button>
-  <button type="button" class="backup-btn" onclick="sendBackupToWhatsApp()" title="إرسال نسخة احتياطية واتساب">💾</button>
-</div>
-
-<script>
-  function showMessage(text, type) {
-    const msg = document.getElementById('message');
-    msg.textContent = text;
-    msg.className = `message show ${type}`;
-  }
-
-  function updateTextStats() {
-    const textarea = document.getElementById('data');
-    const stats = document.getElementById('textStats');
-    const value = textarea.value.trim();
-
-    if (!value) {
-      stats.textContent = 'لا يوجد بيانات حتى الآن.';
-      return;
-    }
-
-    const likelyOperations = value
-      .split(/\n\s*\n|(?=عملية\s)|(?=تم\s)|(?=شراء\s)|(?=خصم\s)/gi)
-      .map(item => item.trim())
-      .filter(Boolean)
-      .length;
-
-    stats.textContent = `عدد الحروف: ${value.length.toLocaleString('ar-EG')} — عمليات متوقعة: ${likelyOperations.toLocaleString('ar-EG')}`;
-  }
-
-  function validateForm() {
-    const textarea = document.getElementById('data');
-    const value = textarea.value.trim();
-
-    if (!value) {
-      showMessage('⚠️ من فضلك الصق بيانات العمليات قبل التحويل.', 'err');
-      textarea.focus();
-      return false;
-    }
-
-    const btn = document.getElementById('submitBtn');
-    const mobileBtn = document.getElementById('mobileSubmitBtn');
-
-    btn.disabled = true;
-    btn.textContent = 'جاري التحويل...';
-
-    if (mobileBtn) {
-      mobileBtn.disabled = true;
-      mobileBtn.textContent = 'جاري التحويل...';
-    }
-
-    return true;
-  }
-
-  function submitMainForm() {
-    const form = document.querySelector('form[action="/result"]');
-    if (!form) return;
-
-    if (validateForm()) {
-      form.submit();
-    }
-  }
-
-  async function pasteFromClipboard() {
-    const textarea = document.getElementById('data');
-
-    try {
-      if (!navigator.clipboard || !navigator.clipboard.readText) {
-        textarea.focus();
-        showMessage('⚠️ المتصفح لا يدعم اللصق التلقائي. اضغط داخل المربع واستخدم لصق يدوي.', 'warn');
-        return;
-      }
-
-      const text = await navigator.clipboard.readText();
-
-      if (!text || !text.trim()) {
-        showMessage('⚠️ الحافظة فارغة. انسخ رسائل البنك أولًا.', 'err');
-        return;
-      }
-
-      const current = textarea.value.trim();
-      textarea.value = current ? `${current}\n\n${text.trim()}` : text.trim();
-      textarea.focus();
-      updateTextStats();
-      showMessage('✅ تم لصق الرسائل بنجاح.', 'ok');
-    } catch (error) {
-      textarea.focus();
-      showMessage('⚠️ لم يتم السماح باللصق التلقائي. اضغط داخل المربع واستخدم Paste يدويًا.', 'warn');
-    }
-  }
-
-  function clearTextArea() {
-    const textarea = document.getElementById('data');
-
-    if (!textarea.value.trim()) {
-      showMessage('ℹ️ لا يوجد نص لمسحه.', 'warn');
-      return;
-    }
-
-    const confirmed = confirm('هل تريد مسح النص الموجود؟');
-    if (!confirmed) return;
-
-    textarea.value = '';
-    updateTextStats();
-    textarea.focus();
-    showMessage('✅ تم مسح النص.', 'ok');
-  }
-
-  function insertSample() {
-    const sample = `عملية انترنت ب: 9.5 USD
-من: War and Peace
-بطاقة: *0858
-في: 01/01/26 10:30
-
-عملية انترنت ب: 250 EGP
-من: Player
-بطاقة: *0858
-في: 01/01/26 10:45`;
-
-    document.getElementById('data').value = sample;
-    updateTextStats();
-    showMessage('✅ تم إضافة مثال. اضغط تحويل الآن للتجربة.', 'ok');
-  }
-
+  function getHistory(){ try { return JSON.parse(localStorage.getItem(STORAGE_HISTORY) || '[]'); } catch(e) { return []; } }
+  function setHistory(history){ localStorage.setItem(STORAGE_HISTORY, JSON.stringify(history)); }
+  function getDeletedStack(){ try { return JSON.parse(localStorage.getItem(STORAGE_DELETED_STACK) || '[]'); } catch(e) { return []; } }
+  function setDeletedStack(stack){ localStorage.setItem(STORAGE_DELETED_STACK, JSON.stringify(stack)); }
+  function getSavedSignatures(){ try { return JSON.parse(localStorage.getItem(STORAGE_SAVED_SIGNATURES) || '[]'); } catch(e) { return []; } }
+  function setSavedSignatures(items){ localStorage.setItem(STORAGE_SAVED_SIGNATURES, JSON.stringify(items)); }
+  function signatureForResult(r,type){ return [type, r.amount, r.currency, r.card, r.date, r.merchant, r.duplicateCount || 1].join('|').toLowerCase(); }
+  function saveTodayOperations(){ recalcResultColumns(); if (!currentResults || !currentResults.length) { alert('لا يوجد عمليات لحفظها.'); return; } const type = $('saveType').value; const savedSignatures = new Set(getSavedSignatures()); const now = new Date(); const batchId = `batch_${Date.now()}_${Math.random().toString(16).slice(2)}`; const history = getHistory(); const newItems = currentResults.map(r => { const item = { id:`${Date.now()}_${Math.random().toString(16).slice(2)}`, batchId, source:'save_button', type, savedAt:now.toISOString(), savedDay:now.toLocaleDateString('en-CA'), operationDate:r.date || '—', card:r.card || '—', amount:Number(r.amount) || 0, currency:r.currency || '—', merchant:r.merchant || '—', account:r.account || '—', liveEGP:r.live_egp || 0, liveSAR:r.live_sar || 0, fixedEGP:r.fixed_egp || 0, fixedSAR:r.fixed_sar || 0, channel:r.channel || '—', fxFee:Number.isFinite(Number(r.fx_fee)) ? Number(r.fx_fee) : null, vatSAR:Number.isFinite(Number(r.vat_sar)) ? Number(r.vat_sar) : null, operationFeeSAR:Number.isFinite(Number(r.operation_fee_sar)) ? Number(r.operation_fee_sar) : null, dueSAR:Number.isFinite(Number(r.due_sar)) ? Number(r.due_sar) : null, remainingBalanceSAR:Number.isFinite(Number(r.remaining_balance_sar)) ? Number(r.remaining_balance_sar) : null, country:r.country || '—', isDuplicate:Boolean(r.isDuplicate), duplicateCount:r.duplicateCount || 1, duplicateKey:r.duplicateKey || '', note:r.merchant || '' }; savedSignatures.add(signatureForResult(r,type)); return item; }); setHistory([...history, ...newItems]); setSavedSignatures([...savedSignatures]); const status = $('saveStatus'); status.textContent = `✅ تم حفظ ${newItems.length} عملية في سجل الرصيد${newItems.some(x => x.isDuplicate) ? ' — والعمليات المكررة اتحفظت عادي.' : ''}`; status.classList.add('show'); renderHistory(); }
+  function matchesFilters(item){ const searchValue = ($('searchInput')?.value || '').trim().toLowerCase(); const typeValue = $('typeFilter')?.value || 'all'; const fromDate = $('fromDate')?.value || ''; const toDate = $('toDate')?.value || ''; if (typeValue !== 'all' && item.type !== typeValue) return false; if (fromDate && item.savedDay < fromDate) return false; if (toDate && item.savedDay > toDate) return false; if (searchValue) { const text = [item.merchant,item.note,item.card,item.channel,item.country,item.account,item.currency,item.operationDate,item.isDuplicate ? 'مكرر' : ''].join(' ').toLowerCase(); if (!text.includes(searchValue)) return false; } return true; }
+  function formatSavedDate(isoDate){ if (!isoDate) return '—'; const date = new Date(isoDate); if (Number.isNaN(date.getTime())) return isoDate; return date.toLocaleString('ar-EG',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}); }
+  function renderHistory(){ const body = $('historyBody'); const emptyState = $('emptyState'); const tableWrap = $('tableWrap'); if (!body) return; const history = getHistory().sort((a,b) => new Date(b.savedAt) - new Date(a.savedAt)); const filtered = history.filter(matchesFilters); let totalAdded = 0, totalDeducted = 0; body.innerHTML = ''; filtered.forEach((item,index) => { const isAdd = item.type === 'add'; const amountSAR = Number(item.fixedSAR) || 0; if (isAdd) totalAdded += amountSAR; else totalDeducted += amountSAR; const tr = document.createElement('tr'); if (item.isDuplicate) tr.classList.add('row-duplicate'); tr.innerHTML = `<td>${index + 1}</td><td><span class="badge ${isAdd ? 'badge-add' : 'badge-deduct'}">${isAdd ? 'مضاف' : 'مخصوم'}</span></td><td>${escapeHTML(formatSavedDate(item.savedAt))}</td><td>${escapeHTML(item.operationDate || '—')}</td><td>${escapeHTML(item.merchant || item.note || '—')}${duplicateBadgeHTML(item)}</td><td class="muted">${escapeHTML(item.card || '—')}</td><td>${escapeHTML(item.channel || '—')}</td><td>${escapeHTML(item.country || '—')}</td><td>${escapeHTML(item.currency || 'SAR')}</td><td data-number="${Number(item.amount) || 0}">${fmtEN(item.amount || 0)}</td><td data-number="${Number.isFinite(Number(item.fxFee)) ? Number(item.fxFee) : ''}">${fmtMaybe(item.fxFee, '')}</td><td data-number="${Number.isFinite(Number(item.vatSAR)) ? Number(item.vatSAR) : ''}">${fmtMaybe(item.vatSAR, 'SAR')}</td><td data-number="${Number.isFinite(Number(item.operationFeeSAR)) ? Number(item.operationFeeSAR) : ''}">${fmtMaybe(item.operationFeeSAR, 'SAR')}</td><td data-number="${Number.isFinite(Number(item.remainingBalanceSAR)) ? Number(item.remainingBalanceSAR) : ''}">${fmtMaybe(item.remainingBalanceSAR, 'SAR')}</td><td data-number="${isAdd ? amountSAR : 0}">${isAdd ? `<span class="amount-add">${fmtEN(amountSAR)}</span><span class="unit">SAR</span>` : '<span class="muted">—</span>'}</td><td data-number="${!isAdd ? amountSAR : 0}">${!isAdd ? `<span class="amount-deduct">${fmtEN(amountSAR)}</span><span class="unit">SAR</span>` : '<span class="muted">—</span>'}</td><td class="muted">${escapeHTML(item.account || '—')}</td><td><button class="delete-row" onclick="deleteEntry('${escapeHTML(item.id)}')">حذف</button></td>`; body.appendChild(tr); }); const net = totalAdded - totalDeducted; $('totalAdded').innerHTML = `${fmtEN(totalAdded)}<span class="unit">SAR</span>`; $('totalDeducted').innerHTML = `${fmtEN(totalDeducted)}<span class="unit">SAR</span>`; $('netBalance').innerHTML = `${fmtEN(net)}<span class="unit">SAR</span>`; $('operationsCount').textContent = filtered.length; emptyState.style.display = filtered.length ? 'none' : 'block'; tableWrap.style.display = filtered.length ? 'block' : 'none'; enableTableSort('historyTable'); }
+    function addManualEntry(){ const amount = parseFloat($('manualAmount').value); if (!amount || amount <= 0) { showToast('⚠️ اكتب مبلغ صحيح بالريال.'); return; } const now = new Date(); const manualDate = $('manualDate').value || todayISO(); const history = getHistory(); history.push({ id:`${Date.now()}_${Math.random().toString(16).slice(2)}`, batchId:`manual_${Date.now()}_${Math.random().toString(16).slice(2)}`, source:'manual', type:$('manualType').value, savedAt:now.toISOString(), savedDay:manualDate, operationDate:manualDate, card:'', amount, currency:'SAR', merchant:$('manualNote').value || 'إدخال يدوي', account:'', liveEGP:0, liveSAR:amount, fixedEGP:0, fixedSAR:amount, isDuplicate:false, duplicateCount:1, note:$('manualNote').value || 'إدخال يدوي' }); setHistory(history); $('manualAmount').value = ''; $('manualNote').value = ''; showToast('✅ تم إضافة العملية اليدوية.'); renderHistory(); }
+  function pushDeletedItems(items,reason){ if (!items || !items.length) return; const stack = getDeletedStack(); stack.push({ id:`deleted_${Date.now()}_${Math.random().toString(16).slice(2)}`, reason:reason || 'حذف', deletedAt:new Date().toISOString(), items }); setDeletedStack(stack.slice(-20)); }
+  function deleteEntry(id){ const history = getHistory(); const deletedItems = history.filter(item => item.id === id); if (!deletedItems.length) { showToast('ℹ️ لم يتم العثور على العملية.'); return; } pushDeletedItems(deletedItems,'حذف عملية واحدة'); setHistory(history.filter(item => item.id !== id)); showToast('✅ تم حذف العملية. يمكنك استرجاعها من زر إرجاع آخر حذف.'); renderHistory(); }
+  function restoreLastDeleted(){ const stack = getDeletedStack(); if (!stack.length) { showToast('ℹ️ لا يوجد عناصر محذوفة لاسترجاعها.'); return; } const lastDeleted = stack.pop(); const history = getHistory(); setHistory([...history, ...lastDeleted.items.map(item => ({...item, restoredAt:new Date().toISOString()}))]); setDeletedStack(stack); showToast(`✅ تم استرجاع ${lastDeleted.items.length} عملية من آخر حذف.`); renderHistory(); }
+  function removeLastSaveBatch(){ const history = getHistory(); const saveButtonItems = history.filter(item => item.source === 'save_button'); if (!saveButtonItems.length) { showToast('ℹ️ لا يوجد حفظ سابق من صفحة النتائج لإزالته.'); return; } const latestItem = saveButtonItems.reduce((latest,current) => new Date(current.savedAt) > new Date(latest.savedAt) ? current : latest); const latestBatchId = latestItem.batchId; if (!confirm('هل تريد إزالة آخر عملية حفظ كاملة من صفحة النتائج؟')) return; const deletedItems = history.filter(item => item.batchId === latestBatchId); pushDeletedItems(deletedItems,'إزالة آخر حفظ'); setHistory(history.filter(item => item.batchId !== latestBatchId)); showToast(`✅ تم إزالة آخر حفظ وعدد العمليات المحذوفة: ${deletedItems.length}`); renderHistory(); }
+  function clearAllHistory(){ const history = getHistory(); if (!history.length) { showToast('ℹ️ السجل فارغ بالفعل.'); return; } if (!confirm('⚠️ هل تريد حذف السجل كله؟ يمكنك استرجاعه من زر إرجاع آخر حذف.')) return; pushDeletedItems(history,'مسح السجل كله'); localStorage.removeItem(STORAGE_HISTORY); localStorage.removeItem(STORAGE_SAVED_SIGNATURES); showToast('✅ تم مسح كل السجل. يمكنك استرجاعه من زر إرجاع آخر حذف.'); renderHistory(); }
+  function exportCSV(){ const history = getHistory().filter(matchesFilters); if (!history.length) { showToast('ℹ️ لا توجد بيانات للتصدير.'); return; } const rows = [['type','saved_at','operation_date','merchant','card','channel','country','currency','amount','fx_fee','vat_sar','operation_fee_sar','remaining_balance_sar','added_sar','deducted_sar','account','is_duplicate']]; history.forEach(item => { const isAdd = item.type === 'add'; const sar = Number(item.fixedSAR) || 0; rows.push([isAdd ? 'add' : 'deduct', item.savedAt || '', item.operationDate || '', item.merchant || item.note || '', item.card || '', item.channel || '', item.country || '', item.currency || '', item.amount || 0, item.fxFee ?? '', item.vatSAR ?? '', item.operationFeeSAR ?? '', item.remainingBalanceSAR ?? '', isAdd ? sar : '', !isAdd ? sar : '', item.account || '', item.isDuplicate ? 'yes' : 'no']); }); downloadText('mox-history.csv', rows.map(r => r.map(v => `"${String(v).replaceAll('"','""')}"`).join(',')).join('\n'), 'text/csv;charset=utf-8'); }
+  function exportBackup(){ const backupData = { appName:'MOX-V1 Backup', version:2, exportedAt:new Date().toISOString(), data:{ history:getHistory(), deletedStack:getDeletedStack(), savedSignatures:getSavedSignatures(), rateEGP:localStorage.getItem(STORAGE_RATE_EGP) || '', rateEGPForSAR:localStorage.getItem(STORAGE_RATE_EGP_FOR_SAR) || '', rates:LIVE_RATES, lastResults:currentResults } }; downloadText(`mox-v1-backup-${todayISO()}.json`, JSON.stringify(backupData,null,2), 'application/json;charset=utf-8'); showToast('✅ تم تحميل النسخة الاحتياطية.'); }
+  function importBackup(event){ const file = event.target.files && event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = () => { try { const backup = JSON.parse(reader.result); const data = backup.data || backup; if (Array.isArray(data.history)) setHistory(data.history); if (Array.isArray(data.deletedStack)) setDeletedStack(data.deletedStack); if (Array.isArray(data.savedSignatures)) setSavedSignatures(data.savedSignatures); if (data.rateEGP) localStorage.setItem(STORAGE_RATE_EGP, data.rateEGP); if (data.rateEGPForSAR) localStorage.setItem(STORAGE_RATE_EGP_FOR_SAR, data.rateEGPForSAR); if (data.rates) saveRatesCache(data.rates); if (Array.isArray(data.lastResults)) { currentResults = data.lastResults; saveLastResults(); } showToast('✅ تم استرجاع النسخة الاحتياطية.'); renderHistory(); renderResults(); } catch(e) { showToast('❌ ملف النسخة غير صالح.'); } event.target.value = ''; }; reader.readAsText(file); }
+  function downloadText(filename,content,type){ const blob = new Blob([content], { type: type || 'text/plain;charset=utf-8' }); const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = filename; document.body.appendChild(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1200); }
 
   const BACKUP_WHATSAPP_NUMBER = '201064870491';
+  function buildBackupPayload(){ return { appName:'MOX-V1', format:'mox-v1-browser-backup', version:2, exportedAt:new Date().toISOString(), currentForm:{ bankMessages:$('data') ? $('data').value : '', rateDate:$('rateDate') ? $('rateDate').value : '' }, localStorageSnapshot:{ history:getHistory(), deletedStack:getDeletedStack(), savedSignatures:getSavedSignatures(), rates:LIVE_RATES, lastResults:currentResults } }; }
+  function createBackupFile(){ const json = JSON.stringify(buildBackupPayload(), null, 2); const filename = `mox-v1-backup-${todayISO()}.json`; const blob = new Blob([json], { type:'application/json;charset=utf-8' }); try { return new File([blob], filename, { type:'application/json' }); } catch(e) { blob.name = filename; return blob; } }
+  function downloadBackupFile(file){ const url = URL.createObjectURL(file); const link = document.createElement('a'); link.href = url; link.download = file.name || `mox-v1-backup-${todayISO()}.json`; document.body.appendChild(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1200); }
+  function openWhatsAppBackupChat(){ const message = encodeURIComponent('نسخة احتياطية من MOX-V1. لو الملف اتحمّل على الجهاز، ارفعه هنا في نفس المحادثة.'); window.open(`https://wa.me/${BACKUP_WHATSAPP_NUMBER}?text=${message}`, '_blank', 'noopener,noreferrer'); }
+  async function sendBackupToWhatsApp(){ const backupFile = createBackupFile(); try { if (navigator.canShare && navigator.canShare({ files:[backupFile] }) && navigator.share) { await navigator.share({ title:'MOX-V1 Backup', text:'نسخة احتياطية من MOX-V1', files:[backupFile] }); showMessage('✅ تم فتح مشاركة النسخة الاحتياطية. اختار واتساب وأرسلها للرقم المطلوب.', 'ok'); return; } } catch(e) {} downloadBackupFile(backupFile); openWhatsAppBackupChat(); showMessage('✅ تم تحميل ملف النسخة وفتح واتساب. أرفق الملف الذي تم تحميله في المحادثة.', 'ok'); }
+  function enableTableSort(tableId){ const table = $(tableId); if (!table || table.dataset.sortReady === '1') return; table.dataset.sortReady = '1'; table.querySelectorAll('thead th.sortable').forEach((th,index) => { th.addEventListener('click', (event) => { if (event.target && event.target.closest('button')) return; const key = `${tableId}_${index}`; const dir = sortState[key] === 'asc' ? 'desc' : 'asc'; sortState = {}; sortState[key] = dir; table.querySelectorAll('thead th.sortable').forEach(h => h.classList.remove('asc','desc')); th.classList.add(dir); const tbody = table.tBodies[0]; const rows = [...tbody.rows].filter(row => !row.classList.contains('totals-row')); const totals = [...tbody.rows].find(row => row.classList.contains('totals-row')); rows.sort((a,b) => compareCells(a.cells[index], b.cells[index], dir)); rows.forEach(row => tbody.appendChild(row)); if (totals) tbody.appendChild(totals); rows.forEach((row,i) => { if (row.cells[0]) row.cells[0].textContent = i + 1; }); }); }); }
+  function compareCells(aCell,bCell,dir){ const av = getSortValue(aCell); const bv = getSortValue(bCell); let result; if (typeof av === 'number' && typeof bv === 'number') result = av - bv; else result = String(av).localeCompare(String(bv), 'ar', { numeric:true, sensitivity:'base' }); return dir === 'asc' ? result : -result; }
+  function getSortValue(cell){ if (!cell) return ''; const dataNum = cell.dataset && cell.dataset.number; if (dataNum !== undefined && dataNum !== '') return Number(dataNum); const text = cell.textContent.replace(/EGP|SAR|USD|,/gi,'').trim(); const normalized = text.replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)); const num = parseFloat(normalized); if (Number.isFinite(num) && /\d/.test(normalized)) return num; return text; }
 
-  function getBackupLocalStorageSnapshot() {
-    const snapshot = {};
-
-    try {
-      Object.keys(localStorage).forEach(key => {
-        // نخزن المفاتيح الخاصة بالتطبيق فقط قدر الإمكان، ومع ذلك نحتفظ بأي مفاتيح MOX/backup/history مفيدة
-        const normalizedKey = String(key || '').toLowerCase();
-        if (
-          normalizedKey.startsWith('mox') ||
-          normalizedKey.includes('mox') ||
-          normalizedKey.includes('history') ||
-          normalizedKey.includes('rate') ||
-          normalizedKey.includes('balance') ||
-          normalizedKey.includes('backup')
-        ) {
-          snapshot[key] = localStorage.getItem(key);
-        }
-      });
-    } catch (error) {
-      console.warn('LocalStorage snapshot skipped:', error);
-    }
-
-    return snapshot;
-  }
-
-  function buildBackupPayload() {
-    const textarea = document.getElementById('data');
-    const rateDate = document.getElementById('rateDate');
-
-    return {
-      appName: 'MOX-V1',
-      format: 'mox-v1-browser-backup',
-      version: 2,
-      exportedAt: new Date().toISOString(),
-      page: {
-        title: document.title,
-        path: window.location.pathname,
-        origin: window.location.origin
-      },
-      currentForm: {
-        bankMessages: textarea ? textarea.value : '',
-        rateDate: rateDate ? rateDate.value : ''
-      },
-      localStorageSnapshot: getBackupLocalStorageSnapshot()
-    };
-  }
-
-  function getBackupFileName() {
-    const stamp = new Date().toLocaleDateString('en-CA');
-    return `mox-v1-backup-${stamp}.json`;
-  }
-
-  function createBackupFile() {
-    const json = JSON.stringify(buildBackupPayload(), null, 2);
-    const filename = getBackupFileName();
-    const blob = new Blob([json], { type: 'application/json;charset=utf-8' });
-
-    try {
-      return new File([blob], filename, { type: 'application/json' });
-    } catch (error) {
-      blob.name = filename;
-      return blob;
-    }
-  }
-
-  function downloadBackupFile(file) {
-    const filename = file.name || getBackupFileName();
-    const url = URL.createObjectURL(file);
-    const link = document.createElement('a');
-
-    link.href = url;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-
-    setTimeout(() => URL.revokeObjectURL(url), 1200);
-  }
-
-  function openWhatsAppBackupChat() {
-    const message = encodeURIComponent(
-      'نسخة احتياطية من MOX-V1. لو الملف اتحمّل على الجهاز، ارفعه هنا في نفس المحادثة.'
-    );
-
-    window.open(`https://wa.me/${BACKUP_WHATSAPP_NUMBER}?text=${message}`, '_blank', 'noopener,noreferrer');
-  }
-
-  async function sendBackupToWhatsApp() {
-    const backupFile = createBackupFile();
-    const shareText = 'نسخة احتياطية من MOX-V1';
-
-    try {
-      if (navigator.canShare && navigator.canShare({ files: [backupFile] }) && navigator.share) {
-        await navigator.share({
-          title: 'MOX-V1 Backup',
-          text: shareText,
-          files: [backupFile]
-        });
-
-        showMessage('✅ تم فتح مشاركة النسخة الاحتياطية. اختار واتساب وأرسلها للرقم المطلوب.', 'ok');
-        return;
-      }
-    } catch (error) {
-      console.warn('Native share failed:', error);
-    }
-
-    downloadBackupFile(backupFile);
-    openWhatsAppBackupChat();
-    showMessage('✅ تم تحميل ملف النسخة وفتح واتساب. أرفق الملف الذي تم تحميله في المحادثة.', 'ok');
-  }
-
-  async function refreshRates() {
-    try {
-      showMessage('⏳ جاري تحديث الأسعار...', 'ok');
-
-      const response = await fetch('/api/rates');
-      const data = await response.json();
-
-      if (data && data.rates) {
-        const egp = data.rates.EGP ? Number(data.rates.EGP).toFixed(2) : '—';
-        const sar = data.rates.SAR ? Number(data.rates.SAR).toFixed(2) : '—';
-
-        showMessage(`✅ تم تحديث الأسعار. الدولار ≈ ${egp} جنيه، والريال ≈ ${sar} لكل دولار.`, 'ok');
-      } else {
-        showMessage('⚠️ لم يتم تحديث الأسعار، جرّب مرة أخرى.', 'err');
-      }
-    } catch (error) {
-      showMessage('⚠️ حصل خطأ أثناء تحديث الأسعار، تأكد من الاتصال بالإنترنت.', 'err');
-    }
-  }
-
-  function setupDynamicManifest() {
-    const link = document.getElementById('dynamicManifestLink');
-    if (!link) return;
-
-    const manifest = {
-      name: 'MOX-V1 - تحويل العمليات',
-      short_name: 'MOX-V1',
-      start_url: window.location.pathname || '.',
-      scope: './',
-      display: 'standalone',
-      orientation: 'portrait',
-      dir: 'rtl',
-      lang: 'ar',
-      background_color: '#0f1117',
-      theme_color: '#0f1117',
-      icons: [
-        { src: "{{ url_for('static', filename='assets/logo.png') }}", sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
-        { src: "{{ url_for('static', filename='assets/logo.png') }}", sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
-      ]
-    };
-
-    try {
-      const blob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
-      link.href = URL.createObjectURL(blob);
-    } catch (error) {
-      console.warn('Manifest setup skipped:', error);
-    }
-  }
-
-  function detectStandaloneMode() {
-    const isStandalone =
-      window.navigator.standalone === true ||
-      window.matchMedia?.('(display-mode: standalone)').matches ||
-      window.matchMedia?.('(display-mode: fullscreen)').matches;
-
-    document.body.classList.toggle('app-standalone', Boolean(isStandalone));
-  }
-
-  document.addEventListener('DOMContentLoaded', function () {
-    setupDynamicManifest();
-    detectStandaloneMode();
-    updateTextStats();
-  });
+  const LOGO_VERSION = '20260517-dup';
+  const LOGO_PATHS = [`assets/logo.png?v=${LOGO_VERSION}`,`./assets/logo.png?v=${LOGO_VERSION}`,`/moxx3/assets/logo.png?v=${LOGO_VERSION}`,'https://raw.githubusercontent.com/mostafak80/moxx3/main/assets/logo.png'];
+  function absoluteLogoUrl(src){ try { return new URL(src, window.location.href).href; } catch(e) { return src; } }
+  function setLogoWithFallback(img, index = 0){ if (!img || index >= LOGO_PATHS.length) { if (img && img.parentElement) img.parentElement.textContent = 'MOX'; return; } img.onerror = () => setLogoWithFallback(img, index + 1); img.src = LOGO_PATHS[index]; }
+  function applyLogoAssets(){ const mainLogo = LOGO_PATHS[0]; document.querySelectorAll('img[data-logo-img]').forEach(img => setLogoWithFallback(img, 0)); const favicon = $('faviconLink'); if (favicon) favicon.href = mainLogo; const appleIcon = $('appleIconLink'); if (appleIcon) appleIcon.href = mainLogo; }
+  function setupDynamicManifest(){ const link = $('dynamicManifestLink'); if (!link) return; const logoUrl = absoluteLogoUrl(LOGO_PATHS[0]); const manifest = { name:'MOX-V1 - تحويل العمليات', short_name:'MOX-V1', start_url:'.', scope:'./', display:'standalone', orientation:'portrait', dir:'rtl', lang:'ar', background_color:'#0f1117', theme_color:'#0f1117', icons:[{src:logoUrl,sizes:'192x192',type:'image/png',purpose:'any maskable'},{src:logoUrl,sizes:'512x512',type:'image/png',purpose:'any maskable'}] }; try { link.href = URL.createObjectURL(new Blob([JSON.stringify(manifest)], { type:'application/manifest+json' })); } catch(e) {} }
+  document.addEventListener('DOMContentLoaded', () => { applyLogoAssets(); setupDynamicManifest(); updateTextStats(); if ($('manualDate')) $('manualDate').value = todayISO(); renderResults(); renderHistory(); });
 </script>
-
 </body>
 </html>
