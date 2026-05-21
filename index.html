@@ -161,7 +161,19 @@
 إجمالى المبلغ المستحق: 1.88 SAR
 الرصيد المتبقى: 7710.56 SAR
 الدولة: SG
-فى: 20/05/26 22:25"></textarea>
+فى: 20/05/26 22:25
+
+شراء إنترنت
+عبر: *1517, Visa
+ب: 120 JPY
+من: GOOGLE
+رسوم تحويل العملات: 0.02366667
+ضريبة القيمة المضافة: 0.00 SAR
+رسوم العملية: 6 SAR
+إجمالى المبلغ المستحق: 290 SAR
+الرصيد المتبقى: 7703.56 SAR
+الدولة: JP
+فى: 21/05/26 12:35"></textarea>
         <div class="textarea-tools">
           <div id="textStats" class="textarea-meta">لا يوجد بيانات حتى الآن.</div>
           <button type="button" class="pill-btn" onclick="clearTextArea()">مسح النص</button>
@@ -246,7 +258,7 @@
     <div id="toast" class="toast"></div>
     <div class="summary"><div class="card"><div class="label">إجمالي الرصيد المضاف</div><div class="value added" id="totalAdded">0.00<span class="unit">SAR</span></div></div><div class="card"><div class="label">إجمالي الرصيد المخصوم</div><div class="value deducted" id="totalDeducted">0.00<span class="unit">SAR</span></div></div><div class="card"><div class="label">الرصيد الحالي</div><div class="value balance" id="netBalance">0.00<span class="unit">SAR</span></div></div><div class="card"><div class="label">عدد العمليات</div><div class="value count" id="operationsCount">0</div></div></div>
     <div class="panel"><div class="panel-title">إضافة رصيد يدوي</div><div class="manual-form"><div class="field"><label>التاريخ</label><input type="date" id="manualDate"></div><div class="field"><label>المبلغ بالريال</label><input type="number" id="manualAmount" step="0.01" min="0" placeholder="مثال: 100"></div><div class="field"><label>النوع</label><select id="manualType"><option value="add">إضافة رصيد</option><option value="deduct">خصم رصيد</option></select></div><div class="field"><label>ملاحظة</label><input type="text" id="manualNote" placeholder="مثال: شحن رصيد"></div><button type="button" class="btn btn-green" onclick="addManualEntry()">➕ إضافة</button></div></div>
-    <div class="panel"><div class="panel-title">فلترة السجل</div><div class="filters"><div class="field"><label>بحث</label><input type="text" id="searchInput" placeholder="تاجر / بطاقة / ملاحظة" oninput="renderHistory()"></div><div class="field"><label>النوع</label><select id="typeFilter" onchange="renderHistory()"><option value="all">كل العمليات</option><option value="add">المضاف فقط</option><option value="deduct">المخصوم فقط</option></select></div><div class="field"><label>فلتر سريع</label><select id="quickDateFilter" onchange="handleQuickFilterChange()"><option value="all">كل المدة</option><option value="today">آخر يوم / اليوم</option><option value="yesterday">أمس</option><option value="last7">آخر 7 أيام</option><option value="last30">آخر شهر</option><option value="last365">آخر سنة</option><option value="custom">تاريخ مخصص</option></select></div><div class="field"><label>فلتر بالشهر</label><select id="monthFilter" onchange="handleMonthFilterChange()"><option value="all">كل الشهور</option></select></div><div class="field"><label>من تاريخ الحفظ</label><input type="date" id="fromDate" onchange="handleManualDateFilterChange()"></div><div class="field"><label>إلى تاريخ الحفظ</label><input type="date" id="toDate" onchange="handleManualDateFilterChange()"></div><button type="button" class="btn btn-primary" onclick="resetHistoryDateFilters()">مسح فلاتر التاريخ</button><button type="button" class="btn btn-primary" onclick="renderHistory()">تطبيق</button></div></div>
+    <div class="panel"><div class="panel-title">فلترة السجل</div><div class="filters"><div class="field"><label>بحث</label><input type="text" id="searchInput" placeholder="تاجر / بطاقة / ملاحظة" oninput="renderHistory()"></div><div class="field"><label>النوع</label><select id="typeFilter" onchange="renderHistory()"><option value="all">كل العمليات</option><option value="add">المضاف فقط</option><option value="deduct">المخصوم فقط</option></select></div><div class="field"><label>الفترة السريعة</label><select id="datePreset" onchange="handleDatePresetChange()"><option value="all">كل الفترات</option><option value="today">آخر يوم / اليوم</option><option value="yesterday">أمس</option><option value="last7">آخر 7 أيام</option><option value="last30">آخر شهر</option><option value="last365">آخر سنة</option><option value="custom">تاريخ مخصص</option></select></div><div class="field"><label>الشهر</label><select id="monthFilter" onchange="handleMonthFilterChange()"><option value="all">كل الشهور</option></select></div><div class="field"><label>من تاريخ الحفظ</label><input type="date" id="fromDate" onchange="setCustomDatePreset(); renderHistory()"></div><div class="field"><label>إلى تاريخ الحفظ</label><input type="date" id="toDate" onchange="setCustomDatePreset(); renderHistory()"></div><button type="button" class="btn btn-primary" onclick="renderHistory()">تطبيق</button></div></div>
     <div class="column-panel">
       <div class="column-header">
         <div><div class="column-title">👁️ التحكم في أعمدة سجل الرصيد</div><div class="column-hint">احفظ شكل العرض المريح لك؛ الاختيارات بتتخزن تلقائيًا على نفس المتصفح.</div></div>
@@ -348,6 +360,18 @@
 الدولة: SG
 فى: 20/05/26 22:25
 
+شراء إنترنت
+عبر: *1517, Visa
+ب: 120 JPY
+من: GOOGLE
+رسوم تحويل العملات: 0.02366667
+ضريبة القيمة المضافة: 0.00 SAR
+رسوم العملية: 6 SAR
+إجمالى المبلغ المستحق: 290 SAR
+الرصيد المتبقى: 7703.56 SAR
+الدولة: JP
+فى: 21/05/26 12:35
+
 عملية انترنت ب: 9.5 USD
 من: War and Peace
 بطاقة: *0858
@@ -364,154 +388,123 @@
   function calcFixedEGP(amount,currency,usdEgpRate){ const usd = toUSD(amount,currency); if (usd === null || usdEgpRate <= 0) return null; return round2(usd * usdEgpRate * MARKUP); }
   function calcFixedSAR(amount,currency,egpRateForSar){ amount = Number(amount); currency = String(currency || '').toUpperCase(); if (!currency || amount <= 0) return null; if (currency === 'EGP') return round2((amount / egpRateForSar) * MARKUP * 3.76); if (currency === 'IQD') return round2((amount / 3500) * MARKUP); if (currency === 'USD') return round2((amount / 0.2666666) * 1.027); if (currency === 'MVR') return round2((amount / 4.09) * MARKUP); if (currency === 'JPY') return round2((amount * 0.00703) * MARKUP * 3.76); if (currency === 'SAR') return round2(amount * MARKUP); return null; }
   function normalizeDigits(value){
-    const map = {'٠':'0','١':'1','٢':'2','٣':'3','٤':'4','٥':'5','٦':'6','٧':'7','٨':'8','٩':'9','۰':'0','۱':'1','۲':'2','۳':'3','۴':'4','۵':'5','۶':'6','۷':'7','۸':'8','۹':'9'};
-    return String(value ?? '').replace(/[٠-٩۰-۹]/g, d => map[d] || d);
+    const arabic = '٠١٢٣٤٥٦٧٨٩';
+    const persian = '۰۱۲۳۴۵۶۷۸۹';
+    return String(value ?? '')
+      .replace(/[٠-٩]/g, d => String(arabic.indexOf(d)))
+      .replace(/[۰-۹]/g, d => String(persian.indexOf(d)))
+      .replace(/٫/g, '.')
+      .replace(/٬/g, ',');
   }
-  function normalizeText(text){
-    return normalizeDigits(String(text || ''))
-      .replace(/\r/g,'')
-      .replace(/[\u200e\u200f\u061c]/g,'')
-      .replace(/[：﹕]/g,':')
-      .replace(/\u066B/g,'.')
-      .replace(/\u066C/g,',')
-      .replace(/[ـ]/g,'')
-      .replace(/\t/g,' ')
-      .trim();
-  }
-  function normalizeArabicLetters(value){
-    return normalizeDigits(String(value || ''))
-      .replace(/[إأآٱ]/g,'ا')
-      .replace(/ى/g,'ي')
-      .replace(/ة/g,'ه')
-      .replace(/[ًٌٍَُِّْـ]/g,'')
-      .replace(/\s+/g,' ')
-      .trim()
-      .toLowerCase();
-  }
+  function normalizeText(text){ return normalizeDigits(String(text || '').replace(/\r/g,'').replace(/[\u200e\u200f]/g,'')).trim(); }
   function safeGroup(match,n){ try { return match && match[n] ? String(match[n]).trim() : '—'; } catch(e) { return '—'; } }
-  function duplicateKeyFor(entry){ return [Number(entry.amount || 0).toFixed(2), entry.currency, entry.card, entry.date, entry.merchant, entry.due_sar ?? '', entry.remaining_balance_sar ?? '', entry.country ?? ''].join('|').toLowerCase(); }
-  function buildEntry(amount,currency,merchant,card,date,account,raw,extra){
-    const cur = String(currency || '').toUpperCase();
-    const entry = { amount:Number(amount), currency:cur, merchant:merchant || '—', card:card || '—', date:date || '—', account:account || '—', raw:raw || '', channel:'—', fx_fee:null, vat_sar:null, operation_fee_sar:null, due_sar:null, remaining_balance_sar:null, country:'—', live_egp:convertLive(Number(amount),cur), live_sar:calcLiveSAR(Number(amount),cur), fixed_egp:null, fixed_sar:null, isDuplicate:false, duplicateCount:1, duplicateKey:'' };
-    if (extra && typeof extra === 'object') Object.assign(entry, extra);
-    if (Number.isFinite(Number(entry.due_sar))) entry.fixed_sar = round2(Number(entry.due_sar));
-    return entry;
+  function normalizeCurrency(value){
+    const raw = String(value || '').trim();
+    const upper = raw.toUpperCase().replace(/[^A-Z]/g,'');
+    if (upper === 'YEN' || upper === 'JPN' || upper === 'JPY') return 'JPY';
+    if (/ين|يابان|ياني|ين ياباني/i.test(raw)) return 'JPY';
+    if (upper === 'SR' || upper === 'SAR') return 'SAR';
+    if (upper === 'EGP') return 'EGP';
+    if (upper === 'USD') return 'USD';
+    if (upper === 'IQD') return 'IQD';
+    if (upper === 'MVR') return 'MVR';
+    return upper || raw;
   }
+  function duplicateKeyFor(entry){ return [Number(entry.amount || 0).toFixed(2), entry.currency, entry.card, entry.date, entry.merchant, Number(entry.due_sar || 0).toFixed(2), Number(entry.remaining_balance_sar || 0).toFixed(2)].join('|').toLowerCase(); }
+  function buildEntry(amount,currency,merchant,card,date,account,raw,extra){ const cur = normalizeCurrency(currency); const entry = { amount:Number(amount), currency:cur, merchant:merchant || '—', card:card || '—', date:date || '—', account:account || '—', raw:raw || '', channel:'—', fx_fee:null, vat_sar:null, operation_fee_sar:null, due_sar:null, due_sar_original:null, due_sar_source:'bank_message', remaining_balance_sar:null, country:'—', live_egp:convertLive(Number(amount),cur), live_sar:calcLiveSAR(Number(amount),cur), fixed_egp:null, fixed_sar:null, isDuplicate:false, duplicateCount:1, duplicateKey:'' }; if (extra && typeof extra === 'object') Object.assign(entry, extra); if (Number.isFinite(Number(entry.due_sar))) entry.fixed_sar = round2(Number(entry.due_sar)); return entry; }
   function parseNum(value){
-    if (value === null || value === undefined) return null;
-    let s = normalizeDigits(String(value)).replace(/\u066B/g,'.').replace(/\u066C/g,',').trim();
-    s = s.replace(/\s+/g,'');
-    if (!s) return null;
-    const commaDecimal = !s.includes('.') && /^[-+]?\d+,\d{1,3}$/.test(s);
-    s = commaDecimal ? s.replace(',', '.') : s.replace(/,/g,'');
-    s = s.replace(/[^0-9.+-]/g,'');
-    const n = parseFloat(s);
+    const cleaned = normalizeDigits(value)
+      .replace(/\s/g,'')
+      .replace(/,/g,'')
+      .replace(/[^0-9.\-+]/g,'');
+    const n = parseFloat(cleaned);
     return Number.isFinite(n) ? n : null;
   }
   function fmtMaybe(value, unit){ const n = Number(value); if (!Number.isFinite(n)) return '<span class="null-val">—</span>'; return `<span class="sar-val">${fmtEN(n)}</span>${unit ? `<span class="unit-sm">${escapeHTML(unit)}</span>` : ''}`; }
-  function cleanValue(value){
-    return String(value ?? '')
-      .replace(/\s*(EGP|USD|SAR|IQD|MVR|JPY)\s*$/i,'')
-      .trim() || '—';
-  }
-  function lineValue(block, labelRegexes, fallback = '—'){
-    const lines = String(block || '').split('\n').map(x => x.trim()).filter(Boolean);
-    for (const line of lines) {
-      for (const label of labelRegexes) {
-        const re = new RegExp('^\\s*(?:' + label + ')\\s*[:：\\-–]?\\s*(.+?)\\s*$', 'i');
-        const match = re.exec(line);
-        if (match && match[1] !== undefined) return String(match[1]).trim();
-      }
-    }
-    return fallback;
-  }
   function firstLineValue(regex, block, fallback = '—'){ const match = regex.exec(block); return match && match[1] ? String(match[1]).trim() : fallback; }
-  function findDateValue(block){
-    const dateMatch = /(\d{1,2}\s*[\/\-]\s*\d{1,2}\s*[\/\-]\s*\d{2,4}(?:\s+\d{1,2}:\d{2}(?::\d{2})?)?)/.exec(normalizeDigits(block));
-    if (dateMatch) return dateMatch[1].replace(/\s*([\/\-])\s*/g,'$1').trim();
-    const labeled = lineValue(block, ['ف[ىي]','بتاريخ','تاريخ(?:\\s+العملية)?','date'], '—');
-    return labeled;
+  function isJPYCurrency(currency){ return normalizeCurrency(currency) === 'JPY'; }
+  function applyJPYDueFromBalances(results){
+    results.forEach((entry,index) => {
+      if (!isJPYCurrency(entry.currency)) return;
+      entry.due_sar_original = Number.isFinite(Number(entry.due_sar)) ? round2(Number(entry.due_sar)) : null;
+      const previous = results[index - 1];
+      const previousBalance = previous ? Number(previous.remaining_balance_sar) : NaN;
+      const currentBalance = Number(entry.remaining_balance_sar);
+      if (Number.isFinite(previousBalance) && Number.isFinite(currentBalance)) {
+        const calculatedDue = round2(previousBalance - currentBalance);
+        entry.due_sar = calculatedDue;
+        entry.fixed_sar = calculatedDue;
+        entry.due_sar_source = 'balance_diff_jpy';
+      } else {
+        entry.due_sar_source = 'bank_message_no_previous_balance';
+      }
+    });
+    return results;
   }
-  function looksLikeDate(value){ return /\d{1,2}\s*[\/\-]\s*\d{1,2}\s*[\/\-]\s*\d{2,4}/.test(normalizeDigits(value)); }
-  function extractAmountCurrency(block){
-    const text = normalizeText(block);
-    const patterns = [
-      /(?:^|\n)\s*(?:ب|المبلغ|قيمة\s+العملية|amount)\s*[:：\-]?\s*([+-]?[\d,.]+)\s*([A-Za-z]{3})/i,
-      /(?:عملية|شراء|مشتريات|خصم)[^\n]{0,80}?\bب\s*[:：\-]?\s*([+-]?[\d,.]+)\s*([A-Za-z]{3})/i,
-      /([+-]?[\d,.]+)\s*(EGP|USD|SAR|IQD|MVR|JPY)\b/i
-    ];
-    for (const re of patterns) {
-      const m = re.exec(text);
-      if (!m) continue;
-      const amount = parseNum(m[1]);
-      const currency = String(m[2] || '').toUpperCase();
-      if (Number.isFinite(amount) && currency) return { amount, currency };
-    }
-    return null;
-  }
-  function maskedCardFrom(text){ const m = /(\*+\s*\d{2,}|\*\d{2,}|[xX*]{2,}\d{2,})/.exec(String(text || '')); return m ? m[1].replace(/\s+/g,'') : '—'; }
-  function parseSmartBlock(block){
-    block = normalizeText(block);
-    if (!block) return null;
-    const amountInfo = extractAmountCurrency(block);
-    if (!amountInfo) return null;
-    const { amount, currency } = amountInfo;
-    const viaFull = lineValue(block, ['عبر','بواسطة','عن\\s+طريق','via','through'], '—');
-    const viaParts = viaFull !== '—' ? viaFull.split(',').map(x => x.trim()).filter(Boolean) : [];
-    let card = lineValue(block, ['البطاقة','بطاقه','بطاقة','كارت','card'], '—');
-    if (card === '—') card = maskedCardFrom(viaFull) !== '—' ? maskedCardFrom(viaFull) : maskedCardFrom(block);
-    let account = lineValue(block, ['الحساب','حساب','account'], '—');
-    const accountNumber = firstLineValue(/^\s*من\s+حساب\s+رقم\s*[:：\-]?\s*(.+)$/mi, block, '—');
-    if (account === '—' && accountNumber !== '—') account = accountNumber;
-    if (account === '—' && viaParts.length > 1) account = viaParts.slice(1).join(', ');
-    let merchant = lineValue(block, ['من','التاجر','البيان','merchant','at'], '—');
-    if (/^حساب\s+رقم/i.test(merchant) || looksLikeDate(merchant)) merchant = '—';
-    const fiValue = lineValue(block, ['في'], '—');
-    if (merchant === '—' && fiValue !== '—' && !looksLikeDate(fiValue)) merchant = fiValue;
-    const date = findDateValue(block);
-    const fxFee = parseNum(lineValue(block, ['رسوم\\s+تحويل\\s+العملات','سعر\\s+الصرف','معامل\\s+التحويل','conversion\\s+rate','fx\\s+rate'], ''));
-    const vatSAR = parseNum(lineValue(block, ['ضريبة\\s+القيمة\\s+المضافة','ضريبه\\s+القيمه\\s+المضافه','VAT','vat'], ''));
-    const operationFeeSAR = parseNum(lineValue(block, ['رسوم\\s+العملية','رسوم\\s+العمليه','رسوم\\s+العملية\\s+بالريال','operation\\s+fee','fee'], ''));
-    const dueSAR = parseNum(lineValue(block, ['إجمال[ىي]\\s+المبلغ\\s+المستحق','اجمال[ىي]\\s+المبلغ\\s+المستحق','المبلغ\\s+المستحق','total\\s+due','due\\s+amount'], ''));
-    const remainingSAR = parseNum(lineValue(block, ['الرصيد\\s+المتبق[ىي]','الرصيد\\s+الحالي','الرصيد\\s+بعد\\s+العملية','remaining\\s+balance','balance'], ''));
-    const country = lineValue(block, ['الدولة','الدوله','country'], '—');
-    return buildEntry(amount, currency, merchant, card, date, account, block, { channel: viaFull, fx_fee: fxFee, vat_sar: vatSAR, operation_fee_sar: operationFeeSAR, due_sar: dueSAR, remaining_balance_sar: remainingSAR, country });
-  }
-  function splitTransactionBlocks(raw){
-    raw = normalizeText(raw);
-    if (!raw) return [];
-    const starter = /(?=^\s*(?:شراء\s+(?:إنترنت|انترنت|اونلاين|أونلاين)|عملية\s+(?:انترنت|إنترنت|شراء)|مشتريات\s+(?:إنترنت|انترنت)|خصم|تم\s+خصم)\b)/gmi;
-    let blocks = raw.split(starter).map(x => x.trim()).filter(Boolean);
-    if (blocks.length <= 1) blocks = raw.split(/\n\s*\n+/).map(x => x.trim()).filter(Boolean);
-    if (!blocks.length) blocks = [raw];
-    return blocks;
-  }
+  
   function addResultWithDuplicateMark(results, seen, entry){ const key = duplicateKeyFor(entry); const count = (seen.get(key) || 0) + 1; seen.set(key, count); entry.isDuplicate = count > 1; entry.duplicateCount = count; entry.duplicateKey = key; results.push(entry); }
   function parseTransactions(raw){
     raw = normalizeText(raw);
     const results = [];
     const seen = new Map();
-    const consumedKeys = new Set();
-    splitTransactionBlocks(raw).forEach(block => {
-      const entry = parseSmartBlock(block);
-      if (!entry) return;
-      const key = duplicateKeyFor(entry) + '|' + normalizeArabicLetters(block).slice(0,180);
-      if (consumedKeys.has(key)) return;
-      consumedKeys.add(key);
-      addResultWithDuplicateMark(results, seen, entry);
+    const purchaseBlocks = raw.split(/(?=شراء\s+(?:إ|ا)?نترنت)/gi).map(x => x.trim()).filter(Boolean);
+    purchaseBlocks.forEach(block => {
+      if (!/^شراء\s+(?:(?:إ|ا)?نترنت)/i.test(block)) return;
+      const am = /^ب\s*[:：\-]?\s*([+\-]?\d+(?:[.,]\d+)?)\s*([A-Za-z]{3}|ين\s*ياباني|ين|ياباني)/mi.exec(block);
+      if (!am) return;
+      const amount = parseNum(am[1]);
+      const currency = normalizeCurrency(am[2]);
+      if (!Number.isFinite(amount)) return;
+      const viaFull = firstLineValue(/^عبر\s*[:：\-]?\s*(.+)$/mi, block);
+      const viaParts = viaFull.split(',').map(x => x.trim()).filter(Boolean);
+      const card = viaParts[0] || viaFull || '—';
+      const account = viaParts.slice(1).join(', ') || '—';
+      const merchant = firstLineValue(/^من\s*[:：\-]?\s*(.+)$/mi, block);
+      const date = firstLineValue(/^ف[ىي]\s*[:：\-]?\s*(\d{1,2}\/\d{1,2}\/\d{2,4}\s+\d{1,2}:\d{2})/mi, block);
+      const fxFee = parseNum(firstLineValue(/^رسوم\s+تحويل\s+العملات\s*[:：\-]?\s*([+\-]?[\d,.]+)/mi, block, ''));
+      const vatSAR = parseNum(firstLineValue(/^ضريبة\s+القيمة\s+المضافة\s*[:：\-]?\s*([+\-]?[\d,.]+)/mi, block, ''));
+      const operationFeeSAR = parseNum(firstLineValue(/^رسوم\s+العملية\s*[:：\-]?\s*([+\-]?[\d,.]+)/mi, block, ''));
+      const dueSAR = parseNum(firstLineValue(/^(?:إجمال[ىي]|اجمال[ىي])\s+المبلغ\s+المستحق\s*[:：\-]?\s*([+\-]?[\d,.]+)/mi, block, ''));
+      const remainingSAR = parseNum(firstLineValue(/^الرصيد\s+المتبق[ىي]\s*[:：\-]?\s*([+\-]?[\d,.]+)/mi, block, ''));
+      const country = firstLineValue(/^الدولة\s*[:：\-]?\s*(.+)$/mi, block);
+      addResultWithDuplicateMark(results, seen, buildEntry(amount, currency, merchant, card, date, account, block, { channel: viaFull, fx_fee: fxFee, vat_sar: vatSAR, operation_fee_sar: operationFeeSAR, due_sar: dueSAR, remaining_balance_sar: remainingSAR, country }));
     });
-    if (results.length) return results;
-    const legacyPattern = /عملية\s+انترنت\s+ب\s*[:：]?\s*([\d,.]+)\s*([A-Za-z]{3})[\s\S]*?من\s*[:：]?\s*([\s\S]*?)\s+بطاقة\s*[:：]?\s*(\*?\d+)[\s\S]*?ف[ىي]\s*[:：]?\s*(\d{1,2}\/\d{1,2}\/\d{2,4}\s+\d{1,2}:\d{2})/gi;
+    const newPattern = /عملية\s+انترنت\s+ب\s*[:：\-]?\s*([+\-]?\d+(?:[.,]\d+)?)\s*([A-Za-z]{3}|ين\s*ياباني|ين|ياباني)[\s\S]*?من\s*[:：\-]?\s*([\s\S]*?)\s+بطاقة\s*[:：\-]?\s*(\*?\d+)[\s\S]*?ف[ىي]\s*[:：\-]?\s*(\d{1,2}\/\d{1,2}\/\d{2,4}\s+\d{1,2}:\d{2})/gi;
     let m;
-    while ((m = legacyPattern.exec(raw)) !== null) {
+    while ((m = newPattern.exec(raw)) !== null) {
       const amount = parseNum(m[1]);
       if (!Number.isFinite(amount)) continue;
-      addResultWithDuplicateMark(results, seen, buildEntry(amount, m[2], m[3].trim(), m[4].trim(), m[5].trim(), '—', m[0]));
+      addResultWithDuplicateMark(results, seen, buildEntry(amount, normalizeCurrency(m[2]), m[3].trim(), m[4].trim(), m[5].trim(), '—', m[0]));
     }
-    return results;
+    const oldBlocks = raw.split(/مشتريات\s+إنترنت|مشتريات\s+انترنت/gi).map(x => x.trim()).filter(Boolean);
+    oldBlocks.forEach(block => {
+      const am = /المبلغ\s*[:\-]\s*([+\-]?\d+(?:[.,]\d+)?)\s*([A-Za-z]{3}|ين\s*ياباني|ين|ياباني)/i.exec(block);
+      if (!am) return;
+      const amount = parseNum(am[1]);
+      const currency = normalizeCurrency(am[2]);
+      if (!Number.isFinite(amount)) return;
+      const card = safeGroup(/البطاقة\s*[:\-]\s*(\S+)/i.exec(block),1);
+      const merchant = safeGroup(/\bفي\s*[:\-]\s*(.+)/i.exec(block),1);
+      const date = safeGroup(/بتاريخ\s*[:\-]\s*(.+)/i.exec(block),1);
+      const account = safeGroup(/من\s+حساب\s+رقم\s*[:\-]\s*(\S+)/i.exec(block),1);
+      addResultWithDuplicateMark(results, seen, buildEntry(amount,currency,merchant,card,date,account,block));
+    });
+    const simpleBlocks = raw.split(/\n\s*\n+/).map(x => x.trim()).filter(Boolean);
+    simpleBlocks.forEach(block => {
+      if (/عملية\s+انترنت|شراء\s+(?:إ|ا)?نترنت/i.test(block) || /المبلغ\s*[:\-]/i.test(block)) return;
+      const am = /(?:amount|المبلغ|ب)\s*[:\-]?\s*([+\-]?\d+(?:[.,]\d+)?)\s*([A-Za-z]{3}|ين\s*ياباني|ين|ياباني)/i.exec(block);
+      if (!am) return;
+      const amount = parseNum(am[1]);
+      const currency = normalizeCurrency(am[2]);
+      const merchant = safeGroup(/(?:من|merchant|at|في)\s*[:\-]?\s*(.+)/i.exec(block),1);
+      const card = safeGroup(/(?:بطاقة|card)\s*[:\-]?\s*(\*?\d+)/i.exec(block),1);
+      const date = safeGroup(/(?:في|فى|date|بتاريخ)\s*[:\-]?\s*(\d{1,2}\/\d{1,2}\/\d{2,4}\s+\d{1,2}:\d{2})/i.exec(block),1);
+      if (Number.isFinite(amount)) addResultWithDuplicateMark(results, seen, buildEntry(amount,currency,merchant,card,date,'—',block));
+    });
+    return applyJPYDueFromBalances(results);
   }
 
-  function handleConvertSubmit(event){ if (event && event.preventDefault) event.preventDefault(); const textarea = $('data'); const raw = textarea.value.trim(); if (!raw) { showMessage('⚠️ من فضلك الصق بيانات العمليات قبل التحويل.', 'err'); textarea.focus(); return false; } const btn = $('submitBtn'); const mobileBtn = $('mobileSubmitBtn'); btn.disabled = true; btn.textContent = 'جاري التحويل...'; if (mobileBtn) { mobileBtn.disabled = true; mobileBtn.textContent = 'جاري التحويل...'; } try { currentResults = parseTransactions(raw); saveLastResults(); if (!currentResults.length) { showMessage('⚠️ لم أستطع استخراج أي عملية. تأكد أن الرسائل بنفس شكل البنك أو استخدم المثال للتجربة.', 'err'); return false; } const duplicateCount = currentResults.filter(item => item.isDuplicate).length; showMessage(`✅ تم استخراج ${currentResults.length} عملية بنجاح${duplicateCount ? ` — منهم ${duplicateCount} مكرر وتم إضافتهم عادي.` : ''}`, 'ok'); renderResults(); showScreen('result'); } catch(error) { console.error(error); showMessage('❌ حصل خطأ أثناء التحويل. جرّب تمسح النص وتلصقه مرة أخرى.', 'err'); } finally { btn.disabled = false; btn.textContent = 'تحويل الآن'; if (mobileBtn) { mobileBtn.disabled = false; mobileBtn.textContent = 'تحويل الآن'; } } return false; }
+    function handleConvertSubmit(event){ if (event && event.preventDefault) event.preventDefault(); const textarea = $('data'); const raw = textarea.value.trim(); if (!raw) { showMessage('⚠️ من فضلك الصق بيانات العمليات قبل التحويل.', 'err'); textarea.focus(); return false; } const btn = $('submitBtn'); const mobileBtn = $('mobileSubmitBtn'); btn.disabled = true; btn.textContent = 'جاري التحويل...'; if (mobileBtn) { mobileBtn.disabled = true; mobileBtn.textContent = 'جاري التحويل...'; } try { currentResults = parseTransactions(raw); saveLastResults(); if (!currentResults.length) { showMessage('⚠️ لم أستطع استخراج أي عملية. تأكد أن الرسائل بنفس شكل البنك أو استخدم المثال للتجربة.', 'err'); return false; } const duplicateCount = currentResults.filter(item => item.isDuplicate).length; showMessage(`✅ تم استخراج ${currentResults.length} عملية بنجاح${duplicateCount ? ` — منهم ${duplicateCount} مكرر وتم إضافتهم عادي.` : ''}`, 'ok'); renderResults(); showScreen('result'); } catch(error) { console.error(error); showMessage('❌ حصل خطأ أثناء التحويل. جرّب تمسح النص وتلصقه مرة أخرى.', 'err'); } finally { btn.disabled = false; btn.textContent = 'تحويل الآن'; if (mobileBtn) { mobileBtn.disabled = false; mobileBtn.textContent = 'تحويل الآن'; } } return false; }
 
   function columnStorageKey(tableId){ return STORAGE_COLUMN_VISIBILITY + tableId; }
   function getColumnState(tableId){ const cols = TABLE_COLUMNS[tableId] || []; let saved = {}; try { saved = JSON.parse(localStorage.getItem(columnStorageKey(tableId)) || '{}') || {}; } catch(e) { saved = {}; } const state = {}; cols.forEach(col => { state[col.key] = saved[col.key] !== false; }); return state; }
@@ -668,81 +661,18 @@
   function getSavedSignatures(){ try { return JSON.parse(localStorage.getItem(STORAGE_SAVED_SIGNATURES) || '[]'); } catch(e) { return []; } }
   function setSavedSignatures(items){ localStorage.setItem(STORAGE_SAVED_SIGNATURES, JSON.stringify(items)); }
   function signatureForResult(r,type){ return [type, r.amount, r.currency, r.card, r.date, r.merchant, r.duplicateCount || 1].join('|').toLowerCase(); }
-  function saveTodayOperations(){ recalcResultColumns(); if (!currentResults || !currentResults.length) { alert('لا يوجد عمليات لحفظها.'); return; } const type = $('saveType').value; const savedSignatures = new Set(getSavedSignatures()); const now = new Date(); const batchId = `batch_${Date.now()}_${Math.random().toString(16).slice(2)}`; const history = getHistory(); const newItems = currentResults.map(r => { const item = { id:`${Date.now()}_${Math.random().toString(16).slice(2)}`, batchId, source:'save_button', type, savedAt:now.toISOString(), savedDay:now.toLocaleDateString('en-CA'), operationDate:r.date || '—', card:r.card || '—', amount:Number(r.amount) || 0, currency:r.currency || '—', merchant:r.merchant || '—', account:r.account || '—', liveEGP:r.live_egp || 0, liveSAR:r.live_sar || 0, fixedEGP:r.fixed_egp || 0, fixedSAR:r.fixed_sar || 0, sarToEGPRate:r.sar_to_egp_rate || getSARToEGPRate(), channel:r.channel || '—', fxFee:Number.isFinite(Number(r.fx_fee)) ? Number(r.fx_fee) : null, vatSAR:Number.isFinite(Number(r.vat_sar)) ? Number(r.vat_sar) : null, operationFeeSAR:Number.isFinite(Number(r.operation_fee_sar)) ? Number(r.operation_fee_sar) : null, dueSAR:Number.isFinite(Number(r.due_sar)) ? Number(r.due_sar) : null, remainingBalanceSAR:Number.isFinite(Number(r.remaining_balance_sar)) ? Number(r.remaining_balance_sar) : null, country:r.country || '—', isDuplicate:Boolean(r.isDuplicate), duplicateCount:r.duplicateCount || 1, duplicateKey:r.duplicateKey || '', note:r.merchant || '' }; savedSignatures.add(signatureForResult(r,type)); return item; }); setHistory([...history, ...newItems]); setSavedSignatures([...savedSignatures]); const status = $('saveStatus'); status.textContent = `✅ تم حفظ ${newItems.length} عملية في سجل الرصيد${newItems.some(x => x.isDuplicate) ? ' — والعمليات المكررة اتحفظت عادي.' : ''}`; status.classList.add('show'); renderHistory(); }
-  function dateAddDays(date, days){ const d = new Date(date); d.setDate(d.getDate() + days); return d; }
-  function toISODate(date){ return date.toLocaleDateString('en-CA'); }
-  function getItemSavedDay(item){
-    if (item && item.savedDay && /^\d{4}-\d{2}-\d{2}$/.test(item.savedDay)) return item.savedDay;
-    const d = new Date(item?.savedAt || item?.operationDate || '');
-    return Number.isNaN(d.getTime()) ? '' : toISODate(d);
-  }
-  function getQuickDateRange(){
-    const preset = $('quickDateFilter')?.value || 'all';
-    const today = new Date();
-    const end = toISODate(today);
-    if (preset === 'today') return { from:end, to:end };
-    if (preset === 'yesterday') { const y = toISODate(dateAddDays(today, -1)); return { from:y, to:y }; }
-    if (preset === 'last7') return { from:toISODate(dateAddDays(today, -6)), to:end };
-    if (preset === 'last30') return { from:toISODate(dateAddDays(today, -29)), to:end };
-    if (preset === 'last365') return { from:toISODate(dateAddDays(today, -364)), to:end };
-    return null;
-  }
-  function monthLabel(monthKey){
-    const parts = String(monthKey || '').split('-');
-    if (parts.length !== 2) return monthKey;
-    return `شهر ${Number(parts[1]).toLocaleString('ar-EG')} ${Number(parts[0]).toLocaleString('ar-EG')}`;
-  }
-  function updateHistoryMonthOptions(history){
-    const select = $('monthFilter');
-    if (!select) return;
-    const current = select.value || 'all';
-    const months = [...new Set((history || getHistory()).map(getItemSavedDay).filter(Boolean).map(day => day.slice(0,7)))].sort().reverse();
-    select.innerHTML = '<option value="all">كل الشهور</option>' + months.map(m => `<option value="${m}">${monthLabel(m)}</option>`).join('');
-    select.value = months.includes(current) ? current : 'all';
-  }
-  function handleQuickFilterChange(){
-    const preset = $('quickDateFilter')?.value || 'all';
-    if ($('monthFilter')) $('monthFilter').value = 'all';
-    if (preset !== 'custom') { if ($('fromDate')) $('fromDate').value = ''; if ($('toDate')) $('toDate').value = ''; }
-    renderHistory();
-  }
-  function handleMonthFilterChange(){
-    if ($('quickDateFilter')) $('quickDateFilter').value = 'all';
-    if ($('fromDate')) $('fromDate').value = '';
-    if ($('toDate')) $('toDate').value = '';
-    renderHistory();
-  }
-  function handleManualDateFilterChange(){
-    if ($('quickDateFilter')) $('quickDateFilter').value = 'custom';
-    if ($('monthFilter')) $('monthFilter').value = 'all';
-    renderHistory();
-  }
-  function resetHistoryDateFilters(){
-    if ($('quickDateFilter')) $('quickDateFilter').value = 'all';
-    if ($('monthFilter')) $('monthFilter').value = 'all';
-    if ($('fromDate')) $('fromDate').value = '';
-    if ($('toDate')) $('toDate').value = '';
-    renderHistory();
-  }
-  function matchesFilters(item){
-    const searchValue = ($('searchInput')?.value || '').trim().toLowerCase();
-    const typeValue = $('typeFilter')?.value || 'all';
-    const monthValue = $('monthFilter')?.value || 'all';
-    const quickRange = getQuickDateRange();
-    let fromDate = $('fromDate')?.value || '';
-    let toDate = $('toDate')?.value || '';
-    const itemDay = getItemSavedDay(item);
-    if (quickRange) { fromDate = quickRange.from; toDate = quickRange.to; }
-    if (typeValue !== 'all' && item.type !== typeValue) return false;
-    if (monthValue !== 'all' && (!itemDay || itemDay.slice(0,7) !== monthValue)) return false;
-    if (fromDate && (!itemDay || itemDay < fromDate)) return false;
-    if (toDate && (!itemDay || itemDay > toDate)) return false;
-    if (searchValue) {
-      const text = [item.merchant,item.note,item.card,item.channel,item.country,item.account,item.currency,item.operationDate,item.savedDay,item.isDuplicate ? 'مكرر' : ''].join(' ').toLowerCase();
-      if (!text.includes(searchValue)) return false;
-    }
-    return true;
-  }
+  function saveTodayOperations(){ recalcResultColumns(); if (!currentResults || !currentResults.length) { alert('لا يوجد عمليات لحفظها.'); return; } const type = $('saveType').value; const savedSignatures = new Set(getSavedSignatures()); const now = new Date(); const batchId = `batch_${Date.now()}_${Math.random().toString(16).slice(2)}`; const history = getHistory(); const newItems = currentResults.map(r => { const item = { id:`${Date.now()}_${Math.random().toString(16).slice(2)}`, batchId, source:'save_button', type, savedAt:now.toISOString(), savedDay:now.toLocaleDateString('en-CA'), operationDate:r.date || '—', card:r.card || '—', amount:Number(r.amount) || 0, currency:r.currency || '—', merchant:r.merchant || '—', account:r.account || '—', liveEGP:r.live_egp || 0, liveSAR:r.live_sar || 0, fixedEGP:r.fixed_egp || 0, fixedSAR:r.fixed_sar || 0, sarToEGPRate:r.sar_to_egp_rate || getSARToEGPRate(), channel:r.channel || '—', fxFee:Number.isFinite(Number(r.fx_fee)) ? Number(r.fx_fee) : null, vatSAR:Number.isFinite(Number(r.vat_sar)) ? Number(r.vat_sar) : null, operationFeeSAR:Number.isFinite(Number(r.operation_fee_sar)) ? Number(r.operation_fee_sar) : null, dueSAR:Number.isFinite(Number(r.due_sar)) ? Number(r.due_sar) : null, dueSAROriginal:Number.isFinite(Number(r.due_sar_original)) ? Number(r.due_sar_original) : null, dueSARSource:r.due_sar_source || 'bank_message', remainingBalanceSAR:Number.isFinite(Number(r.remaining_balance_sar)) ? Number(r.remaining_balance_sar) : null, country:r.country || '—', isDuplicate:Boolean(r.isDuplicate), duplicateCount:r.duplicateCount || 1, duplicateKey:r.duplicateKey || '', note:r.merchant || '' }; savedSignatures.add(signatureForResult(r,type)); return item; }); setHistory([...history, ...newItems]); setSavedSignatures([...savedSignatures]); const status = $('saveStatus'); status.textContent = `✅ تم حفظ ${newItems.length} عملية في سجل الرصيد${newItems.some(x => x.isDuplicate) ? ' — والعمليات المكررة اتحفظت عادي.' : ''}`; status.classList.add('show'); renderHistory(); }
+  function dateISOFromDate(date){ return date.toLocaleDateString('en-CA'); }
+  function parseISODate(value){ const d = new Date(`${value}T00:00:00`); return Number.isNaN(d.getTime()) ? null : d; }
+  function addDays(date,days){ const d = new Date(date); d.setDate(d.getDate() + days); return d; }
+  function monthKeyFromISO(iso){ return iso && /^\d{4}-\d{2}-\d{2}$/.test(iso) ? iso.slice(0,7) : ''; }
+  function monthLabel(key){ const [y,m] = String(key).split('-'); return y && m ? `شهر ${Number(m)} ${y}` : key; }
+  function getSavedDay(item){ if (item && item.savedDay) return item.savedDay; if (item && item.savedAt) { const d = new Date(item.savedAt); if (!Number.isNaN(d.getTime())) return dateISOFromDate(d); } return ''; }
+  function setCustomDatePreset(){ const preset = $('datePreset'); const month = $('monthFilter'); if (preset) preset.value = 'custom'; if (month) month.value = 'all'; }
+  function handleDatePresetChange(){ const preset = $('datePreset')?.value || 'all'; const from = $('fromDate'); const to = $('toDate'); const month = $('monthFilter'); if (month) month.value = 'all'; const today = new Date(); let start = '', end = ''; if (preset === 'today') { start = end = dateISOFromDate(today); } else if (preset === 'yesterday') { const y = addDays(today,-1); start = end = dateISOFromDate(y); } else if (preset === 'last7') { start = dateISOFromDate(addDays(today,-6)); end = dateISOFromDate(today); } else if (preset === 'last30') { start = dateISOFromDate(addDays(today,-29)); end = dateISOFromDate(today); } else if (preset === 'last365') { start = dateISOFromDate(addDays(today,-364)); end = dateISOFromDate(today); } else if (preset === 'all') { start = ''; end = ''; } else { renderHistory(); return; } if (from) from.value = start; if (to) to.value = end; renderHistory(); }
+  function handleMonthFilterChange(){ const key = $('monthFilter')?.value || 'all'; const preset = $('datePreset'); const from = $('fromDate'); const to = $('toDate'); if (key === 'all') { if (preset) preset.value = 'all'; if (from) from.value = ''; if (to) to.value = ''; renderHistory(); return; } const start = `${key}-01`; const d = parseISODate(start); if (!d) return; const endDate = new Date(d.getFullYear(), d.getMonth() + 1, 0); if (preset) preset.value = 'custom'; if (from) from.value = start; if (to) to.value = dateISOFromDate(endDate); renderHistory(); }
+  function populateMonthFilter(history){ const select = $('monthFilter'); if (!select) return; const current = select.value || 'all'; const keys = [...new Set((history || []).map(getSavedDay).map(monthKeyFromISO).filter(Boolean))].sort(); select.innerHTML = `<option value="all">كل الشهور</option>` + keys.map(key => `<option value="${key}">${monthLabel(key)}</option>`).join(''); if ([...select.options].some(opt => opt.value === current)) select.value = current; }
+  function matchesFilters(item){ const searchValue = ($('searchInput')?.value || '').trim().toLowerCase(); const typeValue = $('typeFilter')?.value || 'all'; const fromDate = $('fromDate')?.value || ''; const toDate = $('toDate')?.value || ''; const savedDay = getSavedDay(item); if (typeValue !== 'all' && item.type !== typeValue) return false; if (fromDate && savedDay < fromDate) return false; if (toDate && savedDay > toDate) return false; if (searchValue) { const text = [item.merchant,item.note,item.card,item.channel,item.country,item.account,item.currency,item.operationDate,item.isDuplicate ? 'مكرر' : ''].join(' ').toLowerCase(); if (!text.includes(searchValue)) return false; } return true; }
   function formatSavedDate(isoDate){ if (!isoDate) return '—'; const date = new Date(isoDate); if (Number.isNaN(date.getTime())) return isoDate; return date.toLocaleString('ar-EG',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}); }
   function renderHistory(){
     const body = $('historyBody');
@@ -750,7 +680,7 @@
     const tableWrap = $('tableWrap');
     if (!body) return;
     const history = getHistory().sort((a,b) => new Date(b.savedAt) - new Date(a.savedAt));
-    updateHistoryMonthOptions(history);
+    populateMonthFilter(history);
     const filtered = history.filter(matchesFilters);
     let totalAdded = 0, totalDeducted = 0;
     body.innerHTML = '';
